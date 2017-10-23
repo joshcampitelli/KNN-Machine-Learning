@@ -1,5 +1,5 @@
 package Metrics;
 
-public class integerMetric extends metrics{
+public class integerMetric extends GenericMetric{
 
 }

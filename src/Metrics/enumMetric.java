@@ -1,5 +1,5 @@
 package Metrics;
 
-public class enumMetric extends metrics{
+public class enumMetric extends GenericMetric{
 
 }

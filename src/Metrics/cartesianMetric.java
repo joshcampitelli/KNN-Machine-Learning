@@ -1,5 +1,5 @@
 package Metrics;
 
-public class cartesianMetric extends metrics{
+public class cartesianMetric extends GenericMetric{
 
 }
