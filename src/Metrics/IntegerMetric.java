@@ -12,6 +12,6 @@ public class IntegerMetric implements GenericMetric{
 	}
 	
 	public Object getValue(){
-		return null;
+		return value;
 	}
 }
