@@ -1,26 +1,24 @@
-
+import Metrics.GenericMetric;
 
 public class MachineLearning {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		
-
 	}
 	
-	public boolean Learn(Object metrics[]){
+	public boolean Learn(GenericMetric metrics[]){
 		return false;
 	}
 	
-	public int Predict(Object metrics[]){
+	public int Predict(GenericMetric metrics[]){
 		return 0;
 	}
 
-	public void PredictLearn(Object metrics[]){
+	public void PredictLearn(GenericMetric metrics[]){
 		
 	}
 	
-	public void PredictError(String problem, Object metrics[]){
+	public void PredictError(String problem, GenericMetric metrics[]){
 		
 	}
 }

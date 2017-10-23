@@ -1,13 +1,9 @@
 package Metrics;
 
-public class GenericMetric {
+public interface GenericMetric {
 	
 	
-	public Object getValue(){
-		return null;
-	}
+	public Object getValue();
 	
-	public int getDifference(){
-		return 0;
-	}
+	public int getDifference();
 }
