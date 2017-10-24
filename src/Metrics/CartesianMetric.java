@@ -8,8 +8,11 @@ public class CartesianMetric implements GenericMetric{
 		coordinates[1] = y;
 	}
 	
-	public int getDifference(){
-		return 0;
+	public int getDifference(GenericMetric metric){
+		if(metric instanceof CartesianMetric){
+			
+		}
+		return 1;
 	}
 	
 	public Object getValue(){
