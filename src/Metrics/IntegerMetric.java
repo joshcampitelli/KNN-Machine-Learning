@@ -9,16 +9,13 @@ public class IntegerMetric implements GenericMetric{
 	
 	public int getDifference(GenericMetric metric){
 		if(metric instanceof IntegerMetric){	
-			// Return 0 if the metric passed is of the 
-			// same value as this, else return 1
-			if(value == (int)metric.getValue()){
-				return 0;
-			}
+			// Returns the absolute difference between the two ints
+			return Math.abs(value - (int)metric.getValue());
 		}
 		
 		// Return 1 if the object passed is 
 		// of a different type
-		return 1;
+		return -1;
 	}
 	
 	public Object getValue(){
