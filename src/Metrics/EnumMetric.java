@@ -1,7 +1,7 @@
 package Metrics;
 
 public class EnumMetric implements GenericMetric{
-	private enum age {NEW, OLD};
+	private enum age {NEW, OLD};	// Looking to remove this as it is a magic value
 	private age value;
 	
 	/* This constructor requires a string value that must match one of the enum values.
