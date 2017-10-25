@@ -35,11 +35,8 @@ public class MachineLearning {
 		for (Map.Entry<String, GenericMetric[]> entry : learnedInfo.entrySet()) {
 			String existingKey = entry.getKey();
 			GenericMetric[] value = entry.getValue();
-			for (j = 0; j < value.length(); )
-			
-			
-			for (GenericMetric v : value) {
-				totalDistance = totalDistance + v.getDistance(metrics[i]);				
+			for (j = 0; j < value.length - 1; j++) {
+				totalDistance = totalDistance + value[j].getDistance(metrics[i]);
 				i++;
 			}
 			
