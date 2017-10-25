@@ -55,8 +55,11 @@ public class MachineLearning {
 		this.Learn(key, metrics);
 	}
 	
-	public void PredictError(String problem, int k, GenericMetric... metrics) {
+	public int PredictError(String problem, int k, String key,  GenericMetric... metrics) {
+		int expectedValue = (int) metrics[metrics.length - 1].getValue();
+		int predictedValue = this.Predict(k, key, metrics);
 		
+		return Math.abs(predictedValue-expectedValue);
 	}
 	
 	public static void main (String[] args) {
