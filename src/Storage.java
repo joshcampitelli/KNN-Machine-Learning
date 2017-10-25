@@ -27,6 +27,6 @@ public class Storage {
 	*																new enumMetric("new")};
 	*/
 	public void insert(String key, GenericMetric metrics[]) {
-		learned.put(key, metrics)
+		learned.put(key, metrics);
 	}
 }
