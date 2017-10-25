@@ -5,12 +5,12 @@ import java.util.*;
 public class MachineLearning {
 	String problem;
 	Storage storage;
-	TreeMap<String, Integer> valuesTree;
+	Map<String, Integer> valuesMap;
 	
 	public MachineLearning(String problem) {
 		this.problem = problem;
 		storage = new Storage();
-		valuesTree = new TreeMap<>();
+		valuesMap = new HashMap<>();
 	}
 
 	public void Learn(String key, GenericMetric... metrics) {
@@ -39,22 +39,13 @@ public class MachineLearning {
 				totalDistance = totalDistance + value[j].getDistance(metrics[i]);
 				i++;
 			}
-			
 			newKey = givenKey + existingKey;
 			
-			//Tree isn't going to work, needs to be a hashmap.
-			//valuesTree.put(newKey, totalDifference);			
+			valuesMap.put(newKey, totalDistance);			
 			i = 0;
 		}
 		
-		
-		/*
-		for (GenericMetric m : metrics) {
-			tempDifference = m.getDifference(metric);
-			totalDifference = totalDifference + tempDifference;
-		}
-		*/
-		
+		//Sort hashmap to find smalled distances
 		
 		return predictedValue;
 	}
