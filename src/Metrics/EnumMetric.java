@@ -21,7 +21,7 @@ public class EnumMetric implements GenericMetric{
 	 * this function returns an int of 1; however, the function returns an int of
 	 * 0 if they are not.
 	 */
-	public int getDifference(GenericMetric metric){
+	public int getDistance(GenericMetric metric){
 		if(metric instanceof EnumMetric){
 			if(value.equals(metric.getValue())){
 				return 1;

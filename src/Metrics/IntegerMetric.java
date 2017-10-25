@@ -14,7 +14,7 @@ public class IntegerMetric implements GenericMetric{
 	 * This particular function will return the (positive) difference between two
 	 * integers.
 	 */
-	public int getDifference(GenericMetric metric){
+	public int getDistance(GenericMetric metric){
 		if(metric instanceof IntegerMetric){
 			return Math.abs(value - (int)metric.getValue());
 		}

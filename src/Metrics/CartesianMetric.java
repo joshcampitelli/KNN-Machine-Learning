@@ -15,7 +15,7 @@ public class CartesianMetric implements GenericMetric{
 	 * This particular function will return the hypotenuse of two xy-coordinates.
 	 * The value shall be returned as a positive integer. 
 	 */
-	public int getDifference(GenericMetric metric){
+	public int getDistance(GenericMetric metric){
 		if(metric instanceof CartesianMetric){
 			int[] value = (int[])metric.getValue();
 			double squareSum = 0;
