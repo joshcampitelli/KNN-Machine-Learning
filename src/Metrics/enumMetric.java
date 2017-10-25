@@ -2,7 +2,7 @@ package Metrics;
 
 public class enumMetric implements GenericMetric{
 
-	public int getDifference(){
+	public int getDifference(GenericMetric metric){
 		return 0;
 	}
 	
