@@ -8,7 +8,7 @@ public class EnumMetric implements GenericMetric{
 	 * If the values do not match, no value is assigned to this metric and an error
 	 * message is written to console.
 	 */
-	public EnumMetric(String val){
+	public EnumMetric(String[] enums, String val){
 		try{
 			value = age.valueOf(val.toUpperCase());
 		} catch(IllegalArgumentException e){
