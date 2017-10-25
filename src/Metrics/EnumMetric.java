@@ -14,7 +14,6 @@ public class EnumMetric implements GenericMetric{
 		} catch(IllegalArgumentException e){
 			System.out.println("ERROR - Value not assigned.  Paramenter not accepted");
 		}
-	//Helo Darkness
 	}
 	
 	/* See GenericMetrics.getDifference(GenericMetric metric) for full java doc
@@ -37,5 +36,9 @@ public class EnumMetric implements GenericMetric{
 	 */
 	public Object getValue(){
 		return value;
+	}
+
+	public void doesNothin(){
+		
 	}
 }
