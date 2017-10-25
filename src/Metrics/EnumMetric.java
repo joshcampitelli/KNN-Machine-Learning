@@ -4,12 +4,11 @@ public class EnumMetric implements GenericMetric{
 	private enum age {NEW, OLD};
 	private age value;
 	
-	/* This function requires a string value that must match one of the enum values.
+	/* This constructot requires a string value that must match one of the enum values.
 	 * If the values do not match, no value is assigned to this metric and an error
 	 * message is written to console.
 	 */
 	public EnumMetric(String[] enums, String val){
-		// Set the enum to new if the house is new
 		try{
 			value = age.valueOf(val.toUpperCase());
 		} catch(IllegalArgumentException e){
@@ -21,7 +20,7 @@ public class EnumMetric implements GenericMetric{
 	/* See GenericMetrics.getDifference(GenericMetric metric) for full java doc
 	 * This particular function will check if two enums are equal.  If they are,
 	 * this function returns an int of 1; however, the function returns an int of
-	 * 0 if they are not.  Returns -1 for incorrect parameters.
+	 * 0 if they are not.
 	 */
 	public int getDifference(GenericMetric metric){
 		if(metric instanceof EnumMetric){
