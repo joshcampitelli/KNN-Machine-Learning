@@ -26,6 +26,7 @@ public class MachineLearning {
 			storage.insert(keyChar+i,m);
 		}
 		
+		
 		/*
 		 * Had to remove the boolean value since insert() doesn't return anything
 		 * at this point in time.
