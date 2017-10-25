@@ -24,6 +24,7 @@ public class CartesianMetric implements GenericMetric{
 			}
 			return (int)Math.sqrt(squareSum);
 		}
+		// Comment
 		return -1;
 	}
 
