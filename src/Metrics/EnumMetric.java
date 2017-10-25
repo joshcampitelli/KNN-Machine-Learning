@@ -8,14 +8,11 @@ public class EnumMetric implements GenericMetric{
 	 * If the values do not match, no value is assigned to this metric and an error
 	 * message is written to console.
 	 */
-	public EnumMetric(String val){
+	public EnumMetric(String[] enums, String val){
 		// Set the enum to new if the house is new
-		if(val.equalsIgnoreCase("new")){
-			value = age.NEW;
-		// Set it to old otherwise
-		} else if(val.equalsIgnoreCase("old")){
-			value = age.OLD;
-		} else {
+		try{
+			value = age.valueOf(val.toUpperCase());
+		} catch(IllegalArgumentException e){
 			System.out.println("ERROR - Value not assigned.  Paramenter not accepted");
 		}
 	
