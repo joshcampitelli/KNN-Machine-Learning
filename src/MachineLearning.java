@@ -6,6 +6,7 @@ public class MachineLearning {
 	Storage storage;
 	TreeMap<String, Integer> valuesTree;
 	char keyChar;
+	int keyVal = 0;
 	
 	public MachineLearning(String problem) {
 		this.problem = problem;
@@ -19,12 +20,8 @@ public class MachineLearning {
 	}
 
 	public void Learn(GenericMetric[] metrics){
-		//storage.insert(metrics);
-		int i = 0;
-		for (GenericMetric m: metrics) {
-			i++;
-			storage.insert(keyChar+i,m);
-		}
+		keyVal++;
+		storage.insert(keyChar+""+keyVal, metrics);
 		
 		/*
 		 * Had to remove the boolean value since insert() doesn't return anything
