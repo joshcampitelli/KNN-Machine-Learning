@@ -4,7 +4,7 @@ public class EnumMetric implements GenericMetric{
 	private enum age {NEW, OLD};
 	private age value;
 	
-	/* This constructot requires a string value that must match one of the enum values.
+	/* This constructor requires a string value that must match one of the enum values.
 	 * If the values do not match, no value is assigned to this metric and an error
 	 * message is written to console.
 	 */
