@@ -1,6 +1,4 @@
-import Metrics.CartesianMetric;
-import Metrics.GenericMetric;
-import Metrics.IntegerMetric;
+import Metrics.*;
 import java.util.*;
 
 
@@ -28,7 +26,7 @@ public class MachineLearning {
 	}
 	
 	public int Predict(int k, String givenKey, GenericMetric... metrics) {
-		int predictedValue = 0, totalDifference = 0, i = 0;
+		int predictedValue = 0, totalDistance = 0, i = 0, j = 0;
 		String newKey;
 		HashMap<String, GenericMetric[]> learnedInfo;
 		
@@ -37,8 +35,11 @@ public class MachineLearning {
 		for (Map.Entry<String, GenericMetric[]> entry : learnedInfo.entrySet()) {
 			String existingKey = entry.getKey();
 			GenericMetric[] value = entry.getValue();
+			for (j = 0; j < value.length(); )
+			
+			
 			for (GenericMetric v : value) {
-				totalDifference = totalDifference + v.getDifference(metrics[i]);				
+				totalDistance = totalDistance + v.getDistance(metrics[i]);				
 				i++;
 			}
 			
