@@ -37,8 +37,4 @@ public class EnumMetric implements GenericMetric{
 	public Object getValue(){
 		return value;
 	}
-
-	public void doesNothin(){
-		
-	}
 }
