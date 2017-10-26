@@ -4,7 +4,7 @@ import java.util.*;
 public class main {
 
     public static void main(String[] args) {
-System.out.println();
+
         MachineLearning Housing = new MachineLearning("housing");
 
         Housing.Learn("h1", new CartesianMetric(12, 25), new IntegerMetric(1200), new EnumMetric("new"), new IntegerMetric(500000));
