@@ -59,7 +59,8 @@ public class MachineLearning {
 				i++;
 			}
 			//Storing the difference distances, to be used later in finding the smallest distances
-			valuesMap.put(existingKey, totalDistance);			
+			valuesMap.put(existingKey, totalDistance);
+			totalDistance = 0;
 			i = 0;
 		}
 		
