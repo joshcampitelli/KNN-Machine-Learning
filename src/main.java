@@ -10,7 +10,7 @@ System.out.println();
         Housing.Learn("h1", new CartesianMetric(12, 25), new IntegerMetric(1200), new EnumMetric("new"), new IntegerMetric(500000));
         Housing.Learn("h2", new CartesianMetric(10, 50), new IntegerMetric(1000), new EnumMetric("old"), new IntegerMetric(300000));
         Housing.Learn("h3", new CartesianMetric(12, 25), new IntegerMetric(1200), new EnumMetric("new"), new IntegerMetric(400000));
-         master
+        
 
         //Need to add print statement for representing the return values
         System.out.println("Predicted price of h4 is: " + Housing.Predict(1,"h4", new CartesianMetric(15, 20), new IntegerMetric(1000), new EnumMetric("new")));
