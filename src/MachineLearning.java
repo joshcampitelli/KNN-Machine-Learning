@@ -68,7 +68,7 @@ public class MachineLearning {
 			Entry<String, Integer> minimumDistance = null;
 			for(Entry<String, Integer> entry : valuesMap.entrySet()) {
 				if (minimumDistance == null || minimumDistance.getValue() > entry.getValue()) {
-					minimumDistance = entry;
+					minimumDistance = entry; 
 				}
 			}
 			//Get the value of the key with the smallest distance, adding it to a running sum
