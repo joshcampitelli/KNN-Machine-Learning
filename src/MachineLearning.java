@@ -72,7 +72,8 @@ public class MachineLearning {
 				}
 			}
 			//Get the value of the key with the smallest distance, adding it to a running sum
-			tempPredictedValue = tempPredictedValue + minimumDistance.getValue();
+			GenericMetric[] tempMetric = learnedInfo.get(minimumDistance.getKey());
+			tempPredictedValue = tempPredictedValue + (int)tempMetric[tempMetric.length - 1].getValue();
 			//Remove the smallest distance, this way we are always pulling the next smallest distance
 			valuesMap.remove(minimumDistance.getKey());
 		}
