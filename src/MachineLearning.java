@@ -67,7 +67,7 @@ public class MachineLearning {
 		for (j = 0; j < k; j++) {
 			Entry<String, Integer> minimumDistance = null;
 			for(Entry<String, Integer> entry : valuesMap.entrySet()) {
-				if (minimumDistance.getValue() > entry.getValue()) {
+				if (minimumDistance == null || minimumDistance.getValue() > entry.getValue()) {
 					minimumDistance = entry;
 				}
 			}
