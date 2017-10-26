@@ -7,8 +7,15 @@ public class IntegerMetric implements GenericMetric{
 		value = val;
 	}
 	
-	public int getDifference(){
-		return 0;
+	public int getDifference(GenericMetric metric){
+		if(metric instanceof IntegerMetric){	
+			// Returns the absolute difference between the two ints
+			return Math.abs(value - (int)metric.getValue());
+		}
+		
+		// Return 1 if the object passed is 
+		// of a different type
+		return -1;
 	}
 	
 	public Object getValue(){
