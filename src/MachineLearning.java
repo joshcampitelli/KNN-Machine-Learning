@@ -7,11 +7,13 @@ public class MachineLearning {
 	String problem;
 	Storage storage;
 	Map<String, Integer> valuesMap;
+	int totalError;
 	
 	public MachineLearning(String problem) {
 		this.problem = problem;
 		storage = new Storage();
 		valuesMap = new HashMap<>();
+		totalError = 0;
 	}
 
 	/**
@@ -95,7 +97,18 @@ public class MachineLearning {
 		//Value is the last metric in the array of metrics
 		int expectedValue = (int) metrics[metrics.length - 1].getValue();
 		int predictedValue = this.Predict(k, key, metrics);
-		
-		return Math.abs(predictedValue-expectedValue);
+		int error = Math.abs(predictedValue-expectedValue);
+		addError(error);
+		return error;
+	}
+
+	public int getTotalError(){
+		//Return the total error of the Machine Learning Problem
+		return totalError;
+	}
+
+	public void addError(int error){
+		//Increase value of total error of the Machine Learning Problem
+		totalError += error;
 	}
 }
