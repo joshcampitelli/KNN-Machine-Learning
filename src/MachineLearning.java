@@ -65,7 +65,7 @@ public class MachineLearning {
 		 * Looping through the HashMap of distances to find the smallest distance
 		 */
 		for (j = 0; j < k; j++) {
-			Entry<String, Integer> minimumDistance;
+			Entry<String, Integer> minimumDistance = null;
 			for(Entry<String, Integer> entry : valuesMap.entrySet()) {
 				if (minimumDistance.getValue() > entry.getValue()) {
 					minimumDistance = entry;
@@ -85,13 +85,12 @@ public class MachineLearning {
 	/**
 	 * Predict error determines the error between the predicted value and the expected value. Returns the distance.
 	 * 
-	 * @param problem
 	 * @param k
 	 * @param key
 	 * @param metrics
 	 * @return returns the distance between the expected value and the predicted value
 	 */
-	public int PredictError(String problem, int k, String key,  GenericMetric... metrics) {
+	public int PredictError(int k, String key,  GenericMetric... metrics) {
 		//Value is the last metric in the array of metrics
 		int expectedValue = (int) metrics[metrics.length - 1].getValue();
 		int predictedValue = this.Predict(k, key, metrics);
