@@ -10,7 +10,7 @@ System.out.println();
         Housing.Learn("h1", new CartesianMetric(12, 25), new IntegerMetric(1200), new EnumMetric("new"), new IntegerMetric(500000));
         Housing.Learn("h2", new CartesianMetric(10, 50), new IntegerMetric(1000), new EnumMetric("old"), new IntegerMetric(300000));
         Housing.Learn("h3", new CartesianMetric(12, 25), new IntegerMetric(1200), new EnumMetric("new"), new IntegerMetric(400000));
-        
+
 
         //Need to add print statement for representing the return values
         System.out.println("Predicted price of h4 is: " + Housing.Predict(1,"h4", new CartesianMetric(15, 20), new IntegerMetric(1000), new EnumMetric("new")));
@@ -29,14 +29,14 @@ System.out.println();
         Ladder.Learn("L3", new IntegerMetric(20), new EnumMetric("new"), new IntegerMetric(10), new IntegerMetric(120));
 
         //Need to add print statement for representing the return values
-        System.out.println("Predicted price of L4 is: " + Ladder.Predict(1,"L4", new IntegerMetric(12), new EnumMetric("old"), new IntegerMetric(5));
-        System.out.println("Predicted price of L5 is: " + Ladder.Predict(2,"L5", new IntegerMetric(13), new EnumMetric("new"), new IntegerMetric(5));
-        System.out.println("Predicted price of L6 is: " + Ladder.Predict(3,"L6", new IntegerMetric(18), new EnumMetric("old"), new IntegerMetric(10));
+        System.out.println("Predicted price of L4 is: " + Ladder.Predict(1,"L4", new IntegerMetric(12), new EnumMetric("old"), new IntegerMetric(5)));
+        System.out.println("Predicted price of L5 is: " + Ladder.Predict(2,"L5", new IntegerMetric(13), new EnumMetric("new"), new IntegerMetric(5)));
+        System.out.println("Predicted price of L6 is: " + Ladder.Predict(3,"L6", new IntegerMetric(18), new EnumMetric("old"), new IntegerMetric(10)));
 
         //Need something here to show the total error, either a getter or print at end of PredictError
-        System.out.println("Prediction error of L7 is: " + Ladder.PredictError(1,"L7", new IntegerMetric(10), new EnumMetric("new"), new IntegerMetric(10), new IntegerMetric(50));
-        System.out.println("Prediction error of L8 is: " + Ladder.PredictError(2,"L8", new IntegerMetric(15), new EnumMetric("new"), new IntegerMetric(7), new IntegerMetric(100));
-        System.out.println("Prediction error of L9 is: " + Ladder.PredictError(3,"L9", new IntegerMetric(18), new EnumMetric("new"), new IntegerMetric(9), new IntegerMetric(110));
+        System.out.println("Prediction error of L7 is: " + Ladder.PredictError(1,"L7", new IntegerMetric(10), new EnumMetric("new"), new IntegerMetric(10), new IntegerMetric(50)));
+        System.out.println("Prediction error of L8 is: " + Ladder.PredictError(2,"L8", new IntegerMetric(15), new EnumMetric("new"), new IntegerMetric(7), new IntegerMetric(100)));
+        System.out.println("Prediction error of L9 is: " + Ladder.PredictError(3,"L9", new IntegerMetric(18), new EnumMetric("new"), new IntegerMetric(9), new IntegerMetric(110)));
 
 
     }
