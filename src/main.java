@@ -10,7 +10,7 @@ public class main {
 
         Housing.Learn("h1", new CartesianMetric(12, 25), new IntegerMetric(1200), new EnumMetric("new"), new IntegerMetric(500000));
         Housing.Learn("h2", new CartesianMetric(10, 50), new IntegerMetric(1000), new EnumMetric("old"), new IntegerMetric(300000));
-        Housing.Learn("h3", new CartesianMetric(30, 100), new IntegerMetric(1200), new EnumMetric("new"), new IntegerMetric(400000));
+        Housing.Learn("h3", new CartesianMetric(30, 100), new IntegerMetric(800), new EnumMetric("new"), new IntegerMetric(400000));
 
 
         //Need to add print statement for representing the return values
