@@ -4,10 +4,10 @@ import java.util.Map.Entry;
 
 
 public class MachineLearning {
-	String problem;
-	Storage storage;
-	Map<String, Integer> valuesMap;
-	int totalError;
+	private String problem;
+	private Storage storage;
+	private Map<String, Integer> valuesMap;
+	private int totalError;
 	
 	public MachineLearning(String problem) {
 		this.problem = problem;
