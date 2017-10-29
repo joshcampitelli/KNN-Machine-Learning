@@ -1,3 +1,8 @@
+/**
+ * Code and comments by:
+ * 
+ * @author Ryan Ribeiro 
+ */
 import Metrics.*;
 import java.util.*;
 import java.util.Map.Entry;
@@ -18,6 +23,8 @@ public class MachineLearning {
 
 	/**
 	 * Learn takes a given key and an array of an unknown number of metrics, and stores it in storage of type Storage.
+	 *
+	 * @author Ryan Ribeiro
 	 * 
 	 * @param key
 	 * @param metrics
@@ -30,6 +37,8 @@ public class MachineLearning {
 	 * Given a key, a series of unknown metrics, and a k value for the kNN problem, Predict compares the information with
 	 * and unknown value, and predicts the value based on the information it already knows. Returns the predicted value as
 	 * an int.
+	 * 
+	 * @author Ryan Ribeiro
 	 * 
 	 * @param k
 	 * @param givenKey
@@ -88,6 +97,8 @@ public class MachineLearning {
  
 	/**
 	 * Predict error determines the error between the predicted value and the expected value. Returns the distance.
+	 * 
+	 * @author Ryan Ribeiro
 	 * 
 	 * @param k
 	 * @param key
