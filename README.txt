@@ -2,7 +2,7 @@ SYSC 3110 Turn_Down_A_Bower Group: Deliverable 1
 ------------------------------------------------
 Josh Campitelli 	101010050
 Ryan Ribeiro 		100997936
-Ethan Morril 		100956097
+Ethan Morrill 		100956097
 Logan MacGillivray	100997792
 ------------------------------------------------
 
@@ -12,7 +12,7 @@ functioning for the machine learning system.
 The program is run from the main class, where   
 two MachineLearning objects are created.  Each  
 MachineLearning object has a Storage object,    
-which holds all of out GenericMetric objects.   
+which holds all of our GenericMetric objects.   
 						
 The main class will then add GenericMetric      
 objects to each MachineLearning object.  This   
