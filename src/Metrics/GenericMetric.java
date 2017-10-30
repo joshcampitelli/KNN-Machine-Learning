@@ -1,5 +1,6 @@
 package Metrics;
-
+/* @author Logan MacGillivray
+ */
 public interface GenericMetric {
 
 	/* This function will return a positive whole number as a difference
