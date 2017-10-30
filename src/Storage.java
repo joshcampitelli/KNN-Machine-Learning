@@ -3,6 +3,10 @@ import Metrics.*;
 /**
 * The Storage Class keeps a log of all learned metrics and their
 * respective problems.
+*
+* Code and comments by:
+* 
+* @author Josh Campitelli
 */
 public class Storage {
 	private HashMap<String, GenericMetric[]> learned;
