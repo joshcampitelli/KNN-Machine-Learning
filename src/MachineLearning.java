@@ -92,6 +92,7 @@ public class MachineLearning {
 	 * @param k
 	 * @param key
 	 * @param metrics
+	 * @Author Ryan Ribeiro, Ethan Morrill
 	 * @return returns the distance between the expected value and the predicted value
 	 */
 	public int PredictError(int k, String key,  GenericMetric... metrics) {
@@ -102,12 +103,23 @@ public class MachineLearning {
 		addError(error);
 		return error;
 	}
-
+	
+	/**
+	 * Return the current total error of the problem, for printing purposes
+	 * 
+	 * @Author Ethan Morrill
+	 */
 	public int getTotalError(){
 		//Return the total error of the Machine Learning Problem
 		return totalError;
 	}
 
+	/**
+	 * Increase the total problem error by the new error that has occured in testing
+	 * 
+	 * @Author Ethan Morrill
+	 * @param error
+	 */
 	public void addError(int error){
 		//Increase value of total error of the Machine Learning Problem
 		totalError += error;
