@@ -10,7 +10,7 @@ import Metrics.*;
 */
 public class Storage {
 	private HashMap<String, GenericMetric[]> learned;
-
+	
 	public Storage() {
 		learned = new HashMap<>();
 	}
@@ -18,6 +18,7 @@ public class Storage {
 	/*
 	 * The getLearned method returns the learned metrics for all known
 	 * problems stored in the HashMap.
+	 * @author Josh Campitelli
 	 */
 	public HashMap<String,GenericMetric[]> getLearned() {
 		return learned;
@@ -28,7 +29,7 @@ public class Storage {
 	* parameter represents the problem, and metrics[] are the known metrics.
 	* Ex:
 	* 	problem = "h1", metrics[] = {new CartesianMetric(12, 25), new IntegerMetric(1200),
-	*																new enumMetric("new")};
+	* @author Josh Campitelli														new enumMetric("new")};
 	*/
 	public void insert(String key, GenericMetric metrics[]) {
 		learned.put(key, metrics);
