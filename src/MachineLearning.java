@@ -1,13 +1,12 @@
-/**
- * Code and comments by:
- * 
- * @author Ryan Ribeiro 
- */
 import Metrics.*;
 import java.util.*;
 import java.util.Map.Entry;
 
-
+/**
+ * 
+ * @author Ryan Ribeiro
+ *
+ */
 public class MachineLearning {
 	private String problem;
 	private Storage storage;
