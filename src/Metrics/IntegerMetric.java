@@ -5,6 +5,8 @@ public class IntegerMetric implements GenericMetric{
 
 	/* This constructor requires an integer.  The value becomes the only
 	 * property to this metric, as the metric is used for size/volume metrics.
+	 * 
+	 * @author Logan MacGillivray
 	 */
 	public IntegerMetric(int val){
 		value = val;
@@ -13,6 +15,8 @@ public class IntegerMetric implements GenericMetric{
 	/* See GenericMetrics.getDifference(GenericMetric metric) for full java doc
 	 * This particular function will return the (positive) difference between two
 	 * integers.
+	 * 
+	 * @author Logan MacGillivray
 	 */
 	public int getDistance(GenericMetric metric){
 		if(metric instanceof IntegerMetric){
@@ -23,6 +27,8 @@ public class IntegerMetric implements GenericMetric{
 
 	/* See GenericMetrics.getValue() for full java doc
 	 * This function returns a positive integer
+	 * 
+	 * @author Logan MacGillivray
 	 */
 	public Object getValue(){
 		return value;
