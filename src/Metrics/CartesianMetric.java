@@ -5,6 +5,8 @@ public class CartesianMetric implements GenericMetric{
 
 	/* This constructor requires two integers.  The values are then stored into a
 	 * two element array as a x-value and a y-value.
+	 * 
+	 * @author Logan MacGillivray
 	 */
 	public CartesianMetric(int x, int y){
 		coordinates[0] = x;
@@ -14,6 +16,8 @@ public class CartesianMetric implements GenericMetric{
 	/* See GenericMetrics.getDifference(GenericMetric metric) for full java doc
 	 * This particular function will return the hypotenuse of two xy-coordinates.
 	 * The value shall be returned as a positive integer. 
+	 * 
+	 * @author Logan MacGillivray
 	 */
 	public int getDistance(GenericMetric metric){
 		if(metric instanceof CartesianMetric){
@@ -29,6 +33,8 @@ public class CartesianMetric implements GenericMetric{
 
 	/* See GenericMetrics.getValue() for full java doc
 	 * This function returns an array stored in this metric
+	 * 
+	 * @author Logan MacGillivray
 	 */
 	public Object getValue(){
 		return coordinates;
