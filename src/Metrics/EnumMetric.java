@@ -7,6 +7,8 @@ public class EnumMetric implements GenericMetric{
 	/* This constructor requires a string value that must match one of the enum values.
 	 * If the values do not match, no value is assigned to this metric and an error
 	 * message is written to console.
+	 * 
+	 * @author Logan MacGillivray
 	 */
 	public EnumMetric(String val){
 		try{
@@ -20,6 +22,8 @@ public class EnumMetric implements GenericMetric{
 	 * This particular function will check if two enums are equal.  If they are,
 	 * this function returns an int of 1; however, the function returns an int of
 	 * 0 if they are not.
+	 * 
+	 * @author Logan MacGillivray
 	 */
 	public int getDistance(GenericMetric metric){
 		if(metric instanceof EnumMetric){
@@ -33,6 +37,8 @@ public class EnumMetric implements GenericMetric{
 
 	/* See GenericMetrics.getValue() for full java doc
 	 * This function returns the enum of the metric for viewing
+	 * 
+	 * @author Logan MacGillivray
 	 */
 	public Object getValue(){
 		return value;
