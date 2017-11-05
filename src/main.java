@@ -1,5 +1,5 @@
 import Metrics.*;
-
+import Views.*;
 public class main {
 
     /**
@@ -52,6 +52,8 @@ public class main {
 
         // Print total error of the problem.
         System.out.println("The total prediction error of the Ladder problem is: "+ Ladder.getTotalError());
+        
+        new MainWindow();
 
     }
 
