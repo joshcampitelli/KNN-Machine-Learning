@@ -42,4 +42,23 @@ public class Storage {
 		learned.put(key, list);
 	}
 
+	/*
+	* The remove method removes an instance of learned information from the hashmap.
+	* Parameter represents the string key used to represent the
+	* Ex:
+	* 	remove("h1")
+	* @author Ethan Morrill
+	*/
+	public void remove(String key){
+
+		learned.remove(key);
+		//Error Handling for if failed available
+	}
+
+	public void update(String key, ArrayList<GenericMetric> updatedInfo){
+
+		learned.replace(key, updatedInfo);
+		//Error Handling for if failed available
+	}
+
 }
