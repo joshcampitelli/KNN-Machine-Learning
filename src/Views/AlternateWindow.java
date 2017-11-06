@@ -20,7 +20,7 @@ public class AlternateWindow extends JFrame {
     public AlternateWindow() {
         super("Problem Aspects");
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(new Dimension(300, 350));
         setResizable(false);
 
