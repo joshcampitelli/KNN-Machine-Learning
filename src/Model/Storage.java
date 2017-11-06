@@ -1,9 +1,9 @@
-package Core;
+package Model;
 
 import java.util.HashMap;
-import Metrics.*;
+import Model.Metrics.*;
 /**
-* The Core.Storage Class keeps a log of all learned metrics and their
+* The Model.Storage Class keeps a log of all learned metrics and their
 * respective problems.
 *
 * Code and comments by:

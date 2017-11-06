@@ -11,7 +11,7 @@ public class AlternateWindow extends JFrame {
     private JMenuItem saveExitItem = new JMenuItem("Save & Exit");
     private JMenuItem exitItem = new JMenuItem("Exit");
 
-    private JMenu metricsMI = new JMenu("Metrics");
+    private JMenu metricsMI = new JMenu("Model/Metrics");
     //Possible Design for adding metrics.
     private JMenuItem addIntItem = new JMenuItem("Add Integer");
     private JMenuItem addCartItem = new JMenuItem("Add Cartesian");

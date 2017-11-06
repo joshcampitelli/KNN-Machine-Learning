@@ -1,6 +1,6 @@
-package Core;
+package Model;
 
-import Metrics.*;
+import Model.Metrics.*;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -23,7 +23,7 @@ public class MachineLearning {
 	}
 
 	/**
-	 * Learn takes a given key and an array of an unknown number of metrics, and stores it in storage of type Core.Storage.
+	 * Learn takes a given key and an array of an unknown number of metrics, and stores it in storage of type Model.Storage.
 	 *
 	 * @author Ryan Ribeiro
 	 * 
