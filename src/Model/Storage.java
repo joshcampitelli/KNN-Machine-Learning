@@ -1,5 +1,6 @@
 package Model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import Model.Metrics.*;
 /**
@@ -11,7 +12,7 @@ import Model.Metrics.*;
 * @author Josh Campitelli
 */
 public class Storage {
-	private HashMap<String, GenericMetric[]> learned;
+	private HashMap<String, ArrayList<GenericMetric>> learned;
 	
 	public Storage() {
 		learned = new HashMap<>();
@@ -22,7 +23,7 @@ public class Storage {
 	 * problems stored in the HashMap.
 	 * @author Josh Campitelli
 	 */
-	public HashMap<String,GenericMetric[]> getLearned() {
+	public HashMap<String, ArrayList<GenericMetric>> getLearned() {
 		return learned;
 	}
 
@@ -34,6 +35,11 @@ public class Storage {
 	* @author Josh Campitelli														new enumMetric("new")};
 	*/
 	public void insert(String key, GenericMetric metrics[]) {
-		learned.put(key, metrics);
+		ArrayList<GenericMetric> list = new ArrayList<>();
+		for (int i = 0; i < metrics.length; i++) {
+			list.add(metrics[i]);
+		}
+		learned.put(key, list);
 	}
+
 }
