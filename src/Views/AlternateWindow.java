@@ -6,8 +6,6 @@ import Model.Storage;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class AlternateWindow extends JFrame {
     MetricController metricController;
@@ -65,7 +63,7 @@ public class AlternateWindow extends JFrame {
 
     private void addListeners() {
         /*Action Listener fo Add Metric MI*/
-        addItem.addActionListener(event -> metricController.selectMetric());
+        addItem.addActionListener(event -> metricController.addMetric(listModel));
 
         editItem.addActionListener(event -> metricController.editMetric(list, listModel));
     }
