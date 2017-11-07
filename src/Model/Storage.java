@@ -61,18 +61,36 @@ public class Storage {
 		//Error Handling for if failed available
 	}
 
-	/*Should be able to insert a metric for any problem*/
+	/**
+	 * Adds a metric to the problem specified by "key" parameter.
+	 * @param key identifies the problem (HashMap Key)
+	 * @param metric to be inserted into the HashMap's ArrayList
+	 */
 	public void addMetric(String key, GenericMetric metric) {
-
+		ArrayList<GenericMetric> metrics = learned.get(key);
+		metrics.add(metric);
 	}
 
-	/*Should be able to replace a metric at a given index for any problem*/
+	/**
+	 * Replaces the metric in the HashMap's ArrayList index position
+	 * with the given metric.
+	 * @param key identifies the problem (HashMap Key)
+	 * @param index position within the ArrayList
+	 * @param metric to be inserted into HashMap's ArrayList
+	 */
 	public void replaceMetric(String key, int index, GenericMetric metric) {
-
+		ArrayList<GenericMetric> metrics = learned.get(key);
+		metrics.remove(index);
+		metrics.add(index, metric);
 	}
 
-	/*Should be able to remove a metric at given index for any problem*/
+	/**
+	 * Removes the metric in the HashMap's ArrayList index position
+	 * @param key identifies the problem (HashMap Key)
+	 * @param index position within the ArrayList
+	 */
 	public void removeMetric(String key, int index) {
-
+		ArrayList<GenericMetric> metrics = learned.get(key);
+		metrics.remove(index);
 	}
 }
