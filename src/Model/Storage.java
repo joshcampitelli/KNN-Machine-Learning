@@ -13,6 +13,8 @@ import Model.Metrics.*;
 */
 public class Storage {
 	private HashMap<String, ArrayList<GenericMetric>> learned;
+	/*provides access to metrics for any given problem identified by key*/
+	private ArrayList<GenericMetric> metrics;
 	
 	public Storage() {
 		learned = new HashMap<>();
@@ -67,7 +69,7 @@ public class Storage {
 	 * @param metric to be inserted into the HashMap's ArrayList
 	 */
 	public void addMetric(String key, GenericMetric metric) {
-		ArrayList<GenericMetric> metrics = learned.get(key);
+		metrics = learned.get(key);
 		metrics.add(metric);
 	}
 
@@ -79,7 +81,7 @@ public class Storage {
 	 * @param metric to be inserted into HashMap's ArrayList
 	 */
 	public void replaceMetric(String key, int index, GenericMetric metric) {
-		ArrayList<GenericMetric> metrics = learned.get(key);
+		metrics = learned.get(key);
 		metrics.remove(index);
 		metrics.add(index, metric);
 	}
@@ -90,7 +92,7 @@ public class Storage {
 	 * @param index position within the ArrayList
 	 */
 	public void removeMetric(String key, int index) {
-		ArrayList<GenericMetric> metrics = learned.get(key);
+		metrics = learned.get(key);
 		metrics.remove(index);
 	}
 }
