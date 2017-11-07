@@ -18,7 +18,7 @@ public class MetricController {
         this.storage = storage;
     }
 
-    private void selectMetric() {
+    public void selectMetric() {
         String[] metricTypes = {"Cartesian Metric", "Enum Metric", "Integer Metric"};
         String input = (String) JOptionPane.showInputDialog(null, "Choose Metric Type:",
             "The Choice of a Lifetime", JOptionPane.QUESTION_MESSAGE, null, metricTypes, metricTypes[0]);
@@ -44,8 +44,7 @@ public class MetricController {
         int option = JOptionPane.showConfirmDialog(null, message, "Cartesian Metric", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
             CartesianMetric cartesianMetric = new CartesianMetric(Integer.valueOf(xField.getText()), Integer.valueOf(yField.getText()));
-            ArrayList<GenericMetric> list = storage.getLearned().get(key);
-            list.add(cartesianMetric);
+            storage.addMetric(key, cartesianMetric);
         }
     }
 
@@ -57,8 +56,7 @@ public class MetricController {
         int option = JOptionPane.showConfirmDialog(null, message, "Enum Metric", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
             EnumMetric enumMetric = new EnumMetric(enumField.getText());
-            ArrayList<GenericMetric> list = storage.getLearned().get(key);
-            list.add(enumMetric);
+            storage.addMetric(key, enumMetric);
         }
     }
 
@@ -70,9 +68,37 @@ public class MetricController {
         int option = JOptionPane.showConfirmDialog(null, message, "Integer Metric", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
             IntegerMetric integerMetric = new IntegerMetric(Integer.valueOf(intField.getText()));
-            ArrayList<GenericMetric> list = storage.getLearned().get(key);
-            list.add(integerMetric);
+            storage.addMetric(key, integerMetric);
         }
+    }
+
+    /*edit Metric gets the selected metric from the JList and swaps it with the user's updated metric*/
+    public void editMetric(JList list, DefaultListModel<GenericMetric> listModel) {
+        int index = list.getSelectedIndex();
+        GenericMetric metric = listModel.getElementAt(index);
+        if (metric instanceof CartesianMetric) {
+            metric = editCartesianMetric();
+        } else if (metric instanceof EnumMetric) {
+            metric = editCartesianMetric();
+        } else if (metric instanceof IntegerMetric) {
+            metric = editIntMetric();
+        }
+
+        /*Replace the current metric with updated*/
+        listModel.removeElementAt(index);
+        listModel.add(index, metric);
+    }
+
+    private CartesianMetric editCartesianMetric() {
+        return null;
+    }
+
+    private EnumMetric editEnumMetric() {
+        return null;
+    }
+
+    private IntegerMetric editIntMetric() {
+        return null;
     }
 
     public static void main(String[] args) {

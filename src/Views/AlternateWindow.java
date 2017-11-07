@@ -1,10 +1,17 @@
 package Views;
 
+import Controllers.MetricController;
 import Model.Metrics.GenericMetric;
+import Model.Storage;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class AlternateWindow extends JFrame {
+    MetricController metricController;
+
     /*GUI Menu Attributes*/
     private JMenuBar menuBar = new JMenuBar();
     private JMenu fileMI = new JMenu("File");
@@ -12,7 +19,7 @@ public class AlternateWindow extends JFrame {
     private JMenuItem cancelItem = new JMenuItem("Cancel");
 
     private JMenu metricsMI = new JMenu("Metrics");
-    private JMenuItem createItem = new JMenuItem("Create Metric");
+    private JMenuItem addItem = new JMenuItem("Add Metric");
     private JMenuItem editItem = new JMenuItem("Edit Metric");
     private JMenuItem removeItem = new JMenuItem("Remove Metric");
 
@@ -22,10 +29,12 @@ public class AlternateWindow extends JFrame {
     private DefaultListModel<GenericMetric> listModel;
     private JScrollPane scrollPane;
 
-    public AlternateWindow() {
+    public AlternateWindow(String key, Storage storage) {
         super("Problem Aspects");
+        metricController = new MetricController(key, storage);
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
         setSize(new Dimension(300, 350));
         setResizable(false);
 
@@ -34,7 +43,7 @@ public class AlternateWindow extends JFrame {
         fileMI.add(saveExitItem);
         fileMI.add(cancelItem);
 
-        metricsMI.add(createItem);
+        metricsMI.add(addItem);
         metricsMI.add(editItem);
         metricsMI.add(removeItem);
 
@@ -50,10 +59,19 @@ public class AlternateWindow extends JFrame {
 
         scrollPane = new JScrollPane(list);
         add(scrollPane);
+
+        addListeners();
+    }
+
+    private void addListeners() {
+        /*Action Listener fo Add Metric MI*/
+        addItem.addActionListener(event -> metricController.selectMetric());
+
+        editItem.addActionListener(event -> metricController.editMetric(list, listModel));
     }
 
     public static void main(String[] args) {
-        AlternateWindow alternateWindow = new AlternateWindow();
+        AlternateWindow alternateWindow = new AlternateWindow("", new Storage());
         alternateWindow.setVisible(true);
     }
 
