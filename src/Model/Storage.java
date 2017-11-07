@@ -61,13 +61,18 @@ public class Storage {
 		//Error Handling for if failed available
 	}
 
+	/*Should be able to insert a metric for any problem*/
+	public void addMetric(String key, GenericMetric metric) {
+
+	}
+
 	/*Should be able to replace a metric at a given index for any problem*/
 	public void replaceMetric(String key, int index, GenericMetric metric) {
 
 	}
 
-	/*Should be able to insert a metric for any problem*/
-	public void addMetric(String key, GenericMetric metric) {
+	/*Should be able to remove a metric at given index for any problem*/
+	public void removeMetric(String key, int index) {
 
 	}
 }

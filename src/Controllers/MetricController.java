@@ -50,9 +50,16 @@ public class MetricController {
 
         if (metric != null) {
             /*Replace the current metric with updated*/
+            storage.replaceMetric(key, index, metric);
             listModel.removeElementAt(index);
             listModel.add(index, metric);
         }
+    }
+
+    public void removeMetric(JList list, DefaultListModel<GenericMetric> listModel) {
+        int index = list.getSelectedIndex();
+        listModel.removeElementAt(index);
+        storage.removeMetric(key, index);
     }
 
     /*Allows the user to add a Cartesian Metric*/

@@ -13,15 +13,13 @@ public class AlternateWindow extends JFrame {
     /*GUI Menu Attributes*/
     private JMenuBar menuBar = new JMenuBar();
     private JMenu fileMI = new JMenu("File");
-    private JMenuItem saveExitItem = new JMenuItem("Save & Exit");
-    private JMenuItem cancelItem = new JMenuItem("Cancel");
+    private JMenuItem exitItem = new JMenuItem("Exit");
 
     private JMenu metricsMI = new JMenu("Metrics");
     private JMenuItem addItem = new JMenuItem("Add Metric");
     private JMenuItem editItem = new JMenuItem("Edit Metric");
     private JMenuItem removeItem = new JMenuItem("Remove Metric");
 
-    //todo: create metric MI then in window select which type.
     /*GUI List of Metrics*/
     private JList<GenericMetric> list;
     private DefaultListModel<GenericMetric> listModel;
@@ -38,9 +36,7 @@ public class AlternateWindow extends JFrame {
 
         setLayout(new BorderLayout(10, 10));
 
-        fileMI.add(saveExitItem);
-        fileMI.add(cancelItem);
-
+        fileMI.add(exitItem);
         metricsMI.add(addItem);
         metricsMI.add(editItem);
         metricsMI.add(removeItem);
@@ -62,9 +58,9 @@ public class AlternateWindow extends JFrame {
     }
 
     private void addListeners() {
-        /*Action Listener fo Add Metric MI*/
+        /*Action Listener for MenuItems*/
+        exitItem.addActionListener(event -> this.dispose());
         addItem.addActionListener(event -> metricController.addMetric(listModel));
-
         editItem.addActionListener(event -> metricController.editMetric(list, listModel));
     }
 
