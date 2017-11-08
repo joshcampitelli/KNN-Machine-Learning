@@ -1,5 +1,6 @@
 package Controllers;
 
+import Model.MachineLearning;
 import Model.Metrics.CartesianMetric;
 import Model.Metrics.EnumMetric;
 import Model.Metrics.GenericMetric;
@@ -10,18 +11,19 @@ import javax.swing.*;
 
 public class MetricController {
     private String key;
+    private MachineLearning machineLearning;
     private Storage storage;
 
-    public MetricController(String key, Storage storage) {
+    public MetricController(String key, MachineLearning machineLearning) {
         this.key = key;
-        this.storage = storage;
+        this.machineLearning = machineLearning;
+        //storage = machineLearning.getStorage(); //Method undefined right now.
     }
 
     public void addMetric(DefaultListModel<GenericMetric> listModel) {
         String[] metricTypes = {"Cartesian Metric", "Enum Metric", "Integer Metric"};
         String input = (String) JOptionPane.showInputDialog(null, "Choose Metric Type:",
-            "The Choice of a Lifetime", JOptionPane.QUESTION_MESSAGE, null, metricTypes, metricTypes[0]);
-        System.out.println(input);
+            "Metric Types:", JOptionPane.QUESTION_MESSAGE, null, metricTypes, metricTypes[0]);
         GenericMetric metric = null;
         if (input.equals(metricTypes[0])) {
             metric = cartesianMetricWindow();
@@ -31,7 +33,7 @@ public class MetricController {
             metric = integerMetricWindow();
         }
         if (metric != null) {
-            storage.addMetric(key, metric);
+            //storage.addMetric(key, metric);
             listModel.addElement(metric);
         }
     }
@@ -50,7 +52,7 @@ public class MetricController {
 
         if (metric != null) {
             /*Replace the current metric with updated*/
-            storage.replaceMetric(key, index, metric);
+            //storage.replaceMetric(key, index, metric);
             listModel.removeElementAt(index);
             listModel.add(index, metric);
         }
@@ -59,7 +61,7 @@ public class MetricController {
     public void removeMetric(JList list, DefaultListModel<GenericMetric> listModel) {
         int index = list.getSelectedIndex();
         listModel.removeElementAt(index);
-        storage.removeMetric(key, index);
+        //storage.removeMetric(key, index);
     }
 
     /*Allows the user to add a Cartesian Metric*/

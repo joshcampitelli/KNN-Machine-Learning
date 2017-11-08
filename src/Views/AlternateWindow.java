@@ -2,13 +2,12 @@ package Views;
 
 import Controllers.MetricController;
 import Model.Metrics.GenericMetric;
-import Model.Storage;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class AlternateWindow extends JFrame {
-    MetricController metricController;
+    private MetricController metricController;
 
     /*GUI Menu Attributes*/
     private JMenuBar menuBar = new JMenuBar();
@@ -25,9 +24,9 @@ public class AlternateWindow extends JFrame {
     private DefaultListModel<GenericMetric> listModel;
     private JScrollPane scrollPane;
 
-    public AlternateWindow(String key, Storage storage) {
+    public AlternateWindow(MetricController metricController) {
         super("Problem Aspects");
-        metricController = new MetricController(key, storage);
+        this.metricController = metricController;
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -62,11 +61,6 @@ public class AlternateWindow extends JFrame {
         exitItem.addActionListener(event -> this.dispose());
         addItem.addActionListener(event -> metricController.addMetric(listModel));
         editItem.addActionListener(event -> metricController.editMetric(list, listModel));
+        removeItem.addActionListener(event -> metricController.removeMetric(list, listModel));
     }
-
-    public static void main(String[] args) {
-        AlternateWindow alternateWindow = new AlternateWindow("", new Storage());
-        alternateWindow.setVisible(true);
-    }
-
 }
