@@ -17,7 +17,7 @@ public class MetricController {
     public MetricController(MachineLearning machineLearning) {
         key = machineLearning.getProblem();
         this.machineLearning = machineLearning;
-        //storage = machineLearning.getStorage(); //Method undefined right now.
+        storage = machineLearning.getStorage();
     }
 
     public void addMetric(DefaultListModel<GenericMetric> listModel) {
