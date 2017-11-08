@@ -135,4 +135,12 @@ public class MachineLearning {
 		//Increase value of total error of the Machine Learning Problem
 		totalError += error;
 	}
+	
+	public String getProblem(){
+		return problem;
+	}
+	
+	public Storage getStorage(){
+		return storage;
+	}
 }

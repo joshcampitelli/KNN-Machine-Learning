@@ -2,6 +2,7 @@ package UnitTests;
 
 import Model.MachineLearning;
 import Model.Metrics.*;
+import Views.MainWindow;
 
 public class main {
 
@@ -15,7 +16,7 @@ public class main {
         System.out.println("Housing machine Learning Example: \n");
         MachineLearning Housing = new MachineLearning("housing");
         
-
+        new MainWindow();
         // Teach housing problem 3 given examples of houses
         Housing.Learn("h1", new CartesianMetric(12, 25), new IntegerMetric(1200), new EnumMetric("new"), new IntegerMetric(500000));
         Housing.Learn("h2", new CartesianMetric(10, 50), new IntegerMetric(1000), new EnumMetric("old"), new IntegerMetric(300000));
