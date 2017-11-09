@@ -2,7 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import Model.Metrics.*;
+import Model.Features.*;
 /**
 * The Model.Storage Class keeps a log of all learned metrics and their
 * respective problems.
@@ -12,9 +12,9 @@ import Model.Metrics.*;
 * @author Josh Campitelli
 */
 public class Storage {
-	private HashMap<String, ArrayList<GenericMetric>> learned;
+	private HashMap<String, ArrayList<GenericFeature>> learned;
 	/*provides access to metrics for any given problem identified by key*/
-	private ArrayList<GenericMetric> metrics;
+	private ArrayList<GenericFeature> features;
 	
 	public Storage() {
 		learned = new HashMap<>();
@@ -26,7 +26,7 @@ public class Storage {
 	 * @return reference to the HashMap<String, ArrayList<GenericMetric>>
 	 * @author Josh Campitelli
 	 */
-	public HashMap<String, ArrayList<GenericMetric>> getLearned() {
+	public HashMap<String, ArrayList<GenericFeature>> getLearned() {
 		return learned;
 	}
 
@@ -34,13 +34,13 @@ public class Storage {
 	 * The insert method simply puts data into the HashMap, where the problem
 	 * parameter represents the problem, and metrics[] are the known metrics.
 	 * @param key identifies the problem (HashMap Key)
-	 * @param metrics array of metrics to be inserted into HashMap
+	 * @param features array of metrics to be inserted into HashMap
 	 * @author Josh Campitelli
 	 */
-	public void insert(String key, GenericMetric metrics[]) {
-		ArrayList<GenericMetric> list = new ArrayList<>();
-		for (int i = 0; i < metrics.length; i++) {
-			list.add(metrics[i]);
+	public void insert(String key, GenericFeature features[]) {
+		ArrayList<GenericFeature> list = new ArrayList<>();
+		for (int i = 0; i < features.length; i++) {
+			list.add(features[i]);
 		}
 		learned.put(key, list);
 	}
@@ -58,7 +58,7 @@ public class Storage {
 		//Error Handling for if failed available
 	}
 
-	public void update(String key, ArrayList<GenericMetric> updatedInfo){
+	public void update(String key, ArrayList<GenericFeature> updatedInfo){
 
 		learned.replace(key, updatedInfo);
 		//Error Handling for if failed available
@@ -67,12 +67,12 @@ public class Storage {
 	/**
 	 * Adds a metric to the problem specified by "key" parameter.
 	 * @param key identifies the problem (HashMap Key)
-	 * @param metric to be inserted into the HashMap's ArrayList
+	 * @param feature to be inserted into the HashMap's ArrayList
 	 * @author Josh Campitelli
 	 */
-	public void addMetric(String key, GenericMetric metric) {
-		metrics = learned.get(key);
-		metrics.add(metric);
+	public void addMetric(String key, GenericFeature feature) {
+		features = learned.get(key);
+		features.add(feature);
 	}
 
 	/**
@@ -80,13 +80,13 @@ public class Storage {
 	 * with the given metric.
 	 * @param key identifies the problem (HashMap Key)
 	 * @param index position within the ArrayList
-	 * @param metric to be inserted into HashMap's ArrayList
+	 * @param feature to be inserted into HashMap's ArrayList
 	 * @author Josh Campitelli
 	 */
-	public void replaceMetric(String key, int index, GenericMetric metric) {
-		metrics = learned.get(key);
-		metrics.remove(index);
-		metrics.add(index, metric);
+	public void replaceMetric(String key, int index, GenericFeature feature) {
+		features = learned.get(key);
+		features.remove(index);
+		features.add(index, feature);
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class Storage {
 	 * @author Josh Campitelli
 	 */
 	public void removeMetric(String key, int index) {
-		metrics = learned.get(key);
-		metrics.remove(index);
+		features = learned.get(key);
+		features.remove(index);
 	}
 }

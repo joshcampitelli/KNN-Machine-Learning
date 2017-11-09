@@ -30,4 +30,7 @@ public class EnumFeature implements GenericFeature {
 	public Object getValue(){
 		return value;
 	}
+
+	public String getName() { return name; }
+
 }

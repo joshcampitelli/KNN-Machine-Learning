@@ -4,16 +4,22 @@ import Model.Features.*;
 
 public class CartesianEuclideanMetric implements GenericMetric {
 
-    private int[] coordinates = new int[2];
+    private double weightage;
 
     /* This constructor requires two integers.  The values are then stored into a
      * two element array as a x-value and a y-value.
      *
      * @author Logan MacGillivray
      */
-    public CartesianEuclideanMetric(int x, int y){
-        coordinates[0] = x;
-        coordinates[1] = y;
+    public CartesianEuclideanMetric(double weight){
+
+        weightage = weight;
+
+    }
+    public CartesianEuclideanMetric(){
+
+        weightage = 1.0;
+
     }
 
     /* See GenericMetrics.getDifference(GenericMetric metric) for full java doc
@@ -22,24 +28,18 @@ public class CartesianEuclideanMetric implements GenericMetric {
      *
      * @author Logan MacGillivray
      */
-    public int getDistance(GenericFeature feature){
-        if(feature instanceof CartesianFeature){
+    public int getDistance(GenericFeature feature, GenericFeature learnedFeature){
+        if((feature instanceof CartesianFeature)&&(learnedFeature instanceof CartesianFeature)){
             int[] value = (int[])feature.getValue();
+            int [] learnedValue = (int[]) learnedFeature.getValue();
             double squareSum = 0;
             for(int i = 0; i < value.length; i++){
-                squareSum += Math.pow(value[i]-coordinates[i], 2);
+                squareSum += Math.pow(value[i]-learnedValue[i], 2);
             }
             return (int)Math.sqrt(squareSum);
         }
         return -1;
     }
 
-    /* See GenericMetrics.getValue() for full java doc
-     * This function returns an array stored in this metric
-     *
-     * @author Logan MacGillivray
-     */
-    public Object getValue(){
-        return coordinates;
-    }
+
 }

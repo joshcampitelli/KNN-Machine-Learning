@@ -11,9 +11,10 @@ public class CartesianFeature implements GenericFeature {
 	 * 
 	 * @author Logan MacGillivray
 	 */
-	public CartesianFeature(int x, int y){
+	public CartesianFeature(String name, int x, int y){
 		coordinates[0] = x;
 		coordinates[1] = y;
+		this.name = name;
 	}
 
 
@@ -26,4 +27,6 @@ public class CartesianFeature implements GenericFeature {
 	public Object getValue(){
 		return coordinates;
 	}
+
+	public String getName() { return name; }
 }

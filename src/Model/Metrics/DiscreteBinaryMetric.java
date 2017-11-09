@@ -4,8 +4,7 @@ import Model.Features.*;
 
 public class DiscreteBinaryMetric implements GenericMetric {
 
-    private enum age {NEW, OLD};	// Looking to remove this as it is a magic value
-    private DiscreteBinaryMetric.age value;
+    private double weightage;
 
     /* This constructor requires a string value that must match one of the enum values.
      * If the values do not match, no value is assigned to this metric and an error
@@ -13,12 +12,16 @@ public class DiscreteBinaryMetric implements GenericMetric {
      *
      * @author Logan MacGillivray
      */
-    public DiscreteBinaryMetric(String val){
-        try{
-            value = DiscreteBinaryMetric.age.valueOf(val.toUpperCase());
-        } catch(IllegalArgumentException e){
-            System.out.println("ERROR - Value not assigned.  Paramenter not accepted");
-        }
+    public DiscreteBinaryMetric(double weight){
+
+        weightage = weight;
+
+    }
+
+    public DiscreteBinaryMetric(){
+
+        weightage = 1.0;
+
     }
 
     /* See GenericMetrics.getDifference(GenericMetric metric) for full java doc
@@ -28,9 +31,9 @@ public class DiscreteBinaryMetric implements GenericMetric {
      *
      * @author Logan MacGillivray
      */
-    public int getDistance(GenericFeature feature){
+    public int getDistance(GenericFeature feature, GenericFeature learnedFeature){
         if(feature instanceof EnumFeature){
-            if(value.equals(feature.getValue())){
+            if(learnedFeature.getValue().equals(feature.getValue())){
                 return 1;
             }
             return 0;

@@ -11,21 +11,9 @@ public class IntegerFeature implements GenericFeature {
 	 * 
 	 * @author Logan MacGillivray
 	 */
-	public IntegerFeature(int val){
+	public IntegerFeature(String name, int val){
 		value = val;
-	}
-
-	/* See GenericMetrics.getDifference(GenericMetric metric) for full java doc
-	 * This particular function will return the (positive) difference between two
-	 * integers.
-	 * 
-	 * @author Logan MacGillivray
-	 */
-	public int getDistance(GenericMetric metric){
-		if(metric instanceof IntegerFeature){
-			return Math.abs(value - (int)metric.getValue());
-		}
-		return -1;
+		this.name = name;
 	}
 
 	/* See GenericMetrics.getValue() for full java doc
@@ -36,4 +24,6 @@ public class IntegerFeature implements GenericFeature {
 	public Object getValue(){
 		return value;
 	}
+
+	public String getName() { return name; }
 }
