@@ -1,4 +1,4 @@
-package Controllers;
+package Controller;
 
 import Model.MachineLearning;
 import Model.Metrics.CartesianMetric;
@@ -14,10 +14,10 @@ public class MetricController {
     private MachineLearning machineLearning;
     private Storage storage;
 
-    public MetricController(String key, MachineLearning machineLearning) {
-        this.key = key;
+    public MetricController(MachineLearning machineLearning) {
+        key = machineLearning.getProblem();
         this.machineLearning = machineLearning;
-        //storage = machineLearning.getStorage(); //Method undefined right now.
+        storage = machineLearning.getStorage();
     }
 
     public void addMetric(DefaultListModel<GenericMetric> listModel) {

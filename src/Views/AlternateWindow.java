@@ -1,6 +1,6 @@
 package Views;
 
-import Controllers.MetricController;
+import Controller.MetricController;
 import Model.Metrics.GenericMetric;
 
 import javax.swing.*;
@@ -54,6 +54,7 @@ public class AlternateWindow extends JFrame {
         add(scrollPane);
 
         addListeners();
+        setVisible(true);
     }
 
     private void addListeners() {
