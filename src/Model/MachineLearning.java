@@ -143,4 +143,12 @@ public class MachineLearning {
 	public Storage getStorage(){
 		return storage;
 	}
+	
+	/*
+	 * Need to add functions for display, edit, delete
+	 * display:
+	 * edit: picking a specific metric and changing it
+	 * delete: picking a specific metric and deleting it
+	 * 
+	 */
 }
