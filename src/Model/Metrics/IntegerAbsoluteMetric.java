@@ -1,10 +1,11 @@
 package Model.Metrics;
 
 import Model.Features.*;
+import Model.Storage.*;
 
 public class IntegerAbsoluteMetric implements GenericMetric {
 
-    private double weightage;
+    private String featureName;
 
     /* Old metric class placed here temporarily, will function differently post design meeting
      */
@@ -14,15 +15,9 @@ public class IntegerAbsoluteMetric implements GenericMetric {
      * By default each metric will have equal weight of 1
      * @author Logan MacGillivray, Ethan Morrill
      */
-    public IntegerAbsoluteMetric(double weight){
+    public IntegerAbsoluteMetric(String name){
 
-        weightage = weight;
-
-    }
-
-    public IntegerAbsoluteMetric(){
-
-        weightage = 1.0;
+        featureName = name;
 
     }
 

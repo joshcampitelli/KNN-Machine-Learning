@@ -4,21 +4,16 @@ import Model.Features.*;
 
 public class CartesianEuclideanMetric implements GenericMetric {
 
-    private double weightage;
+    private String featureName;
 
     /* This constructor requires two integers.  The values are then stored into a
      * two element array as a x-value and a y-value.
      *
      * @author Logan MacGillivray
      */
-    public CartesianEuclideanMetric(double weight){
+    public CartesianEuclideanMetric(String name){
 
-        weightage = weight;
-
-    }
-    public CartesianEuclideanMetric(){
-
-        weightage = 1.0;
+        featureName = name;
 
     }
 
