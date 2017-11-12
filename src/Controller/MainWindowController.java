@@ -22,7 +22,7 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("Edit")){
 			//System.out.println("Hello World");
-			new AlternateWindow(new MetricController(machineLearningArray.get(machineLearningArray.size())));
+			new AlternateWindow(new FeatureController(machineLearningArray.get(machineLearningArray.size())));
 		} else if(e.getActionCommand().equals("Add Problem")){
 			// Create the createPanel properties
 			JTextField nameField = new JTextField(5);
@@ -78,7 +78,7 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 			    	}
 			    }
 			    
-			    new AlternateWindow(new MetricController(tmp));
+			    new AlternateWindow(new FeatureController(tmp));
 			    
 		    } else {
 		    	 optionForPanel[0] = "Okay";
