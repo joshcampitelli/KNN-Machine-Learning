@@ -2,6 +2,8 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
+
 import Model.Features.*;
 /**
 * The Model.Storage Class keeps a log of all learned metrics and their
@@ -98,5 +100,24 @@ public class Storage {
 	public void removeMetric(String key, int index) {
 		features = learned.get(key);
 		features.remove(index);
+	}
+
+	public HashMap<String, GenericFeature> getFeature(String featureName){
+
+
+		HashMap<String, GenericFeature> targetFeatures = new HashMap<>();
+		Set<String> keys = learned.keySet();
+		for(String key : keys){
+			ArrayList<GenericFeature> values = learned.get(key);
+			int i = 0;
+			while(i< values.size()){
+
+				GenericFeature feature = values.get(i);
+				if(feature.getName().equals(featureName)){
+					targetFeatures.put(key,feature);
+				}
+			}
+		}
+		return targetFeatures;
 	}
 }
