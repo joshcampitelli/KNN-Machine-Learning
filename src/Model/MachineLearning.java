@@ -22,6 +22,12 @@ public class MachineLearning {
 		totalError = 0;
 	}
 
+	public void learn(String key, ArrayList<GenericMetric> metrics) {
+		for (GenericMetric metric : metrics) {
+			Learn(key, metric);
+		}
+	}
+
 	/**
 	 * Learn takes a given key and an array of an unknown number of metrics, and stores it in storage of type Model.Storage.
 	 *
