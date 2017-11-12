@@ -1,13 +1,17 @@
 package Model;
 
-import Model.Metrics.GenericMetric;
-
 public class FeatureLayout {
+    public enum FeatureType {
+        IntegerFeauture,
+        CartesianFeature,
+        DescreteFeature
+    }
+
     private String name;
-    private GenericMetric featureType;
+    private FeatureType featureType;
     //Another variable for type of metric to use
 
-    public FeatureLayout(String name, GenericMetric featureType) {
+    public FeatureLayout(String name, FeatureType featureType) {
         this.name = name;
         this.featureType = featureType;
     }
@@ -16,7 +20,7 @@ public class FeatureLayout {
         return name;
     }
 
-    public GenericMetric getFeatureType() {
+    public FeatureType getFeatureType() {
         return featureType;
     }
 }
