@@ -1,6 +1,7 @@
 package Model.Metrics;
 /* @author Logan MacGillivray
  */
+import Model.Features.*;
 public interface GenericMetric {
 
 	/* This function will return a positive whole number as a difference
@@ -8,11 +9,6 @@ public interface GenericMetric {
 	 * does not match the current metric.  A metric parameter is required.
 	 * 
 	 */
-	public int getDistance(GenericMetric metric);
+	public int getDistance(GenericFeature feature, GenericFeature learnedFeature);
 
-	/* This function will return the value stored in each metric.  This 
-	 * function should be called by the getDifference function when comparing
-	 * two metrics.  No paramters required.
-	 */
-	public Object getValue();
 }
