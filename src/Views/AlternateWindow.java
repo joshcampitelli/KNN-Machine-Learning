@@ -1,13 +1,13 @@
 package Views;
 
-import Controller.MetricController;
-import Model.Metrics.GenericMetric;
+import Controller.FeatureController;
+import Model.Features.GenericFeature;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class AlternateWindow extends JFrame {
-    private MetricController metricController;
+    private FeatureController featureController;
 
     /*GUI Menu Attributes*/
     private JMenuBar menuBar = new JMenuBar();
@@ -22,13 +22,13 @@ public class AlternateWindow extends JFrame {
     private JMenuItem removeItem = new JMenuItem("Remove Metric");
 
     /*GUI List of Metrics*/
-    private JList<GenericMetric> list;
-    private DefaultListModel<GenericMetric> listModel;
+    private JList<GenericFeature> list;
+    private DefaultListModel<GenericFeature> listModel;
     private JScrollPane scrollPane;
 
-    public AlternateWindow(MetricController metricController) {
+    public AlternateWindow(FeatureController featureController) {
         super("Problem Aspects");
-        this.metricController = metricController;
+        this.featureController = featureController;
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -70,11 +70,11 @@ public class AlternateWindow extends JFrame {
 
     private void addListeners() {
         /*Action Listener for MenuItems*/
-        learnItem.addActionListener(event -> metricController.learnInstance(listModel));
-        updateItem.addActionListener(event -> metricController.updateInstance(listModel));
+        learnItem.addActionListener(event -> featureController.learnInstance(listModel));
+        updateItem.addActionListener(event -> featureController.updateInstance(listModel));
         cancelItem.addActionListener(event -> this.dispose());
         addItem.addActionListener(event -> {
-            metricController.addMetric(listModel);
+            featureController.addFeature(listModel);
             if (listModel.size() > 0) {
                 learnItem.setEnabled(true);
                 updateItem.setEnabled(true);
@@ -83,9 +83,9 @@ public class AlternateWindow extends JFrame {
             }
         });
 
-        editItem.addActionListener(event -> metricController.editMetric(list, listModel));
+        editItem.addActionListener(event -> featureController.editFeature(list, listModel));
         removeItem.addActionListener(event -> {
-            metricController.removeMetric(list, listModel);
+            featureController.removeFeature(list, listModel);
             if (listModel.size() <= 0) {
                 learnItem.setEnabled(false);
                 updateItem.setEnabled(false);
