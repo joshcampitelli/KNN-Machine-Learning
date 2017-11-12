@@ -4,7 +4,7 @@ public class FeatureLayout {
     public enum FeatureType {
         IntegerFeauture,
         CartesianFeature,
-        DescreteFeature
+        DiscreteFeature
     }
 
     private String name;
