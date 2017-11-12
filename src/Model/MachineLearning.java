@@ -11,15 +11,27 @@ import java.util.Map.Entry;
  */
 public class MachineLearning {
 	private String problem;
+	private List<FeatureLayout> featureLayout;
 	private Storage storage;
 	private Map<String, Integer> valuesMap;
-	private int totalError;
+	private int totalError, numOfFeatures;
 
+	/*
 	public MachineLearning(String problem) {
 		this.problem = problem;
 		storage = new Storage();
 		valuesMap = new HashMap<>();
 		totalError = 0;
+	}
+	*/
+	
+	public MachineLearning(String problem, ArrayList<FeatureLayout> featureLayout) {
+		this.problem = problem; 
+		storage = new Storage();
+		this.featureLayout = new ArrayList<>();
+		this.featureLayout = featureLayout;
+		this.totalError = 0;
+		this.numOfFeatures = featureLayout.size();
 	}
 
 	/**
