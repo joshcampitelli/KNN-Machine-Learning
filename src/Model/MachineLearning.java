@@ -14,16 +14,8 @@ public class MachineLearning {
 	private List<FeatureLayout> featureLayout;
 	private Storage storage;
 	private int totalError, numOfFeatures;
+	private Map<String, Integer> distancesSum;
 
-	/*
-	public MachineLearning(String problem) {
-		this.problem = problem;
-		storage = new Storage();
-		valuesMap = new HashMap<>();
-		totalError = 0;
-	}
-	*/
-	
 	public MachineLearning(String problem, ArrayList<FeatureLayout> featureLayout) {
 		this.problem = problem; 
 		storage = new Storage();
@@ -31,6 +23,7 @@ public class MachineLearning {
 		this.featureLayout = featureLayout;
 		this.totalError = 0;
 		this.numOfFeatures = featureLayout.size();
+		distancesSum = new HashMap<>();
 	}
 
 	/**
@@ -69,30 +62,6 @@ public class MachineLearning {
 		int predictedValue = 0, totalDistance = 0, tempPredictedValue = 0;
 		int i = 0, j = 0; //loop control variables
 		Map<String, Integer> calculatedDistances = new HashMap<>();
-
-//		HashMap<String, ArrayList<GenericFeature>> learnedInfo; //HashMap of previously learned information
-//
-//		learnedInfo = storage.getLearned();
-//		
-//		/*Loops through each entry in HashMap 'learnedInfo', saving the key and values.*/
-//		
-//		for (Map.Entry<String, ArrayList<GenericMetric>> entry : learnedInfo.entrySet()) {
-//			String existingKey = entry.getKey();
-//			ArrayList<GenericMetric> value = entry.getValue();
-//			/*
-//			 * Then loops through each value in the array of values, which are all different
-//			 * types of GenericMetric
-//			 */
-//			for (j = 0; j < value.size() - 1; j++) {
-//				//Finally summing up the distances of each metric compared to the pre-existing learned metrics
-//				totalDistance += value.get(j).getDistance(metrics[i]);
-//				i++;
-//			}
-//			//Storing the difference distances, to be used later in finding the smallest distances
-//			valuesMap.put(existingKey, totalDistance);
-//			totalDistance = 0;
-//			i = 0;
-//		}
 		
 		/*
 		 * Take ArrayList<GenericFeature> features, loop through each feature, call getDistance
@@ -102,23 +71,36 @@ public class MachineLearning {
 		 * (Shown below) 
 		 */
 		
+		for (ArrayList<GenericFeature> feature : features) {			
+			Map<String, Integer> distances = new HashMap<>();
+			String name = feature.getName();
+			for (FeatureLayout featLay : featureLayout) {
+				if (featLay.getName() == "Price") {
+					//Do nothing
+				} else {
+					if (featLay.getName().equals(name))
+						distances = featLay.getFeatureType().getDistance(feature);
+					
+					for (String key : distances.keySet()) {
+						if (distancesSum.containsKey(key)) {
+							distancesSum.put(key, distancesSum.get(key) + distances.get(key));
+						} else {
+							distancesSum.put(key, distances.get(key));
+						}
+					}
+				}
+			}			
+		}
 		
-		
-		/*
-		 * Looping through the HashMap of distances to find the smallest distance
-		 */
 		for (j = 0; j < k; j++) {
 			Entry<String, Integer> minimumDistance = null;
-			for(Entry<String, Integer> entry : valuesMap.entrySet()) {
+			for(Entry<String, Integer> entry : distancesSum.entrySet()) {
 				if (minimumDistance == null || minimumDistance.getValue() > entry.getValue()) {
 					minimumDistance = entry;
 				}
 			}
-			//Get the value of the key with the smallest distance, adding it to a running sum
-			ArrayList<GenericMetric> tempMetric = learnedInfo.get(minimumDistance.getKey());
-			tempPredictedValue += (int)tempMetric.get(tempMetric.size() - 1).getValue();
-			//Remove the smallest distance, this way we are always pulling the next smallest distance
-			valuesMap.remove(minimumDistance.getKey());
+			tempPredictedValue += (int)distancesSum.get(minimumDistance.getKey());
+			distancesSum.remove(minimumDistance.getKey());
 		}
 		//predictedValue is based on kNN, so divide by k to get average value
 		predictedValue = tempPredictedValue / k;
@@ -137,10 +119,17 @@ public class MachineLearning {
 	 * @Author Ryan Ribeiro, Ethan Morrill
 	 * @return returns the distance between the expected value and the predicted value
 	 */
-	public int predictError(int k, String key,  GenericMetric... metrics) {
+	public int predictError(int k, String key,  ArrayList<GenericFeature> features) {
 		//Value is the last metric in the array of metrics
-		int expectedValue = (int) metrics[metrics.length - 1].getValue();
-		int predictedValue = this.Predict(k, key, metrics);
+		int expectedValue;
+		
+		for (GenericFeature genFeat : features) {
+			if (genFeat.getName() == "Price")
+				expectedValue = (int)(genFeat.getValue()); //"Price" is going to be an IntegerMetric,
+														   //so it will be safe to cast it to int			
+		}
+			
+		int predictedValue = this.predict(k, key, features);
 		int error = Math.abs(predictedValue-expectedValue);
 		addError(error);
 		return error;
