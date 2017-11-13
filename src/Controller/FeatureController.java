@@ -80,17 +80,17 @@ public class FeatureController {
         int index = list.getSelectedIndex();
         GenericFeature feature = listModel.getElementAt(index);
         if (feature instanceof CartesianFeature) {
-            feature = cartesianFeatureWindow("fix this");
+            feature = cartesianFeatureWindow(feature.getName());
         } else if (feature instanceof EnumFeature) {
-            feature = enumFeatureWindow("fix this");
+            feature = enumFeatureWindow(feature.getName());
         } else if (feature instanceof IntegerFeature) {
-            feature = integerFeatureWindow("fix this");
+            feature = integerFeatureWindow(feature.getName());
         }
 
         if (feature != null) {
             /*Replace the current feature with updated*/
             listModel.removeElementAt(index);
-            listModel.add(index, feature); //Replace in gui
+            listModel.add(index, feature);
         }
     }
 
