@@ -67,7 +67,7 @@ public class DiscreteBinaryMetric implements GenericMetric {
     }
     
     public String[] getPermited(){
-    	return (String[])permittedValues.keySet().toArray();
+    	return permittedValues.keySet().toArray(new String[permittedValues.size()]);
     	
     }
 }
