@@ -11,7 +11,10 @@ public class FeatureLayout {
 
     private String name;
     private FeatureType featureType;
+    private String[] discreteValues;
+    //Another variable for type of metric to use
     private GenericMetric distanceMetric;
+
 
     public FeatureLayout(String name, FeatureType featureType, GenericMetric metric) {
         this.name = name;
@@ -25,6 +28,14 @@ public class FeatureLayout {
 
     public FeatureType getFeatureType() {
         return featureType;
+    }
+    
+    public void setDiscreteValues(String str[]){
+    	discreteValues = str;
+    }
+    
+    public String[] getDiscreteValues(){
+    	return discreteValues;
     }
 
     public GenericMetric getMetric(){
