@@ -61,11 +61,11 @@ public class FeatureController {
         GenericFeature feature = null;
         for (FeatureLayout featureLayout : machineLearning.getFeatureLayout()) {
             if (featureLayout.getFeatureType() == FeatureLayout.FeatureType.CartesianFeature) {
-                feature = cartesianFeatureWindow();
+                feature = cartesianFeatureWindow(featureLayout.getName());
             } else if (featureLayout.getFeatureType() == FeatureLayout.FeatureType.IntegerFeature) {
-                feature = integerFeatureWindow();
+                feature = integerFeatureWindow(featureLayout.getName());
             } else if (featureLayout.getFeatureType() == FeatureLayout.FeatureType.DiscreteFeature) {
-                feature = enumFeatureWindow();
+                feature = enumFeatureWindow(featureLayout.getName());
             }
             if (feature != null) {
                 listModel.addElement(feature);
@@ -77,6 +77,7 @@ public class FeatureController {
      * AddFeature Method should just add locally to the ListModel until the user clicks learn (maybe save modified)
      * which will then use the MachineLearning class' learn method to insert into Storage.
      * @param listModel gui list
+     * todo: might not even need addFeature, should not be allowed to add features to a problem post creation
      */
     public void addFeature(DefaultListModel<GenericFeature> listModel) {
         String[] featureTypes = {"Cartesian Feature", "Enum Feature", "Integer Feature"};
@@ -84,11 +85,11 @@ public class FeatureController {
             "Feature Types:", JOptionPane.QUESTION_MESSAGE, null, featureTypes, featureTypes[0]);
         GenericFeature feature = null;
         if (input.equals(featureTypes[0])) {
-            feature = cartesianFeatureWindow();
+            feature = cartesianFeatureWindow("fix this");
         } else if (input.equals(featureTypes[1])) {
-            feature = enumFeatureWindow();
+            feature = enumFeatureWindow("fix this");
         } else if (input.equals(featureTypes[2])) {
-            feature = integerFeatureWindow();
+            feature = integerFeatureWindow("fix this");
         }
         if (feature != null) {
             listModel.addElement(feature);
@@ -104,11 +105,11 @@ public class FeatureController {
         int index = list.getSelectedIndex();
         GenericFeature feature = listModel.getElementAt(index);
         if (feature instanceof CartesianFeature) {
-            feature = cartesianFeatureWindow();
+            feature = cartesianFeatureWindow("fix this");
         } else if (feature instanceof EnumFeature) {
-            feature = enumFeatureWindow();
+            feature = enumFeatureWindow("fix this");
         } else if (feature instanceof IntegerFeature) {
-            feature = integerFeatureWindow();
+            feature = integerFeatureWindow("fix this");
         }
 
         if (feature != null) {
@@ -123,6 +124,7 @@ public class FeatureController {
      * not modify the actual storage until the window is closed using learn/update.
      * @param list JList on gui, used to get selected feature
      * @param listModel DefaultListModel on gui, displays the features
+     * //todo: wont be required
      */
     public void removeFeature(JList list, DefaultListModel<GenericFeature> listModel) {
         int index = list.getSelectedIndex();
@@ -134,7 +136,7 @@ public class FeatureController {
      * can enter the value. Creates a new CartesianFeature and returns it.
      * @return CartesianFeature
      */
-    private CartesianFeature cartesianFeatureWindow() {
+    private CartesianFeature cartesianFeatureWindow(String name) {
         JTextField xField = new JTextField();
         JTextField yField = new JTextField();
 
@@ -142,9 +144,9 @@ public class FeatureController {
             "X Coordinate:", xField,
             "Y Coordinate:", yField,
         };
-        int option = JOptionPane.showConfirmDialog(null, message, "Cartesian Feature", JOptionPane.OK_CANCEL_OPTION);
+        int option = JOptionPane.showConfirmDialog(null, message, name + "(Cartesian):", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
-            return new CartesianFeature("", Integer.valueOf(xField.getText()), Integer.valueOf(yField.getText())); //todo: Add Name field
+            return new CartesianFeature(name, Integer.valueOf(xField.getText()), Integer.valueOf(yField.getText()));
         }
         return null;
     }
@@ -154,14 +156,14 @@ public class FeatureController {
      * can enter the value. Creates a new EnumFeature and returns it.
      * @return EnumFeature
      */
-    private EnumFeature enumFeatureWindow() {
+    private EnumFeature enumFeatureWindow(String name) {
         JTextField enumField = new JTextField();
         Object[] message = {
             "Enumerated Value:", enumField,
         };
-        int option = JOptionPane.showConfirmDialog(null, message, "Enum Feature", JOptionPane.OK_CANCEL_OPTION);
+        int option = JOptionPane.showConfirmDialog(null, message, name + "(Discrete):", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
-            return new EnumFeature(enumField.getText());
+            return new EnumFeature(name, enumField.getText());
         }
         return null;
     }
@@ -171,14 +173,14 @@ public class FeatureController {
      * can enter the value. Creates a new IntegerFeature and returns it.
      * @return IntegerFeature
      */
-    private IntegerFeature integerFeatureWindow() {
+    private IntegerFeature integerFeatureWindow(String name) {
         JTextField intField = new JTextField();
         Object[] message = {
             "Integer Value:", intField,
         };
-        int option = JOptionPane.showConfirmDialog(null, message, "Integer Feature", JOptionPane.OK_CANCEL_OPTION);
+        int option = JOptionPane.showConfirmDialog(null, message, name + "(Integer):", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
-            return new IntegerFeature("", Integer.valueOf(intField.getText())); //todo: add name field
+            return new IntegerFeature(name, Integer.valueOf(intField.getText()));
         }
         return null;
     }
