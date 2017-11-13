@@ -11,10 +11,11 @@ public class CartesianEuclideanMetric implements GenericMetric {
     private String featureName;
     private Storage storage;
 
-    /* This constructor requires two integers.  The values are then stored into a
-     * two element array as a x-value and a y-value.
+    /* This constructor requires two integers and a reference to the storage for the problem.
+     * The values are then stored into a two element array as a x-value and a y-value.
+     * With a reference to the storage stored locally.
      *
-     * @author Logan MacGillivray
+     * @author Logan MacGillivray, Ethan Morrill
      */
     public CartesianEuclideanMetric(String name, Storage storage){
 
@@ -25,10 +26,12 @@ public class CartesianEuclideanMetric implements GenericMetric {
     }
 
     /* See GenericMetrics.getDifference(GenericMetric metric) for full java doc
-     * This particular function will return the hypotenuse of two xy-coordinates.
-     * The value shall be returned as a positive integer.
+     * This particular function will return a hashmap of the example key and euclidean distance
+     * of the provided feature and each learned example.
+     * The value shall be returned as a Hashmap of {key, positive integer distance}.
+     * returns null if provided feature is of the wrong type.
      *
-     * @author Logan MacGillivray
+     * @author Logan MacGillivray, Ethan Morrill
      */
     public HashMap<String, Integer> getDistance(GenericFeature feature){
         HashMap<String, Integer> distances = new HashMap<>();
@@ -48,6 +51,15 @@ public class CartesianEuclideanMetric implements GenericMetric {
             return distances;
         }
         return null;
+    }
+
+    /* See GenericMetric.getName() for full java doc
+	 * This function returns the feature name that the metric is afiliated with for viewing
+	 *
+	 * @author Logan Macgllvray
+	 */
+    public String getName(){
+    	return featureName;
     }
 
 

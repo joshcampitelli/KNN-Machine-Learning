@@ -2,6 +2,7 @@ package Controller;
 import java.util.ArrayList;
 import Views.AlternateWindow;
 import Model.MachineLearning;
+import Model.Metrics.*;
 import Views.MainWindow;
 
 import java.awt.event.ActionEvent;
@@ -21,83 +22,118 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 	}
 
 	public void valueChanged(ListSelectionEvent e) {
-		frame.enableAll();
-		
+		frame.enableAll(true);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("Edit")){
-			//System.out.println("Hello World");
 			new AlternateWindow(new FeatureController(machineLearningArray.get(frame.getJList().getSelectedIndex()),"edit"));
 		} else if(e.getActionCommand().equals("Add")){
-			//System.out.println("Hello World");
 			new AlternateWindow(new FeatureController(machineLearningArray.get(frame.getJList().getSelectedIndex()),"add"));
+		
 		} else if(e.getActionCommand().equals("Add Problem")){
 			// Create the createPanel properties
 			JTextField nameField = new JTextField(5);
-		    JTextField propertyField = new JTextField(5);
-		    String[] optionForPanel = {"Next"};
-		    JPanel createPanel = new JPanel();
-		    
-		    // Add features to the createPanel
-		    createPanel.add(new JLabel("Name:"));
-		    createPanel.add(nameField);
-		    createPanel.add(Box.createHorizontalStrut(15));
-		    createPanel.add(new JLabel("Number of features:"));
-		    createPanel.add(propertyField);
-		    
-		    // Send JOptionPane to user
-		    JOptionPane.showOptionDialog(null, createPanel, "Problem Creation", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, optionForPanel, optionForPanel[0]);
-		    
-		    // If the propertyField equals a number
-		    if((propertyField.getText().matches("[-+]?\\d*\\.?\\d+")) && (!nameField.equals(""))){
-		    	// Set up addPropsPanel properties
-			    optionForPanel[0] = "Enter";
-			    JPanel addPropsPanel = new JPanel();
-			    JTextField textFields[] = new JTextField[Integer.parseInt(propertyField.getText())];
-			    JComboBox comboBoxes[] = new JComboBox[Integer.parseInt(propertyField.getText())];
-			    addPropsPanel.add(new JLabel("Please enter each property name.\n"));
+			JTextField propertyField = new JTextField(5);
+			String[] optionForPanel = {"Next"};
+			JPanel createPanel = new JPanel();
+			
+			// Add features to the createPanel
+			createPanel.add(new JLabel("Name:"));
+			createPanel.add(nameField);
+			createPanel.add(Box.createHorizontalStrut(15));
+			createPanel.add(new JLabel("Number of features:"));
+			createPanel.add(propertyField);
+			
+			// Send JOptionPane to user
+			JOptionPane.showOptionDialog(null, createPanel, "Problem Creation", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, optionForPanel, optionForPanel[0]);
+			
+			// If the propertyField equals a number
+			if(propertyField.getText().matches("[-+]?\\d*\\.?\\d+")){
+				if(nameField.getText().equals("")){
+					nameField.setText("Unknown Problem");
+				}
+				// Set up addPropsPanel properties
+				optionForPanel[0] = "Enter";
+				JPanel addPropsPanel = new JPanel();
+				JTextField textFields[] = new JTextField[Integer.parseInt(propertyField.getText())];
+				JComboBox comboBoxes[] = new JComboBox[Integer.parseInt(propertyField.getText())];
+				addPropsPanel.add(new JLabel("Please enter each property name.\n"));
+
+				// Add a JTextField for every property required for the problem
+				for(int i = 0; i < Integer.parseInt(propertyField.getText()); i++){
+					textFields[i] = new JTextField(5);
+					addPropsPanel.add(textFields[i]);
+
+					// Magic Value, get rid of in next release
+					String[] arrayOfMetrics = {"CartesianEuclideanMetric", "DiscreteBinaryMetric", "IntegerAbsoluteMetric"};
+					comboBoxes[i] = new JComboBox(arrayOfMetrics);
+					addPropsPanel.add(comboBoxes[i]);
+					addPropsPanel.add(Box.createHorizontalStrut(15));
+				}
+
+				// Send JOptionPane to user
+				JOptionPane.showOptionDialog(null, addPropsPanel, 
+						"Please Features and Select a Metric", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE, 
+						null, new String[] {"Enter"}, "default");
+
+				machineLearningArray.add(new MachineLearning(nameField.getText()));
 			    
-			    // Add a JTextField for every property required for the problem
-			    for(int i = 0; i < Integer.parseInt(propertyField.getText()); i++){
-			    	textFields[i] = new JTextField(5);
-			    	addPropsPanel.add(textFields[i]);
-			    	
-			    	// Magic Value, get rid of in next release
-			    	String[] arrayOfMetrics = {"CartesianEuclideanMetric", "DiscreteBinaryMetric", "IntegerAbsoluteMetric"};
-			    	comboBoxes[i] = new JComboBox(arrayOfMetrics);
-			    	addPropsPanel.add(comboBoxes[i]);
-			    	addPropsPanel.add(Box.createHorizontalStrut(15));
-			    }
-			    
-			    // Send JOptionPane to user
-			    JOptionPane.showOptionDialog(null, addPropsPanel, 
-			    		"Please Features and Select a Metric", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE, 
-			    		null, new String[] {"Enter"}, "default");
-			    
-			    machineLearningArray.add(new MachineLearning(nameField.getText()));
-			    
-			   // MachineLearning newML = new MachineLearning(nameField.getText());
-			    int unknownFeature = 1;
-			    for(int j = 0; j < Integer.parseInt(propertyField.getText()); j++){
-			    	/*add metrics to tmp*/
-			    	if(textFields[j].getText().equals("")){
-			    		textFields[j].setText("UnkownFeature " + unknownFeature);
-			    		unknownFeature++;
-			    	}
-			    	
-			    	if(comboBoxes[j].getSelectedItem().equals("CartesianEuclideanMetric")){
-			    		machineLearningArray.get(machineLearningArray.size() - 1).addFeatureLayout(textFields[j].getText(),"CartesianFeature");
-			    	} else if(comboBoxes[j].getSelectedItem().equals("DiscreteBinaryMetric")){
-			    		machineLearningArray.get(machineLearningArray.size() - 1).addFeatureLayout(textFields[j].getText(),"EnumFeature");
-			    	} else if(comboBoxes[j].getSelectedItem().equals("IntegerAbsoluteMetric")){
-			    		machineLearningArray.get(machineLearningArray.size() - 1).addFeatureLayout(textFields[j].getText(),"IntegerFeature");
-			    	}
-			    }
-			    
-			    new AlternateWindow(new FeatureController(machineLearningArray.get(machineLearningArray.size() - 1)));
-			    frame.newScreen();
-			    
+				// MachineLearning newML = new MachineLearning(nameField.getText());
+				int unknownFeature = 1;
+				for(int j = 0; j < Integer.parseInt(propertyField.getText()); j++){
+					/*add metrics to tmp*/
+					if(textFields[j].getText().equals("")){
+						textFields[j].setText("UnkownFeature " + unknownFeature);
+						unknownFeature++;
+					}
+					MachineLearning tmp = machineLearningArray.get(machineLearningArray.size() - 1);
+					if(comboBoxes[j].getSelectedItem().equals("CartesianEuclideanMetric")){
+						tmp.addFeatureLayout(new CartesianEuclideanMetric(textFields[j].getText(), tmp.getStorage()));
+					} else if(comboBoxes[j].getSelectedItem().equals("DiscreteBinaryMetric")){
+						// Create a JOptionPane to get the number of Discrete Values for this 
+						boolean haveANumber = false;
+						JTextField numOfDiscrete = new JTextField(5);
+						JPanel discreteNumPanel = new JPanel();
+						discreteNumPanel.add(new JLabel("Number of discrete values:"));
+						discreteNumPanel.add(numOfDiscrete);
+						discreteNumPanel.add(Box.createHorizontalStrut(15));
+						optionForPanel[0] = "Next";
+						while(!haveANumber){
+							JOptionPane.showOptionDialog(null, discreteNumPanel, "Problem Creation", 
+									JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, 
+									optionForPanel, optionForPanel[0]);
+							
+							if(numOfDiscrete.getText().matches("[-+]?\\d*\\.?\\d+")){
+								haveANumber = true;
+							}
+						}						
+						
+						JTextField[] discreteField = new JTextField[Integer.parseInt(numOfDiscrete.getText())];
+						JPanel discretePanel = new JPanel();
+						for(int k = 0; k < Integer.parseInt(numOfDiscrete.getText()); k++){
+							discreteField[k] = new JTextField(5);
+							discretePanel.add(discreteField[k]);
+							discretePanel.add(Box.createHorizontalStrut(15));
+						}
+						optionForPanel[0] = "Enter";
+						
+						JOptionPane.showOptionDialog(null, discretePanel, "Problem Creation", 
+								JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, 
+								optionForPanel, optionForPanel[0]);
+						
+						String[] discreteVals = new String[Integer.parseInt(numOfDiscrete.getText())];
+						for(int k = 0; k < Integer.parseInt(numOfDiscrete.getText()); k++){
+							discreteVals[k] = discreteField[k].getText();
+						}
+						tmp.addFeatureLayout(new DiscreteBinaryMetric(textFields[j].getText(), tmp.getStorage(), discreteVals));
+						//tmp.getFeatureLayout(j).setDiscreteValues(discreteVals);
+					} else if(comboBoxes[j].getSelectedItem().equals("IntegerAbsoluteMetric")){
+						tmp.addFeatureLayout(new IntegerAbsoluteMetric(textFields[j].getText(), tmp.getStorage()));
+					}
+				}
+				frame.newScreen();
+				new AlternateWindow(new FeatureController(machineLearningArray.get(machineLearningArray.size() - 1), "add"));
 		    } else {
 		    	optionForPanel[0] = "Okay";
 		    	JPanel addPropsPanel = new JPanel();
@@ -124,5 +160,4 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 		}
 		return arg;
 	}
-
 }

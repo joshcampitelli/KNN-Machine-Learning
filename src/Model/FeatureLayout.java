@@ -1,6 +1,6 @@
 package Model;
 
-import Model.Metrics.GenericMetric;
+import Model.Metrics.*;
 
 public class FeatureLayout {
     public enum FeatureType {
@@ -11,11 +11,21 @@ public class FeatureLayout {
 
     private String name;
     private FeatureType featureType;
+    private String[] discreteValues;
+    //Another variable for type of metric to use
     private GenericMetric distanceMetric;
 
-    public FeatureLayout(String name, FeatureType featureType, GenericMetric metric) {
-        this.name = name;
-        this.featureType = featureType;
+
+    public FeatureLayout(GenericMetric metric) {
+        this.name = metric.getName();
+        if(metric instanceof CartesianEuclideanMetric){
+        	this.featureType = FeatureType.CartesianFeature;
+        } else if(metric instanceof DiscreteBinaryMetric){
+        	this.featureType = FeatureType.DiscreteFeature;
+        	setDiscreteValues(((DiscreteBinaryMetric) metric).getPermited());
+        } else if(metric instanceof IntegerAbsoluteMetric) {
+        	this.featureType = FeatureType.IntegerFeature;
+        }
         distanceMetric = metric;
     }
 
@@ -25,6 +35,14 @@ public class FeatureLayout {
 
     public FeatureType getFeatureType() {
         return featureType;
+    }
+    
+    public void setDiscreteValues(String str[]){
+    	discreteValues = str;
+    }
+    
+    public String[] getDiscreteValues(){
+    	return discreteValues;
     }
 
     public GenericMetric getMetric(){

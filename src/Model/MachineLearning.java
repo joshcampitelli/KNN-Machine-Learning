@@ -1,5 +1,6 @@
 package Model;
 
+import Model.Features.GenericFeature;
 import Model.Metrics.*;
 import Model.FeatureLayout;
 import java.util.*;
@@ -8,95 +9,93 @@ import java.util.Map.Entry;
 /**
  *
  * @author Ryan Ribeiro
- *
  */
 public class MachineLearning {
 	private String problem;
+	private List<FeatureLayout> featureLayout;
 	private Storage storage;
-	private Map<String, Integer> valuesMap;
 	private int totalError;
-	private ArrayList<FeatureLayout> myFeatures;
+	private Map<String, Integer> distancesSum;
 
 	public MachineLearning(String problem) {
 		this.problem = problem;
 		storage = new Storage();
-		valuesMap = new HashMap<>();
+		distancesSum = new HashMap<>();
+		featureLayout = new ArrayList<>();
 		totalError = 0;
-		myFeatures = new ArrayList<FeatureLayout>();
-	}
-
-	public void learn(String key, ArrayList<GenericMetric> metrics) {
-		for (GenericMetric metric : metrics) {
-			Learn(key, metric);
-		}
 	}
 
 	/**
 	 * Learn takes a given key and an array of an unknown number of metrics, and stores it in storage of type Model.Storage.
 	 *
-	 * @author Ryan Ribeiro
-	 *
+	 * 
 	 * @param key
-	 * @param metrics
+	 * @param features
+	 * @author Ryan Ribeiro
 	 */
-	public void Learn(String key, GenericMetric... metrics) {
-		storage.insert(key, metrics);
+	public void learn(String key, ArrayList<GenericFeature> features) {
+		storage.insert(key, features);
 	}
 
 	/**
-	 * Given a key, a series of unknown metrics, and a k value for the kNN problem, Predict compares the information with
-	 * and unknown value, and predicts the value based on the information it already knows. Returns the predicted value as
-	 * an int.
-	 *
-	 * @author Ryan Ribeiro
+	 * Compares a passed ArrayList of features to the previously learned features to calculate the
+	 * distance between each existing piece of learned information with the new information. Then,
+	 * using the passed value 'k', predict calculates the predicted value for the new information
+	 * based on the 'k' shortest distances of learned information. Returns the predicted value for
+	 * the new information as an int.
 	 *
 	 * @param k
-	 * @param givenKey
-	 * @param metrics
-	 * @return	returns the predicted value for a problem with an unknown value. Return type is of int.
-	 */
-	public int Predict(int k, String givenKey, GenericMetric... metrics) {
-		int predictedValue = 0, totalDistance = 0, tempPredictedValue = 0;
-		int i = 0, j = 0; //loop control variables
-
-		HashMap<String, ArrayList<GenericMetric>> learnedInfo; //HashMap of previously learned information
-
-		learnedInfo = storage.getLearned();
+	 * @param features
+	 * @return returns the predicted value for a problem with an unknown value. Return type is of int.
+	 * @author Ryan Ribeiro
+	 */	
+	public int predict(int k, ArrayList<GenericFeature> features) {
+		int predictedValue, tempPredictedValue = 0;
+		int i; //loop control variable
 		
-		/*Loops through each entry in HashMap 'learnedInfo', saving the key and values.*/
-		for (Map.Entry<String, ArrayList<GenericMetric>> entry : learnedInfo.entrySet()) {
-			String existingKey = entry.getKey();
-			ArrayList<GenericMetric> value = entry.getValue();
-			/*
-			 * Then loops through each value in the array of values, which are all different
-			 * types of GenericMetric
-			 */
-			for (j = 0; j < value.size() - 1; j++) {
-				//Finally summing up the distances of each metric compared to the pre-existing learned metrics
-				totalDistance += value.get(j).getDistance(metrics[i]);
-				i++;
-			}
-			//Storing the difference distances, to be used later in finding the smallest distances
-			valuesMap.put(existingKey, totalDistance);
-			totalDistance = 0;
-			i = 0;
+		//looping through all features passed to predict
+		for (GenericFeature feature : features) {
+			//temporary HashMap to store returned distances
+			Map<String, Integer> distances = new HashMap<>();
+			String name = feature.getName();
+			//looping through all FeatureLayouts created from constructor
+			for (FeatureLayout featLay : featureLayout) {
+				//checks if it's the price metric, and if it is we don't want the distance of it
+				if (featLay.getName().toLowerCase() == "price") {
+					//Do nothing
+				} else {
+					//matches the names to know which feature belongs to which FeatureLayout
+					if (featLay.getName().equals(name))
+						distances = featLay.getMetric().getDistance(feature);
+					
+					//summing the total distance from the existing distancesSum and the returned
+					//distances. Sums on a key by key basis 
+					for (String key : distances.keySet()) {
+						if (distancesSum.containsKey(key)) {
+							distancesSum.put(key, distancesSum.get(key) + distances.get(key));
+						} else {
+							distancesSum.put(key, distances.get(key));
+						}
+					}
+					//for each loop exists with distancesSum containing the sum of the distances
+					//for all features of a specific key 
+				}
+			}			
 		}
 		
-		/*
-		 * Looping through the HashMap of distances to find the smallest distance
-		 */
-		for (j = 0; j < k; j++) {
+		//looping to determine the smallest distance 'k' times
+		for (i = 0; i < k; i++) {
 			Entry<String, Integer> minimumDistance = null;
-			for(Entry<String, Integer> entry : valuesMap.entrySet()) {
+			//loops over each distance, determines smallest
+			for(Entry<String, Integer> entry : distancesSum.entrySet()) {
 				if (minimumDistance == null || minimumDistance.getValue() > entry.getValue()) {
 					minimumDistance = entry;
 				}
 			}
-			//Get the value of the key with the smallest distance, adding it to a running sum
-			ArrayList<GenericMetric> tempMetric = learnedInfo.get(minimumDistance.getKey());
-			tempPredictedValue += (int)tempMetric.get(tempMetric.size() - 1).getValue();
-			//Remove the smallest distance, this way we are always pulling the next smallest distance
-			valuesMap.remove(minimumDistance.getKey());
+			//sums the values for each of the smallest distances
+			tempPredictedValue += distancesSum.get(minimumDistance.getKey());
+			//removes smallest distance so that the next iteration will produce the next smallest distance
+			distancesSum.remove(minimumDistance.getKey());
 		}
 		//predictedValue is based on kNN, so divide by k to get average value
 		predictedValue = tempPredictedValue / k;
@@ -107,18 +106,24 @@ public class MachineLearning {
 	/**
 	 * Predict error determines the error between the predicted value and the expected value. Returns the distance.
 	 *
-	 * @author Ryan Ribeiro
 	 *
 	 * @param k
 	 * @param key
-	 * @param metrics
-	 * @Author Ryan Ribeiro, Ethan Morrill
+	 * @param features
 	 * @return returns the distance between the expected value and the predicted value
+	 * @Author Ryan Ribeiro, Ethan Morrill
 	 */
-	public int PredictError(int k, String key,  GenericMetric... metrics) {
-		//Value is the last metric in the array of metrics
-		int expectedValue = (int) metrics[metrics.length - 1].getValue();
-		int predictedValue = this.Predict(k, key, metrics);
+	public int predictError(int k, String key,  ArrayList<GenericFeature> features) {
+		int expectedValue = 0;
+		
+		//looping to find the feature that contains the value for that set of features
+		for (GenericFeature genFeat : features) {
+			if (genFeat.getName().toLowerCase() == "price")
+				//"price" is going to always be an IntegerFeature, so casting it to int is safe
+				expectedValue = (int)(genFeat.getValue());			
+		}	
+		int predictedValue = this.predict(k, features);
+		//error is the difference between the predicted value and the expected value
 		int error = Math.abs(predictedValue-expectedValue);
 		addError(error);
 		return error;
@@ -127,37 +132,77 @@ public class MachineLearning {
 	/**
 	 * Return the current total error of the problem, for printing purposes
 	 *
+	 * @return the current total error of the problem as an int
 	 * @Author Ethan Morrill
 	 */
 	public int getTotalError(){
-		//Return the total error of the Machine Learning Problem
+		//Return the total error of the MachineLearning Problem
 		return totalError;
 	}
 
 	/**
-	 * Increase the total problem error by the new error that has occured in testing
+	 * Increase the total problem error by the new error that has occurred in testing
 	 *
-	 * @Author Ethan Morrill
 	 * @param error
+	 * @Author Ethan Morrill
 	 */
 	public void addError(int error){
-		//Increase value of total error of the Machine Learning Problem
+		//Increase value of total error of the MachineLearning Problem
 		totalError += error;
 	}
 	
+	/**
+	 * Returns the name of problem for the instance of MachineLearning
+	 * 
+	 * @return the name of the problem as a String
+	 */
 	public String getProblem(){
 		return problem;
 	}
 	
+	/**
+	 * Returns reference to the storage used for the instance of MachineLearning
+	 * 
+	 * @return reference to the storage as type Storage
+	 */
 	public Storage getStorage(){
 		return storage;
 	}
 	
-	public void addFeatureLayout(String name, String type){
-		myFeatures.add(new FeatureLayout(name,FeatureLayout.FeatureType.valueOf(type)));
+	/**
+	 * Adds a FeatureLayout to the ArrayList of FeatureLayouts
+	 * 
+	 * @param metric
+	 */
+	public void addFeatureLayout(GenericMetric metric){
+		featureLayout.add(new FeatureLayout(metric));
+	}
+  
+	/**
+	 * Returns the FeatureLayout at index i in the ArrayList of FeatureLayouts
+	 * 
+	 * @param i
+	 * @return	returns the FeatureLayout at index i of type FeatureLayout
+	 */
+	public FeatureLayout getFeatureLayout(int i){
+		return featureLayout.get(i);
 	}
 
-	public ArrayList<FeatureLayout> getFeatureLayout() {
-		return myFeatures;
+	/**
+	 * Returns a list of FeatureLayouts
+	 * 
+	 * @return returns a list of FeatureLayouts of type List<FeatureLayout>
+	 */
+	public List<FeatureLayout> getFeatureLayout() {
+		return featureLayout;
+	}
+	
+	/**
+	 * Deletes an existing piece of learned information with key 'key' from storage
+	 * 
+	 * @param key
+	 */
+	public void deleteLearned (String key) {
+		storage.remove(key);
 	}
 }

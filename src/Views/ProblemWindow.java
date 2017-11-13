@@ -1,4 +1,5 @@
 package Views;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -11,15 +12,18 @@ import javax.swing.JMenuItem;
 import javax.swing.ListSelectionModel;
 
 import Controller.MainWindowController;
+import Controller.ProblemWindowController;
 
-public class MainWindow extends JFrame{
-	private MainWindowController mainControl = new MainWindowController(this);
-	private JList<String> listOfProblems;
-	private JMenuItem editMenuItem = new JMenuItem("Edit");
-	private JMenuItem addMenuItem = new JMenuItem("Add");
+public class ProblemWindow extends JFrame {
+	private ProblemWindowController problemControl;
+	private JList<String> listOfObjects;
+	private JMenuItem editMenuItem;
+	private JMenuItem removeMenuItem;
 	
-	public MainWindow(){
-		super("Machine Learning");
+	public ProblemWindow(ProblemWindowController control){
+		super(control.toString());
+		problemControl = control;
+		problemControl.setFrame(this);
 		
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize(dimension.width/2, dimension.height/2);
@@ -29,10 +33,10 @@ public class MainWindow extends JFrame{
 		
 		createMenu();
 		
-		listOfProblems = new JList<String>(mainControl.getProblems());
-		listOfProblems.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		listOfProblems.addListSelectionListener(mainControl);
-		add(listOfProblems, BorderLayout.CENTER);
+		listOfObjects = new JList<String>(problemControl.getProblems());
+		listOfObjects.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listOfObjects.addListSelectionListener(problemControl);
+		add(listOfObjects, BorderLayout.CENTER);
 		
 		setVisible(true);
 	}
@@ -46,38 +50,35 @@ public class MainWindow extends JFrame{
 		JMenu editMenu = new JMenu("Edit");
 		menuBar.add(editMenu);
 		
-		JMenuItem addProblemMenuItem = new JMenuItem("Add Problem");
-		addProblemMenuItem.addActionListener(mainControl);
-		fileMenu.add(addProblemMenuItem);
+		JMenuItem addMenuItem = new JMenuItem("Add");
+		addMenuItem.addActionListener(problemControl);
+		fileMenu.add(addMenuItem);
 		
 		// Add an Edit JMenuItem to the Edit JMenu
-		
-		addMenuItem.setEnabled(false);
-		addMenuItem.addActionListener(mainControl);
-		editMenu.add(addMenuItem);
+		editMenuItem = new JMenuItem("Edit");
 		editMenuItem.setEnabled(false);
-		editMenuItem.addActionListener(mainControl);
+		editMenuItem.addActionListener(problemControl);
 		editMenu.add(editMenuItem);
+		removeMenuItem = new JMenuItem("Remove");
+		removeMenuItem.setEnabled(false);
+		removeMenuItem.addActionListener(problemControl);
+		editMenu.add(removeMenuItem);
 		
 		// Add the JMenuBar to the NORTH section of the BorderLayout
 		getContentPane().add(menuBar, BorderLayout.NORTH);
 	}
 	
 	public void newScreen(){
-		listOfProblems.setListData(mainControl.getProblemsArray());
+		listOfObjects.setListData(problemControl.getProblemsArray());
 	}
 	
 	public JList<String> getJList(){
-		return listOfProblems;
+		return listOfObjects;
 	}
 	
 	public void enableAll(boolean val){
-		addMenuItem.setEnabled(val);
+		removeMenuItem.setEnabled(val);
 		editMenuItem.setEnabled(val);
-	}
-
-	public static void main(String[] args) {
-		MainWindow mainWindow = new MainWindow();
 	}
 	
 }

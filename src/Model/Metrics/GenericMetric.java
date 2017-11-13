@@ -14,4 +14,9 @@ public interface GenericMetric {
 	 */
 	public HashMap<String, Integer> getDistance(GenericFeature feature);
 
+
+	/* Funct will return the name of the feature which the metric is related to.
+	 * No Parameters required.
+	 */
+	public String getName();
 }

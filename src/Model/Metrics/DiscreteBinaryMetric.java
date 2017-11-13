@@ -21,7 +21,7 @@ public class DiscreteBinaryMetric implements GenericMetric {
 
         featureName = name;
         this.storage = storage;
-        HashMap<String, Integer> permittedValues = new HashMap<>(); //DO i need this?
+        permittedValues = new HashMap<>(); 
         int i = 0;
         while(i< permitted.length ){
             permittedValues.put(permitted[i], i);
@@ -62,4 +62,22 @@ public class DiscreteBinaryMetric implements GenericMetric {
         return null;
     }
 
+    /* See GenericMetric.getName() for full java doc
+	 * This function returns the feature name that the metric is afiliated with for viewing
+	 *
+	 * @author Logan Macgllvray
+	 */
+    public String getName(){
+    	return featureName;
+    }
+
+    /*
+	 * This function returns the array of permitted string values for discrete features
+	 *
+	 * @author Logan Macgllvray
+	 */
+    public String[] getPermited(){
+    	return permittedValues.keySet().toArray(new String[permittedValues.size()]);
+    	
+    }
 }

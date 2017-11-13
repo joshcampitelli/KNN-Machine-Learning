@@ -15,11 +15,14 @@ import Model.Features.*;
 */
 public class Storage {
 	private HashMap<String, ArrayList<GenericFeature>> learned;
-	/*provides access to metrics for any given problem identified by key*/
-	private ArrayList<GenericFeature> features;
 	
 	public Storage() {
 		learned = new HashMap<>();
+	}
+
+	/*For UnitTests*/
+	public int getSize() {
+		return learned.size();
 	}
 
 	/**
@@ -34,17 +37,13 @@ public class Storage {
 
 	/**
 	 * The insert method simply puts data into the HashMap, where the problem
-	 * parameter represents the problem, and metrics[] are the known metrics.
+	 * parameter represents the problem, and ArrayList are the known features.
 	 * @param key identifies the problem (HashMap Key)
 	 * @param features array of metrics to be inserted into HashMap
 	 * @author Josh Campitelli
 	 */
-	public void insert(String key, GenericFeature features[]) {
-		ArrayList<GenericFeature> list = new ArrayList<>();
-		for (int i = 0; i < features.length; i++) {
-			list.add(features[i]);
-		}
-		learned.put(key, list);
+	public void insert(String key, ArrayList<GenericFeature> features) {
+		learned.put(key, features);
 	}
 
 	/*
@@ -67,41 +66,11 @@ public class Storage {
 	}
 
 	/**
-	 * Adds a metric to the problem specified by "key" parameter.
-	 * @param key identifies the problem (HashMap Key)
-	 * @param feature to be inserted into the HashMap's ArrayList
-	 * @author Josh Campitelli
+	 * Returns hashmap of keys and features for a given featureName
+	 * @param featureName identifies the name f the feature of interest
+	 * @return Hashmap of {key, GenercFeature} for the provided featureName
+	 * @author Ethan Morrill
 	 */
-	public void addMetric(String key, GenericFeature feature) {
-		features = learned.get(key);
-		features.add(feature);
-	}
-
-	/**
-	 * Replaces the metric in the HashMap's ArrayList index position
-	 * with the given metric.
-	 * @param key identifies the problem (HashMap Key)
-	 * @param index position within the ArrayList
-	 * @param feature to be inserted into HashMap's ArrayList
-	 * @author Josh Campitelli
-	 */
-	public void replaceMetric(String key, int index, GenericFeature feature) {
-		features = learned.get(key);
-		features.remove(index);
-		features.add(index, feature);
-	}
-
-	/**
-	 * Removes the metric in the HashMap's ArrayList index position
-	 * @param key identifies the problem (HashMap Key)
-	 * @param index position within the ArrayList
-	 * @author Josh Campitelli
-	 */
-	public void removeMetric(String key, int index) {
-		features = learned.get(key);
-		features.remove(index);
-	}
-
 	public HashMap<String, GenericFeature> getFeature(String featureName){
 
 
