@@ -29,4 +29,8 @@ public class CartesianFeature implements GenericFeature {
 	 * @author Ethan Morrill
 	 */
 	public String getName() { return name; }
+
+	public String toString() {
+		return name + " (Cartesian): X = " + coordinates[0] + ", Y = " + coordinates[1];
+	}
 }

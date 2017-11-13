@@ -32,4 +32,7 @@ public class EnumFeature implements GenericFeature {
 	 */
 	public String getName() { return name; }
 
+	public String toString() {
+		return name + " (Discrete): Value = " + value;
+	}
 }
