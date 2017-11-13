@@ -160,9 +160,4 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 		}
 		return arg;
 	}
-
-	public int getNumberOfDiscreteValues(){
-		
-		return 0;
-	}
 }
