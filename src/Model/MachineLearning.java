@@ -18,9 +18,8 @@ public class MachineLearning {
 	private int totalError;
 	private Map<String, Integer> distancesSum;
 
-	public MachineLearning(String problem, ArrayList<FeatureLayout> featureLayout) {
+	public MachineLearning(String problem) {
 		this.problem = problem;
-		this.featureLayout = featureLayout;
 		storage = new Storage();
 		distancesSum = new HashMap<>();
 		totalError = 0;
@@ -163,8 +162,8 @@ public class MachineLearning {
 	}
 	
 	public void addFeatureLayout(GenericMetric metric){
-		myFeatures.add(new FeatureLayout(metric));
-  }
+		featureLayout.add(new FeatureLayout(metric));
+	}
 
 	/*
 	 * Need to add functions for display, edit, delete
