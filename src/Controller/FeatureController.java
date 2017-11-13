@@ -107,7 +107,7 @@ public class FeatureController {
             "X Coordinate:", xField,
             "Y Coordinate:", yField,
         };
-        int option = JOptionPane.showConfirmDialog(null, message, name + "(Cartesian):", JOptionPane.OK_CANCEL_OPTION);
+        int option = JOptionPane.showConfirmDialog(null, message, name + " (Cartesian):", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
             return new CartesianFeature(name, Integer.valueOf(xField.getText()), Integer.valueOf(yField.getText()));
         }
@@ -122,9 +122,9 @@ public class FeatureController {
     private EnumFeature enumFeatureWindow(String name) {
         JTextField enumField = new JTextField();
         Object[] message = {
-            "Enumerated Value:", enumField,
+            "Discrete Value:", enumField,
         };
-        int option = JOptionPane.showConfirmDialog(null, message, name + "(Discrete):", JOptionPane.OK_CANCEL_OPTION);
+        int option = JOptionPane.showConfirmDialog(null, message, name + " (Discrete):", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
             return new EnumFeature(name, enumField.getText());
         }
@@ -141,7 +141,7 @@ public class FeatureController {
         Object[] message = {
             "Integer Value:", intField,
         };
-        int option = JOptionPane.showConfirmDialog(null, message, name + "(Integer):", JOptionPane.OK_CANCEL_OPTION);
+        int option = JOptionPane.showConfirmDialog(null, message, name + " (Integer):", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
             return new IntegerFeature(name, Integer.valueOf(intField.getText()));
         }
