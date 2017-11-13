@@ -7,4 +7,6 @@ public interface GenericFeature {
 	 * two metrics.  No paramters required.
 	 */
     public Object getValue();
+
+    public String getName();
 }
