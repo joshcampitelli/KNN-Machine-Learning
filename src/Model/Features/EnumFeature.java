@@ -1,25 +1,19 @@
 package Model.Features;
 
-import Model.Metrics.GenericMetric;
-
 public class EnumFeature implements GenericFeature {
-	private enum age {NEW, OLD};	// Looking to remove this as it is a magic value
-	private age value;
+
 	private String name;
+	private String value;
 
 
-	/* This constructor requires a string value that must match one of the enum values.
-	 * If the values do not match, no value is assigned to this metric and an error
-	 * message is written to console.
+	/* This constructor requires two string values the name of the feature, and the discrete value.
 	 * 
-	 * @author Logan MacGillivray
+	 * @author Logan MacGillivray, Ethan Morrill
 	 */
-	public EnumFeature(String val){
-		try{
-			value = age.valueOf(val.toUpperCase());
-		} catch(IllegalArgumentException e){
-			System.out.println("ERROR - Value not assigned.  Paramenter not accepted");
-		}
+	public EnumFeature(String name, String value){
+
+		this.name = name;
+		this.value = value;
 	}
 
 	/* See GenericMetrics.getValue() for full java doc
@@ -31,6 +25,11 @@ public class EnumFeature implements GenericFeature {
 		return value;
 	}
 
+	/* See GenericMetrics.getName() for full java doc
+	 * This function returns the name of the feature for viewing
+	 *
+	 * @author Ethan Morrill
+	 */
 	public String getName() { return name; }
 
 }
