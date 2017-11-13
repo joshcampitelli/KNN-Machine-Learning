@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import Views.AlternateWindow;
 import Model.MachineLearning;
 import Model.Features.*;
+import Views.MainWindow;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +15,11 @@ import javax.swing.*;
 
 public class MainWindowController implements ActionListener, ListSelectionListener {
 	private ArrayList<MachineLearning> machineLearningArray = new ArrayList<MachineLearning>();
+	private MainWindow frame;
+	
+	public MainWindowController(MainWindow frame){
+		this.frame = frame;
+	}
 
 	public void valueChanged(ListSelectionEvent e) {
 		// TODO Auto-generated method stub
@@ -67,7 +73,9 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 			    		"Please Features and Select a Metric", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE, 
 			    		null, new String[] {"Enter"}, "default");
 			    
-			    MachineLearning newML = new MachineLearning(nameField.getText());
+			    machineLearningArray.add(new MachineLearning(nameField.getText()));
+			    
+			   // MachineLearning newML = new MachineLearning(nameField.getText());
 			    int unknownFeature = 1;
 			    for(int j = 0; j < Integer.parseInt(propertyField.getText()); j++){
 			    	/*add metrics to tmp*/
@@ -76,29 +84,26 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 			    		unknownFeature++;
 			    	}
 			    	
-			    	if(comboBoxes[j].equals("CartesianEuclidMetric")){
-			    		//newML.addFeatureLayout(textFields[j],"CartesianFeature");
-			    	} else if(comboBoxes[j].equals("DiscreteBinaryMetric")){
-			    		//newML.addFeatureLayout(textFields[j],"EnumFeature");
-			    	} else if(comboBoxes[j].equals("IntegerAbsoluteMetric")){
-			    		//newML.addFeatureLayout(textFields[j],"IntegerFeature");
+			    	if(comboBoxes[j].getSelectedItem().equals("CartesianEuclideanMetric")){
+			    		machineLearningArray.get(machineLearningArray.size() - 1).addFeatureLayout(textFields[j].getText(),"CartesianFeature");
+			    	} else if(comboBoxes[j].getSelectedItem().equals("DiscreteBinaryMetric")){
+			    		machineLearningArray.get(machineLearningArray.size() - 1).addFeatureLayout(textFields[j].getText(),"EnumFeature");
+			    	} else if(comboBoxes[j].getSelectedItem().equals("IntegerAbsoluteMetric")){
+			    		machineLearningArray.get(machineLearningArray.size() - 1).addFeatureLayout(textFields[j].getText(),"IntegerFeature");
 			    	}
 			    }
 			    
-			    new AlternateWindow(new FeatureController(newML));
+			    new AlternateWindow(new FeatureController(machineLearningArray.get(machineLearningArray.size() - 1)));
+			    frame.newScreen();
 			    
 		    } else {
 		    	optionForPanel[0] = "Okay";
 		    	JPanel addPropsPanel = new JPanel();
 		    	addPropsPanel.add(new JLabel("Please enter a name and value."));
 		    	JOptionPane.showOptionDialog(null, addPropsPanel, 
-		    			"Error!", JOptionPane.NO_OPTION, JOptionPane.ERROR_MESSAGE, 
-		    			null, new String[] {"Okay"}, "default");
-			    
-		    }
-		    
-		    
-		    //System.out.println(nameField.getText());
+		    		"Error!", JOptionPane.NO_OPTION, JOptionPane.ERROR_MESSAGE, 
+		    		null, new String[] {"Okay"}, "default");
+			}
 		}
 	}
 	
@@ -108,6 +113,14 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 			tmp.addElement(machineLearningArray.get(i).getProblem());
 		}
 		return tmp;
+	}
+	
+	public String[] getProblemsArray(){
+		String[] arg = new String[machineLearningArray.size()];
+		for(int i = 0; i < arg.length; i++){
+			 arg[i] = machineLearningArray.get(i).getProblem();
+		}
+		return arg;
 	}
 
 }

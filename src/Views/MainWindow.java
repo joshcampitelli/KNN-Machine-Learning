@@ -13,7 +13,7 @@ import javax.swing.ListSelectionModel;
 import Controller.MainWindowController;
 
 public class MainWindow extends JFrame{
-	private MainWindowController mainControl = new MainWindowController();
+	private MainWindowController mainControl = new MainWindowController(this);
 	private JList<String> listOfProblems;
 	
 	public MainWindow(){
@@ -57,6 +57,10 @@ public class MainWindow extends JFrame{
 		
 		// Add the JMenuBar to the NORTH section of the BorderLayout
 		getContentPane().add(menuBar, BorderLayout.NORTH);
+	}
+	
+	public void newScreen(){
+		listOfProblems.setListData(mainControl.getProblemsArray());
 	}
 	
 }

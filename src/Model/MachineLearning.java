@@ -1,6 +1,7 @@
 package Model;
 
 import Model.Metrics.*;
+import Model.FeatureLayout;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -14,12 +15,14 @@ public class MachineLearning {
 	private Storage storage;
 	private Map<String, Integer> valuesMap;
 	private int totalError;
+	private ArrayList<FeatureLayout> myFeatures;
 
 	public MachineLearning(String problem) {
 		this.problem = problem;
 		storage = new Storage();
 		valuesMap = new HashMap<>();
 		totalError = 0;
+		myFeatures = new ArrayList<FeatureLayout>();
 	}
 
 	public void learn(String key, ArrayList<GenericMetric> metrics) {
@@ -148,5 +151,9 @@ public class MachineLearning {
 	
 	public Storage getStorage(){
 		return storage;
+	}
+	
+	public void addFeatureLayout(String name, String type){
+		myFeatures.add(new FeatureLayout(name,FeatureLayout.FeatureType.valueOf(type)));
 	}
 }
