@@ -3,7 +3,7 @@ package Model;
 import Model.Metrics.GenericMetric;
 
 public class FeatureLayout {
-    private enum FeatureType {
+    public enum FeatureType {
         IntegerFeauture,
         CartesianFeature,
         DiscreteFeature

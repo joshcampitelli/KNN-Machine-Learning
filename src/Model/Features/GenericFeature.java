@@ -8,5 +8,9 @@ public interface GenericFeature {
 	 */
     public Object getValue();
 
+    /* This function will return the name of the feature stored in each feature.  This
+	 * function should be called by the getFeature function when retrieving specific values of a feature.
+	 * No paramters required.
+	 */
     public String getName();
 }
