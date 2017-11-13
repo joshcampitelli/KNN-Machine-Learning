@@ -50,6 +50,10 @@ public class MachineLearning {
 	 * @author Ryan Ribeiro
 	 */	
 	public int predict(int k, ArrayList<GenericFeature> features) {
+		if (k > storage.getSize() || k < 0) {
+			//error
+		}
+		
 		int predictedValue, tempPredictedValue = 0;
 		int i; //loop control variable
 		
@@ -114,6 +118,10 @@ public class MachineLearning {
 	 * @Author Ryan Ribeiro, Ethan Morrill
 	 */
 	public int predictError(int k, String key,  ArrayList<GenericFeature> features) {
+		if (k > storage.getSize() || k < 0) {
+			//error
+		}
+		
 		int expectedValue = 0;
 		
 		//looping to find the feature that contains the value for that set of features
@@ -185,6 +193,9 @@ public class MachineLearning {
 	 * @return	returns the FeatureLayout at index i of type FeatureLayout
 	 */
 	public FeatureLayout getFeatureLayout(int i){
+		if (i >= featureLayout.size() || i < 0) {
+			//error
+		}
 		return featureLayout.get(i);
 	}
 
@@ -203,6 +214,7 @@ public class MachineLearning {
 	 * @param key
 	 */
 	public void deleteLearned (String key) {
+		//the error trapping for this one has to happen on the end of 'remove' in Storage
 		storage.remove(key);
 	}
 }
