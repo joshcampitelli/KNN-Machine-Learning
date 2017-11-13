@@ -25,8 +25,6 @@ public class FeatureController {
     }
 
     /**
-     * todo: may need another parameter specifying the case in which the window is being opened (edit/addnew)
-     * todo: which will then enable/disable MenuItems accordingly.
      * @param machineLearning Reference to Model
      */
     public FeatureController(MachineLearning machineLearning, String state) {
