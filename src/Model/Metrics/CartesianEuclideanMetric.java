@@ -1,19 +1,26 @@
 package Model.Metrics;
 
 import Model.Features.*;
+import Model.Storage;
+
+import java.util.HashMap;
+import java.util.Set;
 
 public class CartesianEuclideanMetric implements GenericMetric {
 
     private String featureName;
+    private Storage storage;
 
     /* This constructor requires two integers.  The values are then stored into a
      * two element array as a x-value and a y-value.
      *
      * @author Logan MacGillivray
      */
-    public CartesianEuclideanMetric(String name){
+    public CartesianEuclideanMetric(String name, Storage storage){
 
         featureName = name;
+        this.storage = storage;
+
 
     }
 
@@ -23,17 +30,24 @@ public class CartesianEuclideanMetric implements GenericMetric {
      *
      * @author Logan MacGillivray
      */
-    public int getDistance(GenericFeature feature, GenericFeature learnedFeature){
-        if((feature instanceof CartesianFeature)&&(learnedFeature instanceof CartesianFeature)){
-            int[] value = (int[])feature.getValue();
-            int [] learnedValue = (int[]) learnedFeature.getValue();
-            double squareSum = 0;
-            for(int i = 0; i < value.length; i++){
-                squareSum += Math.pow(value[i]-learnedValue[i], 2);
+    public HashMap<String, Integer> getDistance(GenericFeature feature){
+        HashMap<String, Integer> distances = new HashMap<>();
+        int[] value = (int[])feature.getValue();
+        if(feature instanceof CartesianFeature){
+            HashMap<String, GenericFeature> learnedFeature = storage.getFeature(featureName);
+            Set<String> keys = learnedFeature.keySet();
+            for(String key : keys) {
+                int [] learnedValue = (int[]) learnedFeature.get(key).getValue();
+                double squareSum = 0;
+                for(int i = 0; i < value.length; i++){
+                    squareSum += Math.pow(value[i]-learnedValue[i], 2);
+                }
+                distances.put(key, (int)Math.sqrt(squareSum));
+
             }
-            return (int)Math.sqrt(squareSum);
+            return distances;
         }
-        return -1;
+        return null;
     }
 
 

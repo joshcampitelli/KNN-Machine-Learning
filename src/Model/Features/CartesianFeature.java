@@ -1,7 +1,5 @@
 package Model.Features;
 
-import Model.Metrics.GenericMetric;
-
 public class CartesianFeature implements GenericFeature {
 	private int[] coordinates = new int[2];
 	private String name;

@@ -66,6 +66,17 @@ public class AlternateWindow extends JFrame {
 
         addListeners();
         setVisible(true);
+
+        if (featureController.getState() == FeatureController.State.addProblem) {
+            learnItem.setEnabled(true);
+            editItem.setEnabled(true);
+            removeItem.setEnabled(true);
+        } else {
+            updateItem.setEnabled(true);
+            editItem.setEnabled(true);
+            removeItem.setEnabled(true);
+        }
+
         //Might Work Not Tested
         featureController.initialize(listModel);
     }
