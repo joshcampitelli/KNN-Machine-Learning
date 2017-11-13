@@ -105,10 +105,10 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 									JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, 
 									optionForPanel, optionForPanel[0]);
 							
-							if(propertyField.getText().matches("[-+]?\\d*\\.?\\d+")){
+							if(numOfDiscrete.getText().matches("[-+]?\\d*\\.?\\d+")){
 								haveANumber = true;
 							}
-						}
+						}						
 						
 						JTextField[] discreteField = new JTextField[Integer.parseInt(numOfDiscrete.getText())];
 						JPanel discretePanel = new JPanel();
@@ -161,4 +161,8 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 		return arg;
 	}
 
+	public int getNumberOfDiscreteValues(){
+		
+		return 0;
+	}
 }
