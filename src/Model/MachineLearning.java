@@ -22,6 +22,7 @@ public class MachineLearning {
 		this.problem = problem;
 		storage = new Storage();
 		distancesSum = new HashMap<>();
+		featureLayout = new ArrayList<>();
 		totalError = 0;
 	}
 
