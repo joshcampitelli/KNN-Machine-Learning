@@ -18,9 +18,10 @@ public class IntegerAbsoluteMetric implements GenericMetric {
      * By default each metric will have equal weight of 1
      * @author Logan MacGillivray, Ethan Morrill
      */
-    public IntegerAbsoluteMetric(String name){
+    public IntegerAbsoluteMetric(String name, Storage storage){
 
         featureName = name;
+        this.storage = storage;
 
     }
 
