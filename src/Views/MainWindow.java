@@ -15,6 +15,8 @@ import Controller.MainWindowController;
 public class MainWindow extends JFrame{
 	private MainWindowController mainControl = new MainWindowController(this);
 	private JList<String> listOfProblems;
+	private JMenuItem editMenuItem = new JMenuItem("Edit");
+	private JMenuItem addMenuItem = new JMenuItem("Add");
 	
 	public MainWindow(){
 		super("Machine Learning");
@@ -44,16 +46,18 @@ public class MainWindow extends JFrame{
 		JMenu editMenu = new JMenu("Edit");
 		menuBar.add(editMenu);
 		
-		JMenuItem addMenuItem = new JMenuItem("Add Problem");
-		addMenuItem.addActionListener(mainControl);
-		fileMenu.add(addMenuItem);
+		JMenuItem addProblemMenuItem = new JMenuItem("Add Problem");
+		addProblemMenuItem.addActionListener(mainControl);
+		fileMenu.add(addProblemMenuItem);
 		
 		// Add an Edit JMenuItem to the Edit JMenu
-		JMenuItem editMenuItem = new JMenuItem("Edit");
+		
+		addMenuItem.setEnabled(false);
+		addMenuItem.addActionListener(mainControl);
+		editMenu.add(addMenuItem);
 		editMenuItem.setEnabled(false);
 		editMenuItem.addActionListener(mainControl);
 		editMenu.add(editMenuItem);
-		
 		
 		// Add the JMenuBar to the NORTH section of the BorderLayout
 		getContentPane().add(menuBar, BorderLayout.NORTH);
@@ -61,6 +65,14 @@ public class MainWindow extends JFrame{
 	
 	public void newScreen(){
 		listOfProblems.setListData(mainControl.getProblemsArray());
+	}
+	
+	public JList<String> getJList(){
+		return listOfProblems;
+	}
+	
+	public void enableAll(){
+		editMenuItem.setEnabled(true);
 	}
 	
 }

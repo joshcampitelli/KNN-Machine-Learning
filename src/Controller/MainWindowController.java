@@ -2,7 +2,6 @@ package Controller;
 import java.util.ArrayList;
 import Views.AlternateWindow;
 import Model.MachineLearning;
-import Model.Features.*;
 import Views.MainWindow;
 
 import java.awt.event.ActionEvent;
@@ -22,14 +21,17 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 	}
 
 	public void valueChanged(ListSelectionEvent e) {
-		// TODO Auto-generated method stub
+		frame.enableAll();
 		
 	}
 	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("Edit")){
 			//System.out.println("Hello World");
-			new AlternateWindow(new FeatureController(machineLearningArray.get(machineLearningArray.size())));
+			new AlternateWindow(new FeatureController(machineLearningArray.get(frame.getJList().getSelectedIndex()),"edit"));
+		} else if(e.getActionCommand().equals("Add")){
+			//System.out.println("Hello World");
+			new AlternateWindow(new FeatureController(machineLearningArray.get(frame.getJList().getSelectedIndex()),"add"));
 		} else if(e.getActionCommand().equals("Add Problem")){
 			// Create the createPanel properties
 			JTextField nameField = new JTextField(5);
