@@ -47,6 +47,10 @@ public class Storage {
 		learned.put(key, list);
 	}
 
+	public void insert(String key, ArrayList<GenericFeature> features) {
+		learned.put(key, features);
+	}
+
 	/*
 	* The remove method removes an instance of learned information from the hashmap.
 	* Parameter represents the string key used to represent the
