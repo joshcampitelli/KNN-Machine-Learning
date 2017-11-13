@@ -156,4 +156,8 @@ public class MachineLearning {
 	public void addFeatureLayout(String name, String type){
 		myFeatures.add(new FeatureLayout(name,FeatureLayout.FeatureType.valueOf(type)));
 	}
+	
+	public FeatureLayout getFeatureLayout(int i){
+		return myFeatures.get(i);
+	}
 }

@@ -71,8 +71,9 @@ public class MainWindow extends JFrame{
 		return listOfProblems;
 	}
 	
-	public void enableAll(){
-		editMenuItem.setEnabled(true);
+	public void enableAll(boolean val){
+		addMenuItem.setEnabled(val);
+		editMenuItem.setEnabled(val);
 	}
 	
 }

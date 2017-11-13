@@ -9,6 +9,7 @@ public class FeatureLayout {
 
     private String name;
     private FeatureType featureType;
+    private String[] discreteValues;
     //Another variable for type of metric to use
 
     public FeatureLayout(String name, FeatureType featureType) {
@@ -22,5 +23,13 @@ public class FeatureLayout {
 
     public FeatureType getFeatureType() {
         return featureType;
+    }
+    
+    public void setDiscreteValues(String str[]){
+    	discreteValues = str;
+    }
+    
+    public String[] getDiscreteValues(){
+    	return discreteValues;
     }
 }
