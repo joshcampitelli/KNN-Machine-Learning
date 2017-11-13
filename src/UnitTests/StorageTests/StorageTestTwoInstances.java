@@ -10,20 +10,25 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
-public class StorageTestOneInstance {
+public class StorageTestTwoInstances {
     private Storage storage;
-    private ArrayList<GenericFeature> instance;
+    private ArrayList<GenericFeature> instance1;
+    private ArrayList<GenericFeature> instance2;
 
     @Before
     public void setUp() {
         storage = new Storage();
-        instance = new ArrayList<>();
-        instance.add(new IntegerFeature("",1));
+        instance1 = new ArrayList<>();
+        instance2 = new ArrayList<>();
+
+        instance1.add(new IntegerFeature("",1));
+        instance2.add(new IntegerFeature("",2));
     }
 
     @Test
     public void testSize() {
-        storage.insert("", instance);
+        storage.insert("", instance1);
+        storage.insert("", instance2);
         assertEquals("Size should be 1.", 1, storage.getSize());
     }
 }

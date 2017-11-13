@@ -29,4 +29,8 @@ public class IntegerFeature implements GenericFeature {
 	 * @author Ethan Morrill
 	 */
 	public String getName() { return name; }
+
+	public String toString() {
+		return name + " (Integer): Value = " + value;
+	}
 }
