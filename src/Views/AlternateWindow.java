@@ -66,6 +66,8 @@ public class AlternateWindow extends JFrame {
 
         addListeners();
         setVisible(true);
+        //Might Work Not Tested
+        featureController.initialize(listModel);
     }
 
     private void addListeners() {
