@@ -75,5 +75,9 @@ public class MainWindow extends JFrame{
 		addMenuItem.setEnabled(val);
 		editMenuItem.setEnabled(val);
 	}
+
+	public static void main(String[] args) {
+		MainWindow mainWindow = new MainWindow();
+	}
 	
 }
