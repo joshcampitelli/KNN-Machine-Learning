@@ -14,4 +14,5 @@ public interface GenericMetric {
 	 */
 	public HashMap<String, Integer> getDistance(GenericFeature feature);
 
+	public String getName();
 }
