@@ -16,7 +16,7 @@ public class EnumFeature implements GenericFeature {
 		this.value = value;
 	}
 
-	/* See GenericMetrics.getValue() for full java doc
+	/* See GenericFeature.getValue() for full java doc
 	 * This function returns the enum of the metric for viewing
 	 * 
 	 * @author Logan MacGillivray
@@ -25,7 +25,7 @@ public class EnumFeature implements GenericFeature {
 		return value;
 	}
 
-	/* See GenericMetrics.getName() for full java doc
+	/* See GenericFeature.getName() for full java doc
 	 * This function returns the name of the feature for viewing
 	 *
 	 * @author Ethan Morrill

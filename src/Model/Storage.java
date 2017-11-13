@@ -106,6 +106,12 @@ public class Storage {
 		features.remove(index);
 	}
 
+	/**
+	 * Returns hashmap of keys and features for a given featureName
+	 * @param featureName identifies the name f the feature of interest
+	 * @return Hashmap of {key, GenercFeature} for the provided featureName
+	 * @author Ethan Morrill
+	 */
 	public HashMap<String, GenericFeature> getFeature(String featureName){
 
 
