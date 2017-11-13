@@ -2,6 +2,7 @@ package Controller;
 import java.util.ArrayList;
 import Views.AlternateWindow;
 import Model.MachineLearning;
+import Views.MainWindow;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,16 +14,24 @@ import javax.swing.*;
 
 public class MainWindowController implements ActionListener, ListSelectionListener {
 	private ArrayList<MachineLearning> machineLearningArray = new ArrayList<MachineLearning>();
+	private MainWindow frame;
+	
+	public MainWindowController(MainWindow frame){
+		this.frame = frame;
+	}
 
 	public void valueChanged(ListSelectionEvent e) {
-		// TODO Auto-generated method stub
+		frame.enableAll();
 		
 	}
 	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("Edit")){
 			//System.out.println("Hello World");
-			new AlternateWindow(new FeatureController(machineLearningArray.get(machineLearningArray.size())));
+			new AlternateWindow(new FeatureController(machineLearningArray.get(frame.getJList().getSelectedIndex()),"edit"));
+		} else if(e.getActionCommand().equals("Add")){
+			//System.out.println("Hello World");
+			new AlternateWindow(new FeatureController(machineLearningArray.get(frame.getJList().getSelectedIndex()),"add"));
 		} else if(e.getActionCommand().equals("Add Problem")){
 			// Create the createPanel properties
 			JTextField nameField = new JTextField(5);
@@ -41,7 +50,7 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 		    JOptionPane.showOptionDialog(null, createPanel, "Problem Creation", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, optionForPanel, optionForPanel[0]);
 		    
 		    // If the propertyField equals a number
-		    if(propertyField.getText().matches("[-+]?\\d*\\.?\\d+") || nameField.equals("")){
+		    if((propertyField.getText().matches("[-+]?\\d*\\.?\\d+")) && (!nameField.equals(""))){
 		    	// Set up addPropsPanel properties
 			    optionForPanel[0] = "Enter";
 			    JPanel addPropsPanel = new JPanel();
@@ -66,32 +75,37 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 			    		"Please Features and Select a Metric", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE, 
 			    		null, new String[] {"Enter"}, "default");
 			    
-			    MachineLearning tmp = new MachineLearning(nameField.getText());
+			    machineLearningArray.add(new MachineLearning(nameField.getText()));
+			    
+			   // MachineLearning newML = new MachineLearning(nameField.getText());
+			    int unknownFeature = 1;
 			    for(int j = 0; j < Integer.parseInt(propertyField.getText()); j++){
 			    	/*add metrics to tmp*/
-			    	if(comboBoxes[j].equals("CartesianEuclidMetric")){
-			    		//tmp.addFeatureLayout(textFields[j],"CartesianFeature");
-			    	} else if(comboBoxes[j].equals("DiscreteBinaryMetric")){
-			    		//tmp.addFeatureLayout(textFields[j],"EnumFeature");
-			    	} else if(comboBoxes[j].equals("IntegerAbsoluteMetric")){
-			    		//tmp.addFeatureLayout(textFields[j],"IntegerFeature");
+			    	if(textFields[j].getText().equals("")){
+			    		textFields[j].setText("UnkownFeature " + unknownFeature);
+			    		unknownFeature++;
+			    	}
+			    	
+			    	if(comboBoxes[j].getSelectedItem().equals("CartesianEuclideanMetric")){
+			    		machineLearningArray.get(machineLearningArray.size() - 1).addFeatureLayout(textFields[j].getText(),"CartesianFeature");
+			    	} else if(comboBoxes[j].getSelectedItem().equals("DiscreteBinaryMetric")){
+			    		machineLearningArray.get(machineLearningArray.size() - 1).addFeatureLayout(textFields[j].getText(),"EnumFeature");
+			    	} else if(comboBoxes[j].getSelectedItem().equals("IntegerAbsoluteMetric")){
+			    		machineLearningArray.get(machineLearningArray.size() - 1).addFeatureLayout(textFields[j].getText(),"IntegerFeature");
 			    	}
 			    }
 			    
-			    new AlternateWindow(new FeatureController(tmp));
+			    new AlternateWindow(new FeatureController(machineLearningArray.get(machineLearningArray.size() - 1)));
+			    frame.newScreen();
 			    
 		    } else {
-		    	 optionForPanel[0] = "Okay";
+		    	optionForPanel[0] = "Okay";
 		    	JPanel addPropsPanel = new JPanel();
 		    	addPropsPanel.add(new JLabel("Please enter a name and value."));
 		    	JOptionPane.showOptionDialog(null, addPropsPanel, 
-		    			"Error!", JOptionPane.NO_OPTION, JOptionPane.ERROR_MESSAGE, 
-		    			null, new String[] {"Okay"}, "default");
-			    
-		    }
-		    
-		    
-		    //System.out.println(nameField.getText());
+		    		"Error!", JOptionPane.NO_OPTION, JOptionPane.ERROR_MESSAGE, 
+		    		null, new String[] {"Okay"}, "default");
+			}
 		}
 	}
 	
@@ -101,6 +115,14 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 			tmp.addElement(machineLearningArray.get(i).getProblem());
 		}
 		return tmp;
+	}
+	
+	public String[] getProblemsArray(){
+		String[] arg = new String[machineLearningArray.size()];
+		for(int i = 0; i < arg.length; i++){
+			 arg[i] = machineLearningArray.get(i).getProblem();
+		}
+		return arg;
 	}
 
 }
