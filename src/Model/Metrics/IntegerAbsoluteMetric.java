@@ -45,4 +45,8 @@ public class IntegerAbsoluteMetric implements GenericMetric {
         }
         return null;
     }
+    
+    public String getName(){
+    	return featureName;
+    }
 }

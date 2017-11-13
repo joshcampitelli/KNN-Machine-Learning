@@ -2,6 +2,7 @@ package Controller;
 import java.util.ArrayList;
 import Views.AlternateWindow;
 import Model.MachineLearning;
+import Model.Metrics.*;
 import Views.MainWindow;
 
 import java.awt.event.ActionEvent;
@@ -86,12 +87,10 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 						textFields[j].setText("UnkownFeature " + unknownFeature);
 						unknownFeature++;
 					}
-
+					MachineLearning tmp = machineLearningArray.get(machineLearningArray.size() - 1);
 					if(comboBoxes[j].getSelectedItem().equals("CartesianEuclideanMetric")){
-						machineLearningArray.get(machineLearningArray.size() - 1).addFeatureLayout(textFields[j].getText(),"CartesianFeature");
+						tmp.addFeatureLayout(new CartesianEuclideanMetric(textFields[j].getText(), tmp.getStorage()));
 					} else if(comboBoxes[j].getSelectedItem().equals("DiscreteBinaryMetric")){
-						machineLearningArray.get(machineLearningArray.size() - 1).addFeatureLayout(textFields[j].getText(),"DiscreteFeature");
-						
 						// Create a JOptionPane to get the number of Discrete Values for this 
 						boolean haveANumber = false;
 						JTextField numOfDiscrete = new JTextField(5);
@@ -127,9 +126,10 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 						for(int k = 0; k < Integer.parseInt(numOfDiscrete.getText()); k++){
 							discreteVals[k] = discreteField[k].getText();
 						}
-						machineLearningArray.get(machineLearningArray.size() - 1).getFeatureLayout(j).setDiscreteValues(discreteVals);
+						tmp.addFeatureLayout(new DiscreteBinaryMetric(textFields[j].getText(), tmp.getStorage(), discreteVals));
+						//tmp.getFeatureLayout(j).setDiscreteValues(discreteVals);
 					} else if(comboBoxes[j].getSelectedItem().equals("IntegerAbsoluteMetric")){
-						machineLearningArray.get(machineLearningArray.size() - 1).addFeatureLayout(textFields[j].getText(),"IntegerFeauture");
+						tmp.addFeatureLayout(new IntegerAbsoluteMetric(textFields[j].getText(), tmp.getStorage()));
 					}
 				}
 				frame.newScreen();

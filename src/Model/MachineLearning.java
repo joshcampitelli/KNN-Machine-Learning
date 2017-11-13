@@ -153,8 +153,8 @@ public class MachineLearning {
 		return storage;
 	}
 	
-	public void addFeatureLayout(String name, String type){
-		myFeatures.add(new FeatureLayout(name,FeatureLayout.FeatureType.valueOf(type)));
+	public void addFeatureLayout(GenericMetric metric){
+		myFeatures.add(new FeatureLayout(metric));
 	}
 
 	

@@ -49,6 +49,10 @@ public class CartesianEuclideanMetric implements GenericMetric {
         }
         return null;
     }
+    
+    public String getName(){
+    	return featureName;
+    }
 
 
 }

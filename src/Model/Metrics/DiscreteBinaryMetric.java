@@ -21,7 +21,7 @@ public class DiscreteBinaryMetric implements GenericMetric {
 
         featureName = name;
         this.storage = storage;
-        HashMap<String, Integer> permittedValues = new HashMap<>(); //DO i need this?
+        permittedValues = new HashMap<>(); 
         int i = 0;
         while(i< permitted.length ){
             permittedValues.put(permitted[i], i);
@@ -62,4 +62,12 @@ public class DiscreteBinaryMetric implements GenericMetric {
         return null;
     }
 
+    public String getName(){
+    	return featureName;
+    }
+    
+    public String[] getPermited(){
+    	return (String[])permittedValues.keySet().toArray();
+    	
+    }
 }
