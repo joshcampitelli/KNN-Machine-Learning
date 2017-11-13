@@ -165,6 +165,9 @@ public class MachineLearning {
 		return storage;
 	}
 	
+	public void addFeatureLayout(GenericMetric metric){
+		myFeatures.add(new FeatureLayout(metric));
+  }
 
 	/*
 	 * Need to add functions for display, edit, delete
@@ -174,11 +177,6 @@ public class MachineLearning {
 	 * 
 	 */
 
-	public void addFeatureLayout(String name, String type){
-		myFeatures.add(new FeatureLayout(name,FeatureLayout.FeatureType.valueOf(type)));
-	}
-
-	
 	public FeatureLayout getFeatureLayout(int i){
 		return myFeatures.get(i);
   }
