@@ -13,7 +13,6 @@ public class MachineLearning {
 	private String problem;
 	private List<FeatureLayout> featureLayout;
 	private Storage storage;
-	private Map<String, Integer> valuesMap;
 	private int totalError, numOfFeatures;
 
 	/*
@@ -42,8 +41,12 @@ public class MachineLearning {
 	 * @param key
 	 * @param metrics
 	 */
-	public void Learn(String key, GenericMetric... metrics) {
-		storage.insert(key, metrics);
+	/*
+	 * Change:	Learn->learn
+	 * 			public void learn(String key, some new way to store stuff);
+	 */
+	public void learn(String key, ArrayList<GenericFeature> features) {
+		storage.insert(key, features);
 	}
 
 	/**
@@ -57,33 +60,49 @@ public class MachineLearning {
 	 * @param givenKey
 	 * @param metrics
 	 * @return	returns the predicted value for a problem with an unknown value. Return type is of int.
+	 */	
+	/*
+	 * Predict is given k (for kNN), givenKey (seems useless, can be removed), needs to be given
+	 * the either arrayList or set of information that makes up a row.
 	 */
-	public int Predict(int k, String givenKey, GenericMetric... metrics) {
+	public int predict(int k, String givenKey, ArrayList<GenericFeature> features) {
 		int predictedValue = 0, totalDistance = 0, tempPredictedValue = 0;
 		int i = 0, j = 0; //loop control variables
+		Map<String, Integer> calculatedDistances = new HashMap<>();
 
-		HashMap<String, ArrayList<GenericMetric>> learnedInfo; //HashMap of previously learned information
-
-		learnedInfo = storage.getLearned();
+//		HashMap<String, ArrayList<GenericFeature>> learnedInfo; //HashMap of previously learned information
+//
+//		learnedInfo = storage.getLearned();
+//		
+//		/*Loops through each entry in HashMap 'learnedInfo', saving the key and values.*/
+//		
+//		for (Map.Entry<String, ArrayList<GenericMetric>> entry : learnedInfo.entrySet()) {
+//			String existingKey = entry.getKey();
+//			ArrayList<GenericMetric> value = entry.getValue();
+//			/*
+//			 * Then loops through each value in the array of values, which are all different
+//			 * types of GenericMetric
+//			 */
+//			for (j = 0; j < value.size() - 1; j++) {
+//				//Finally summing up the distances of each metric compared to the pre-existing learned metrics
+//				totalDistance += value.get(j).getDistance(metrics[i]);
+//				i++;
+//			}
+//			//Storing the difference distances, to be used later in finding the smallest distances
+//			valuesMap.put(existingKey, totalDistance);
+//			totalDistance = 0;
+//			i = 0;
+//		}
 		
-		/*Loops through each entry in HashMap 'learnedInfo', saving the key and values.*/
-		for (Map.Entry<String, ArrayList<GenericMetric>> entry : learnedInfo.entrySet()) {
-			String existingKey = entry.getKey();
-			ArrayList<GenericMetric> value = entry.getValue();
-			/*
-			 * Then loops through each value in the array of values, which are all different
-			 * types of GenericMetric
-			 */
-			for (j = 0; j < value.size() - 1; j++) {
-				//Finally summing up the distances of each metric compared to the pre-existing learned metrics
-				totalDistance += value.get(j).getDistance(metrics[i]);
-				i++;
-			}
-			//Storing the difference distances, to be used later in finding the smallest distances
-			valuesMap.put(existingKey, totalDistance);
-			totalDistance = 0;
-			i = 0;
-		}
+		/*
+		 * Take ArrayList<GenericFeature> features, loop through each feature, call getDistance
+		 * on each one, return is a HashMap<String, Integer>. Have a master 
+		 * HashMap<String: Key, Integer: Distance> which we then sum up up on a key by key basis.
+		 * Finally, we take that master HashMap and sort it, and treat it the same way as before
+		 * (Shown below) 
+		 */
+		
+		
 		
 		/*
 		 * Looping through the HashMap of distances to find the smallest distance
@@ -118,7 +137,7 @@ public class MachineLearning {
 	 * @Author Ryan Ribeiro, Ethan Morrill
 	 * @return returns the distance between the expected value and the predicted value
 	 */
-	public int PredictError(int k, String key,  GenericMetric... metrics) {
+	public int predictError(int k, String key,  GenericMetric... metrics) {
 		//Value is the last metric in the array of metrics
 		int expectedValue = (int) metrics[metrics.length - 1].getValue();
 		int predictedValue = this.Predict(k, key, metrics);
