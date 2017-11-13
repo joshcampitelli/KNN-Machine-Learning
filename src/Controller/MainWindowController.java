@@ -2,6 +2,7 @@ package Controller;
 import java.util.ArrayList;
 import Views.AlternateWindow;
 import Model.MachineLearning;
+import Model.Features.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,7 +42,7 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 		    JOptionPane.showOptionDialog(null, createPanel, "Problem Creation", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, optionForPanel, optionForPanel[0]);
 		    
 		    // If the propertyField equals a number
-		    if(propertyField.getText().matches("[-+]?\\d*\\.?\\d+") || nameField.equals("")){
+		    if((propertyField.getText().matches("[-+]?\\d*\\.?\\d+")) && (!nameField.equals(""))){
 		    	// Set up addPropsPanel properties
 			    optionForPanel[0] = "Enter";
 			    JPanel addPropsPanel = new JPanel();
@@ -66,22 +67,28 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 			    		"Please Features and Select a Metric", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE, 
 			    		null, new String[] {"Enter"}, "default");
 			    
-			    MachineLearning tmp = new MachineLearning(nameField.getText());
+			    MachineLearning newML = new MachineLearning(nameField.getText());
+			    int unknownFeature = 1;
 			    for(int j = 0; j < Integer.parseInt(propertyField.getText()); j++){
 			    	/*add metrics to tmp*/
+			    	if(textFields[j].getText().equals("")){
+			    		textFields[j].setText("UnkownFeature " + unknownFeature);
+			    		unknownFeature++;
+			    	}
+			    	
 			    	if(comboBoxes[j].equals("CartesianEuclidMetric")){
-			    		//tmp.addFeatureLayout(textFields[j],"CartesianFeature");
+			    		//newML.addFeatureLayout(textFields[j],"CartesianFeature");
 			    	} else if(comboBoxes[j].equals("DiscreteBinaryMetric")){
-			    		//tmp.addFeatureLayout(textFields[j],"EnumFeature");
+			    		//newML.addFeatureLayout(textFields[j],"EnumFeature");
 			    	} else if(comboBoxes[j].equals("IntegerAbsoluteMetric")){
-			    		//tmp.addFeatureLayout(textFields[j],"IntegerFeature");
+			    		//newML.addFeatureLayout(textFields[j],"IntegerFeature");
 			    	}
 			    }
 			    
-			    new AlternateWindow(new FeatureController(tmp));
+			    new AlternateWindow(new FeatureController(newML));
 			    
 		    } else {
-		    	 optionForPanel[0] = "Okay";
+		    	optionForPanel[0] = "Okay";
 		    	JPanel addPropsPanel = new JPanel();
 		    	addPropsPanel.add(new JLabel("Please enter a name and value."));
 		    	JOptionPane.showOptionDialog(null, addPropsPanel, 
