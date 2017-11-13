@@ -1,5 +1,6 @@
 package Model;
 
+import Model.Features.GenericFeature;
 import Model.Metrics.*;
 import Model.FeatureLayout;
 import java.util.*;
@@ -14,17 +15,15 @@ public class MachineLearning {
 	private String problem;
 	private List<FeatureLayout> featureLayout;
 	private Storage storage;
-	private int totalError, numOfFeatures;
+	private int totalError;
 	private Map<String, Integer> distancesSum;
 
 	public MachineLearning(String problem, ArrayList<FeatureLayout> featureLayout) {
-		this.problem = problem; 
-		storage = new Storage();
-		this.featureLayout = new ArrayList<>();
+		this.problem = problem;
 		this.featureLayout = featureLayout;
-		this.totalError = 0;
-		this.numOfFeatures = featureLayout.size();
+		storage = new Storage();
 		distancesSum = new HashMap<>();
+		totalError = 0;
 	}
 
 	/**
@@ -33,7 +32,7 @@ public class MachineLearning {
 	 * @author Ryan Ribeiro
 	 *
 	 * @param key
-	 * @param metrics
+	 * @param features
 	 */
 	/*
 	 * Change:	Learn->learn
@@ -51,18 +50,16 @@ public class MachineLearning {
 	 * @author Ryan Ribeiro
 	 *
 	 * @param k
-	 * @param givenKey
-	 * @param metrics
+	 * @param features
 	 * @return	returns the predicted value for a problem with an unknown value. Return type is of int.
 	 */	
 	/*
 	 * Predict is given k (for kNN), givenKey (seems useless, can be removed), needs to be given
 	 * the either arrayList or set of information that makes up a row.
 	 */
-	public int predict(int k, String givenKey, ArrayList<GenericFeature> features) {
-		int predictedValue = 0, totalDistance = 0, tempPredictedValue = 0;
-		int i = 0, j = 0; //loop control variables
-		Map<String, Integer> calculatedDistances = new HashMap<>();
+	public int predict(int k, ArrayList<GenericFeature> features) {
+		int predictedValue, tempPredictedValue = 0;
+		int j; //loop control variable
 		
 		/*
 		 * Take ArrayList<GenericFeature> features, loop through each feature, call getDistance
@@ -72,7 +69,7 @@ public class MachineLearning {
 		 * (Shown below) 
 		 */
 		
-		for (ArrayList<GenericFeature> feature : features) {			
+		for (GenericFeature feature : features) {
 			Map<String, Integer> distances = new HashMap<>();
 			String name = feature.getName();
 			for (FeatureLayout featLay : featureLayout) {
@@ -80,7 +77,7 @@ public class MachineLearning {
 					//Do nothing
 				} else {
 					if (featLay.getName().equals(name))
-						distances = featLay.getFeatureType().getDistance(feature);
+						distances = featLay.getMetric().getDistance(feature);
 					
 					for (String key : distances.keySet()) {
 						if (distancesSum.containsKey(key)) {
@@ -100,7 +97,7 @@ public class MachineLearning {
 					minimumDistance = entry;
 				}
 			}
-			tempPredictedValue += (int)distancesSum.get(minimumDistance.getKey());
+			tempPredictedValue += distancesSum.get(minimumDistance.getKey());
 			distancesSum.remove(minimumDistance.getKey());
 		}
 		//predictedValue is based on kNN, so divide by k to get average value
@@ -116,13 +113,13 @@ public class MachineLearning {
 	 *
 	 * @param k
 	 * @param key
-	 * @param metrics
+	 * @param features
 	 * @Author Ryan Ribeiro, Ethan Morrill
 	 * @return returns the distance between the expected value and the predicted value
 	 */
 	public int predictError(int k, String key,  ArrayList<GenericFeature> features) {
 		//Value is the last metric in the array of metrics
-		int expectedValue;
+		int expectedValue = 0;
 		
 		for (GenericFeature genFeat : features) {
 			if (genFeat.getName() == "Price")
@@ -130,7 +127,7 @@ public class MachineLearning {
 														   //so it will be safe to cast it to int			
 		}
 			
-		int predictedValue = this.predict(k, key, features);
+		int predictedValue = this.predict(k, features);
 		int error = Math.abs(predictedValue-expectedValue);
 		addError(error);
 		return error;
@@ -174,17 +171,16 @@ public class MachineLearning {
 	 * 
 	 */
 
-	public void addFeatureLayout(String name, String type){
-		myFeatures.add(new FeatureLayout(name,FeatureLayout.FeatureType.valueOf(type)));
+	public void addFeatureLayout(String name, String type, GenericMetric metric){
+		featureLayout.add(new FeatureLayout(name,FeatureLayout.FeatureType.valueOf(type), metric));
 	}
 
 	
 	public FeatureLayout getFeatureLayout(int i){
-		return myFeatures.get(i);
+		return featureLayout.get(i);
   }
 
-	public ArrayList<FeatureLayout> getFeatureLayout() {
-		return myFeatures;
-
+	public List<FeatureLayout> getFeatureLayout() {
+		return featureLayout;
 	}
 }
