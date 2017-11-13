@@ -14,7 +14,7 @@ public class IntegerFeature implements GenericFeature {
 		this.name = name;
 	}
 
-	/* See GenericMetrics.getValue() for full java doc
+	/* See GenericFeature.getValue() for full java doc
 	 * This function returns a positive integer
 	 * 
 	 * @author Logan MacGillivray
@@ -23,5 +23,10 @@ public class IntegerFeature implements GenericFeature {
 		return value;
 	}
 
+	/* See GenericFeature.getName() for full java doc
+	 * This function returns the name of the feature for viewing
+	 *
+	 * @author Ethan Morrill
+	 */
 	public String getName() { return name; }
 }

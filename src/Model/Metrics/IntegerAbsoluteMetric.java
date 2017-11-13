@@ -45,7 +45,12 @@ public class IntegerAbsoluteMetric implements GenericMetric {
         }
         return null;
     }
-    
+
+    /* See GenericMetric.getName() for full java doc
+	 * This function returns the feature name that the metric is afiliated with for viewing
+	 *
+	 * @author Logan Macgllvray
+	 */
     public String getName(){
     	return featureName;
     }
