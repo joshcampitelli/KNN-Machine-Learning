@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.FeatureLayout;
 import Model.MachineLearning;
 
 import Model.Features.GenericFeature;
@@ -16,26 +17,56 @@ public class FeatureController {
     private String key; //Problem Key in HashMap
     private MachineLearning machineLearning;
     private Storage storage; //HashMap Reference
-    //todo: only update gui for now. Once the user clicks save/learn/updateinstance (depending on construct param)
-    //todo: is when you update storage and dispose the frame.
+    private State state; //Indicates edit or add
+
+    private enum State {
+        editProblem,
+        addProblem
+    }
+
     /**
      * todo: may need another parameter specifying the case in which the window is being opened (edit/addnew)
      * todo: which will then enable/disable MenuItems accordingly.
      * @param machineLearning Reference to Model
      */
-    public FeatureController(MachineLearning machineLearning) {
+    public FeatureController(MachineLearning machineLearning, String state) {
         key = machineLearning.getProblem();
         this.machineLearning = machineLearning;
         storage = machineLearning.getStorage();
+        if (state.toLowerCase().equals("add")) {
+            this.state = State.addProblem;
+        } else {
+            this.state = State.editProblem;
+        }
+    }
+
+    public void initialize(DefaultListModel<GenericFeature> listModel) {
+        if (state == State.addProblem) {
+            instantiateFeatures(listModel);
+        }
     }
 
     /**
-     * Method will be called by the AlternateWindow Class when constructed, this method will
-     * get all the user input for the features supplied by MachineLearning. Will loop through
-     * all the supplied features opening their respective JOptionPanes (instanceof).
+     * instantiateFeatures method called upon constructing the AlternateWindow it's purpose is to
+     * get user input for 'problems' to be learned with MachineLearning. As the user enters each
+     * feature they are added to the DefaultListModel, upon completion they're 'learned' by
+     * MachineLearning
+     * @param listModel gui list to display features.
      */
-    public void instantiateFeatures() {
-
+    private void instantiateFeatures(DefaultListModel<GenericFeature> listModel) {
+        GenericFeature feature = null;
+        for (FeatureLayout featureLayout : machineLearning.getFeatureLayouts()) {
+            if (featureLayout.getFeatureType() == FeatureLayout.FeatureType.CartesianFeature) {
+                feature = cartesianFeatureWindow();
+            } else if (featureLayout.getFeatureType() == FeatureLayout.FeatureType.IntegerFeauture) {
+                feature = integerFeatureWindow();
+            } else if (featureLayout.getFeatureType() == FeatureLayout.FeatureType.DiscreteFeature) {
+                feature = enumFeatureWindow();
+            }
+            if (feature != null) {
+                listModel.addElement(feature);
+            }
+        }
     }
 
     /**
