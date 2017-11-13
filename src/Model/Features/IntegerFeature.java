@@ -1,7 +1,5 @@
 package Model.Features;
 
-import Model.Metrics.GenericMetric;
-
 public class IntegerFeature implements GenericFeature {
 	private int value;
 	private String name;
