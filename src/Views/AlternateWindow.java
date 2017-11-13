@@ -1,32 +1,34 @@
 package Views;
 
-import Controller.MetricController;
-import Model.Metrics.GenericMetric;
+import Controller.FeatureController;
+import Model.Features.GenericFeature;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class AlternateWindow extends JFrame {
-    private MetricController metricController;
+    private FeatureController featureController;
 
     /*GUI Menu Attributes*/
     private JMenuBar menuBar = new JMenuBar();
-    private JMenu fileMI = new JMenu("File");
-    private JMenuItem exitItem = new JMenuItem("Exit");
+    private JMenu machineLearnMenu = new JMenu("Machine Learning");
+    private JMenuItem learnItem = new JMenu("Learn Instance");
+    private JMenuItem updateItem = new JMenu("Update Instance");
+    private JMenuItem cancelItem = new JMenuItem("Cancel");
 
-    private JMenu metricsMI = new JMenu("Metrics");
+    private JMenu metricsMenu = new JMenu("Metrics");
     private JMenuItem addItem = new JMenuItem("Add Metric");
     private JMenuItem editItem = new JMenuItem("Edit Metric");
     private JMenuItem removeItem = new JMenuItem("Remove Metric");
 
     /*GUI List of Metrics*/
-    private JList<GenericMetric> list;
-    private DefaultListModel<GenericMetric> listModel;
+    private JList<GenericFeature> list;
+    private DefaultListModel<GenericFeature> listModel;
     private JScrollPane scrollPane;
 
-    public AlternateWindow(MetricController metricController) {
+    public AlternateWindow(FeatureController featureController) {
         super("Problem Aspects");
-        this.metricController = metricController;
+        this.featureController = featureController;
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -35,13 +37,22 @@ public class AlternateWindow extends JFrame {
 
         setLayout(new BorderLayout(10, 10));
 
-        fileMI.add(exitItem);
-        metricsMI.add(addItem);
-        metricsMI.add(editItem);
-        metricsMI.add(removeItem);
+        machineLearnMenu.add(learnItem);
+        machineLearnMenu.add(updateItem);
+        machineLearnMenu.add(cancelItem);
 
-        menuBar.add(fileMI);
-        menuBar.add(metricsMI);
+        metricsMenu.add(addItem);
+        metricsMenu.add(editItem);
+        metricsMenu.add(removeItem);
+
+        /*Disable until user adds feature*/
+        learnItem.setEnabled(false);
+        updateItem.setEnabled(false);
+        editItem.setEnabled(false);
+        removeItem.setEnabled(false);
+
+        menuBar.add(machineLearnMenu);
+        menuBar.add(metricsMenu);
         setJMenuBar(menuBar);
 
         listModel = new DefaultListModel<>();
@@ -55,13 +66,45 @@ public class AlternateWindow extends JFrame {
 
         addListeners();
         setVisible(true);
+
+        if (featureController.getState() == FeatureController.State.addProblem) {
+            learnItem.setEnabled(true);
+            editItem.setEnabled(true);
+            removeItem.setEnabled(true);
+        } else {
+            updateItem.setEnabled(true);
+            editItem.setEnabled(true);
+            removeItem.setEnabled(true);
+        }
+
+        //Might Work Not Tested
+        featureController.initialize(listModel);
     }
 
     private void addListeners() {
         /*Action Listener for MenuItems*/
-        exitItem.addActionListener(event -> this.dispose());
-        addItem.addActionListener(event -> metricController.addMetric(listModel));
-        editItem.addActionListener(event -> metricController.editMetric(list, listModel));
-        removeItem.addActionListener(event -> metricController.removeMetric(list, listModel));
+        learnItem.addActionListener(event -> featureController.learnInstance(listModel));
+        updateItem.addActionListener(event -> featureController.updateInstance(listModel));
+        cancelItem.addActionListener(event -> this.dispose());
+        addItem.addActionListener(event -> {
+            featureController.addFeature(listModel);
+            if (listModel.size() > 0) {
+                learnItem.setEnabled(true);
+                updateItem.setEnabled(true);
+                editItem.setEnabled(true);
+                removeItem.setEnabled(true);
+            }
+        });
+
+        editItem.addActionListener(event -> featureController.editFeature(list, listModel));
+        removeItem.addActionListener(event -> {
+            featureController.removeFeature(list, listModel);
+            if (listModel.size() <= 0) {
+                learnItem.setEnabled(false);
+                updateItem.setEnabled(false);
+                editItem.setEnabled(false);
+                removeItem.setEnabled(false);
+            }
+        });
     }
 }

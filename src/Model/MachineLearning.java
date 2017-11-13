@@ -1,6 +1,7 @@
 package Model;
 
 import Model.Metrics.*;
+import Model.FeatureLayout;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -164,6 +165,7 @@ public class MachineLearning {
 		return storage;
 	}
 	
+
 	/*
 	 * Need to add functions for display, edit, delete
 	 * display:
@@ -171,4 +173,18 @@ public class MachineLearning {
 	 * delete: picking a specific metric and deleting it
 	 * 
 	 */
+
+	public void addFeatureLayout(String name, String type){
+		myFeatures.add(new FeatureLayout(name,FeatureLayout.FeatureType.valueOf(type)));
+	}
+
+	
+	public FeatureLayout getFeatureLayout(int i){
+		return myFeatures.get(i);
+  }
+
+	public ArrayList<FeatureLayout> getFeatureLayout() {
+		return myFeatures;
+
+	}
 }
