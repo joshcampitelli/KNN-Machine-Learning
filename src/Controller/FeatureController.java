@@ -19,7 +19,7 @@ public class FeatureController {
     private Storage storage; //HashMap Reference
     private State state; //Indicates edit or add
 
-    private enum State {
+    public enum State {
         editProblem,
         addProblem
     }
@@ -46,6 +46,10 @@ public class FeatureController {
         }
     }
 
+    public State getState() {
+        return state;
+    }
+
     /**
      * instantiateFeatures method called upon constructing the AlternateWindow it's purpose is to
      * get user input for 'problems' to be learned with MachineLearning. As the user enters each
@@ -55,10 +59,10 @@ public class FeatureController {
      */
     private void instantiateFeatures(DefaultListModel<GenericFeature> listModel) {
         GenericFeature feature = null;
-        for (FeatureLayout featureLayout : machineLearning.getFeatureLayouts()) {
+        for (FeatureLayout featureLayout : machineLearning.getFeatureLayout()) {
             if (featureLayout.getFeatureType() == FeatureLayout.FeatureType.CartesianFeature) {
                 feature = cartesianFeatureWindow();
-            } else if (featureLayout.getFeatureType() == FeatureLayout.FeatureType.IntegerFeauture) {
+            } else if (featureLayout.getFeatureType() == FeatureLayout.FeatureType.IntegerFeature) {
                 feature = integerFeatureWindow();
             } else if (featureLayout.getFeatureType() == FeatureLayout.FeatureType.DiscreteFeature) {
                 feature = enumFeatureWindow();
