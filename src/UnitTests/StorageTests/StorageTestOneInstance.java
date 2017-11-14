@@ -18,12 +18,20 @@ public class StorageTestOneInstance {
     public void setUp() {
         storage = new Storage();
         instance = new ArrayList<>();
-        instance.add(new IntegerFeature("",1));
+        instance.add(new IntegerFeature("key",1));
     }
 
     @Test
     public void testSize() {
-        storage.insert("", instance);
+        storage.insert("key", instance);
         assertEquals("Size should be 1.", 1, storage.getSize());
+    }
+
+    @Test
+    public void testRemove() {
+        storage.insert("key", instance);
+        assertEquals("Size should be 1.", 1, storage.getSize());
+        storage.remove("key");
+        assertEquals("Size should be 0.", 0, storage.getSize());
     }
 }
