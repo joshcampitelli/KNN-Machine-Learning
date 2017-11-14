@@ -16,6 +16,7 @@ import javax.swing.event.ListSelectionListener;
 
 import Model.MachineLearning;
 import Model.Storage;
+import Model.Features.GenericFeature;
 import Model.Metrics.CartesianEuclideanMetric;
 import Model.Metrics.DiscreteBinaryMetric;
 import Model.Metrics.IntegerAbsoluteMetric;
@@ -34,21 +35,34 @@ public class ProblemWindowController implements ActionListener, ListSelectionLis
 			storageKeys.add(keys[i]);
 		}
 	}
-
+	
 	public void setFrame(ProblemWindow frame) {
 		this.frame = frame;
 	}
+	
+	public ProblemWindow getWindow(){
+		return frame;
+	}
+	
 	public void valueChanged(ListSelectionEvent e) {
 		frame.enableAll(true);
 	}
 	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("Edit")){
-			new AlternateWindow(new FeatureController(machineLearning,"edit"));
-		} else if(e.getActionCommand().equals("Add")){
-			new AlternateWindow(new FeatureController(machineLearning, "add"));
+			new AlternateWindow(new FeatureController(this,"edit","H1"));
+		} else if(e.getActionCommand().equals("Learn Example")){
+			new AlternateWindow(new FeatureController(this, "add",name()));
 		} else if(e.getActionCommand().equals("Remove")){
+			machineLearning.getStorage().remove(frame.getJList().getSelectedValue());
+			frame.newScreen();
+		} else if(e.getActionCommand().equals("Predict Price")){
+			JPanel addPropsPanel = new JPanel();
+			JTextField nameField = new JTextField();
+			addPropsPanel.add(new JLabel("Please enter the name of the instance.\n"));
+			addPropsPanel.add(nameField);
 			
+			new AlternateWindow(new FeatureController(this, "add",name()));
 		}
 	}
 	
@@ -72,4 +86,20 @@ public class ProblemWindowController implements ActionListener, ListSelectionLis
 		return machineLearning.getProblem();
 	}
 	
+	public MachineLearning getMachine() {
+		return machineLearning;
+	}
+	
+	private String name(){
+		String[] option = {"Enter"};
+		JPanel addPropsPanel = new JPanel();
+		JTextField nameField = new JTextField(5);
+		addPropsPanel.add(new JLabel("Please enter the name of the instance.\n"));
+		addPropsPanel.add(nameField);
+		
+		JOptionPane.showOptionDialog(null, addPropsPanel, "Problem Creation", 
+				JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, 
+				option, option[0]);
+		return nameField.getText();
+	}
 }

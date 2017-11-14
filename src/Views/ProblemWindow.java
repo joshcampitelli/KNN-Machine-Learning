@@ -19,6 +19,7 @@ public class ProblemWindow extends JFrame {
 	private JList<String> listOfObjects;
 	private JMenuItem editMenuItem;
 	private JMenuItem removeMenuItem;
+	private JMenuItem predictMenuItem;
 	
 	public ProblemWindow(ProblemWindowController control){
 		super(control.toString());
@@ -28,7 +29,7 @@ public class ProblemWindow extends JFrame {
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize(dimension.width/2, dimension.height/2);
 		setLocation(dimension.width/2 - this.getWidth()/2, dimension.height/2 - this.getHeight()/2);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout());
 		
 		createMenu();
@@ -50,7 +51,7 @@ public class ProblemWindow extends JFrame {
 		JMenu editMenu = new JMenu("Edit");
 		menuBar.add(editMenu);
 		
-		JMenuItem addMenuItem = new JMenuItem("Add");
+		JMenuItem addMenuItem = new JMenuItem("Learn Example");
 		addMenuItem.addActionListener(problemControl);
 		fileMenu.add(addMenuItem);
 		
@@ -63,6 +64,10 @@ public class ProblemWindow extends JFrame {
 		removeMenuItem.setEnabled(false);
 		removeMenuItem.addActionListener(problemControl);
 		editMenu.add(removeMenuItem);
+		predictMenuItem = new JMenuItem("Predict Price");
+		predictMenuItem.setEnabled(false);
+		predictMenuItem.addActionListener(problemControl);
+		editMenu.add(predictMenuItem);
 		
 		// Add the JMenuBar to the NORTH section of the BorderLayout
 		getContentPane().add(menuBar, BorderLayout.NORTH);
@@ -70,6 +75,7 @@ public class ProblemWindow extends JFrame {
 	
 	public void newScreen(){
 		listOfObjects.setListData(problemControl.getProblemsArray());
+		this.repaint();
 	}
 	
 	public JList<String> getJList(){

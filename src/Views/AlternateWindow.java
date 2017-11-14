@@ -14,10 +14,10 @@ public class AlternateWindow extends JFrame {
     private JMenu machineLearnMenu = new JMenu("Machine Learning");
     private JMenuItem learnItem = new JMenuItem("Learn Instance");
     private JMenuItem updateItem = new JMenuItem("Update Instance");
+
     private JMenuItem predictPriceItem = new JMenuItem("Predict Price");
     private JMenuItem predictErrorItem = new JMenuItem("Predict Error");
-
-
+  
     private JMenuItem cancelItem = new JMenuItem("Cancel");
 
     private JMenu metricsMenu = new JMenu("Metrics");
