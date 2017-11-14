@@ -89,6 +89,4 @@ public class MainWindow extends JFrame{
 	public void enableAll(boolean val){
 		editMenuItem.setEnabled(val);
 	}
-
-	
 }
