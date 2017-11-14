@@ -82,17 +82,17 @@ public class FeatureController {
         int index = list.getSelectedIndex();
         GenericFeature feature = listModel.getElementAt(index);
         if (feature instanceof CartesianFeature) {
-            feature = cartesianFeatureWindow("fix this");
+            feature = cartesianFeatureWindow(feature.getName());
         } else if (feature instanceof EnumFeature) {
-            feature = enumFeatureWindow("fix this");
+            feature = enumFeatureWindow(feature.getName());
         } else if (feature instanceof IntegerFeature) {
-            feature = integerFeatureWindow("fix this");
+            feature = integerFeatureWindow(feature.getName());
         }
 
         if (feature != null) {
             /*Replace the current feature with updated*/
             listModel.removeElementAt(index);
-            listModel.add(index, feature); //Replace in gui
+            listModel.add(index, feature);
         }
     }
 
@@ -109,7 +109,7 @@ public class FeatureController {
             "X Coordinate:", xField,
             "Y Coordinate:", yField,
         };
-        int option = JOptionPane.showConfirmDialog(null, message, name + "(Cartesian):", JOptionPane.OK_CANCEL_OPTION);
+        int option = JOptionPane.showConfirmDialog(null, message, name + " (Cartesian):", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
             return new CartesianFeature(name, Integer.valueOf(xField.getText()), Integer.valueOf(yField.getText()));
         }
@@ -124,9 +124,9 @@ public class FeatureController {
     private EnumFeature enumFeatureWindow(String name) {
         JTextField enumField = new JTextField();
         Object[] message = {
-            "Enumerated Value:", enumField,
+            "Discrete Value:", enumField,
         };
-        int option = JOptionPane.showConfirmDialog(null, message, name + "(Discrete):", JOptionPane.OK_CANCEL_OPTION);
+        int option = JOptionPane.showConfirmDialog(null, message, name + " (Discrete):", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
             return new EnumFeature(name, enumField.getText());
         }
@@ -143,7 +143,7 @@ public class FeatureController {
         Object[] message = {
             "Integer Value:", intField,
         };
-        int option = JOptionPane.showConfirmDialog(null, message, name + "(Integer):", JOptionPane.OK_CANCEL_OPTION);
+        int option = JOptionPane.showConfirmDialog(null, message, name + " (Integer):", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
             return new IntegerFeature(name, Integer.valueOf(intField.getText()));
         }
@@ -160,9 +160,18 @@ public class FeatureController {
         for (int i = 0; i < listModel.size(); i ++) {
             newInstance.add(listModel.get(i));
         }
-        System.out.println(key);
-        machineLearning.learn(key, newInstance);
-        control.getWindow().newScreen();
+
+        JTextField intField = new JTextField();
+        Object[] message = {
+                "Price:", intField,
+        };
+        int option = JOptionPane.showConfirmDialog(null, message, "Price of Instance", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            newInstance.add(new IntegerFeature("price", Integer.valueOf(intField.getText())));
+            machineLearning.learn(key, newInstance);
+            control.getWindow().newScreen();
+        }
+
     }
 
     /**
@@ -174,5 +183,53 @@ public class FeatureController {
         storage.remove(key);
         learnInstance(listModel);
         
+    }
+
+    public boolean priceExists() {
+        ArrayList<GenericFeature> features = machineLearning.getStorage().getLearned().get(key);
+        if (features != null) {
+            for (GenericFeature feature : machineLearning.getStorage().getLearned().get(key)) {
+                if (feature.getName().toLowerCase().equals("price")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void predictPrice(DefaultListModel<GenericFeature> listModel) {
+        int predictedValue = 0;
+        ArrayList<GenericFeature> newInstance = new ArrayList<>();
+        for (int i = 0; i < listModel.size(); i ++) {
+            newInstance.add(listModel.get(i));
+        }
+
+        JTextField intField = new JTextField();
+        Object[] message = {
+                "Value for K:", intField,
+        };
+        int option = JOptionPane.showConfirmDialog(null, message, "KNN Algorithm", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            predictedValue = machineLearning.predict(Integer.valueOf(intField.getText()), newInstance);
+            JOptionPane.showMessageDialog(null, "Predicted Value is: " + predictedValue);
+        }
+    }
+
+    public void predictError(DefaultListModel<GenericFeature> listModel) {
+        int predictError;
+        ArrayList<GenericFeature> newInstance = new ArrayList<>();
+        for (int i = 0; i < listModel.size(); i ++) {
+            newInstance.add(listModel.get(i));
+        }
+
+        JTextField intField = new JTextField();
+        Object[] message = {
+                "Value for K:", intField,
+        };
+        int option = JOptionPane.showConfirmDialog(null, message, "KNN Algorithm", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            predictError = machineLearning.predictError(Integer.valueOf(intField.getText()), newInstance);
+            JOptionPane.showMessageDialog(null, "Predicted Error is: " + predictError);
+        }
     }
 }
