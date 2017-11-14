@@ -6,6 +6,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * Tests the Storage when size = 0
+ * @author Josh Campitelli
+ */
 public class StorageTestNothingLearned {
     private Storage storage;
     @Before
