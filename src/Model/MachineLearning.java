@@ -112,12 +112,11 @@ public class MachineLearning {
 	 *
 	 *
 	 * @param k
-	 * @param key
 	 * @param features
 	 * @return returns the distance between the expected value and the predicted value
 	 * @Author Ryan Ribeiro, Ethan Morrill
 	 */
-	public int predictError(int k, String key,  ArrayList<GenericFeature> features) {
+	public int predictError(int k, ArrayList<GenericFeature> features) {
 		if (k > storage.getSize() || k < 0) {
 			//error
 		}

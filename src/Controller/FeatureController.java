@@ -158,7 +158,16 @@ public class FeatureController {
         for (int i = 0; i < listModel.size(); i ++) {
             newInstance.add(listModel.get(i));
         }
-        machineLearning.learn(key, newInstance);
+
+        JTextField intField = new JTextField();
+        Object[] message = {
+                "Price:", intField,
+        };
+        int option = JOptionPane.showConfirmDialog(null, message, "Price of Instance", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            newInstance.add(new IntegerFeature("price", Integer.valueOf(intField.getText())));
+            machineLearning.learn(key, newInstance);
+        }
     }
 
     /**
@@ -169,5 +178,53 @@ public class FeatureController {
     public void updateInstance(DefaultListModel<GenericFeature> listModel) {
         storage.remove(key);
         learnInstance(listModel);
+    }
+
+    public boolean priceExists() {
+        ArrayList<GenericFeature> features = machineLearning.getStorage().getLearned().get(key);
+        if (features != null) {
+            for (GenericFeature feature : machineLearning.getStorage().getLearned().get(key)) {
+                if (feature.getName().toLowerCase().equals("price")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void predictPrice(DefaultListModel<GenericFeature> listModel) {
+        int predictedValue = 0;
+        ArrayList<GenericFeature> newInstance = new ArrayList<>();
+        for (int i = 0; i < listModel.size(); i ++) {
+            newInstance.add(listModel.get(i));
+        }
+
+        JTextField intField = new JTextField();
+        Object[] message = {
+                "Value for K:", intField,
+        };
+        int option = JOptionPane.showConfirmDialog(null, message, "KNN Algorithm", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            predictedValue = machineLearning.predict(Integer.valueOf(intField.getText()), newInstance);
+            JOptionPane.showMessageDialog(null, "Predicted Value is: " + predictedValue);
+        }
+    }
+
+    public void predictError(DefaultListModel<GenericFeature> listModel) {
+        int predictError;
+        ArrayList<GenericFeature> newInstance = new ArrayList<>();
+        for (int i = 0; i < listModel.size(); i ++) {
+            newInstance.add(listModel.get(i));
+        }
+
+        JTextField intField = new JTextField();
+        Object[] message = {
+                "Value for K:", intField,
+        };
+        int option = JOptionPane.showConfirmDialog(null, message, "KNN Algorithm", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            predictError = machineLearning.predictError(Integer.valueOf(intField.getText()), newInstance);
+            JOptionPane.showMessageDialog(null, "Predicted Error is: " + predictError);
+        }
     }
 }
