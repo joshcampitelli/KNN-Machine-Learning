@@ -24,10 +24,6 @@ public class FeatureController {
         editProblem,
         addProblem
     }
-
-    /**
-     * @param machineLearning Reference to Model
-     */
     public FeatureController(ProblemWindowController pwc, String state, String key) {
         this.control = pwc;
     	this.machineLearning = pwc.getMachine();
@@ -43,6 +39,13 @@ public class FeatureController {
     public void initialize(DefaultListModel<GenericFeature> listModel) {
         if (state == State.addProblem) {
             instantiateFeatures(listModel);
+        } else {
+            ArrayList<GenericFeature> features = machineLearning.getStorage().getLearned().get(key);
+            if (features != null) {
+                for (GenericFeature feature : features) {
+                    listModel.addElement(feature);
+                }
+            }
         }
     }
 
