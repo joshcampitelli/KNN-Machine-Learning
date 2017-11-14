@@ -193,9 +193,6 @@ public class FeatureController {
     }
 
     public void predictPrice(DefaultListModel<GenericFeature> listModel) {
-        System.out.println("Predict Price");
-
-
         int predictedValue = 0;
         ArrayList<GenericFeature> newInstance = new ArrayList<>();
         for (int i = 0; i < listModel.size(); i ++) {
