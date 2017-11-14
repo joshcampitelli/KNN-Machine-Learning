@@ -16,6 +16,6 @@ public class DiscreteFeatureGetNameTest {
 
     @Test
     public void testSize() {
-        assertEquals("Size should be 'age'.", "age", intFeat.getName());
+        assertEquals("Name should be 'age'.", "age", intFeat.getName());
     }
 }

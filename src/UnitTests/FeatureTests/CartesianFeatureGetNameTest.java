@@ -15,6 +15,6 @@ public class CartesianFeatureGetNameTest {
 
     @Test
     public void testSize() {
-        assertEquals("Size should be 'coordinates.", "coordinates" , cartFeat.getName());
+        assertEquals("Name should be 'coordinates.", "coordinates" , cartFeat.getName());
     }
 }

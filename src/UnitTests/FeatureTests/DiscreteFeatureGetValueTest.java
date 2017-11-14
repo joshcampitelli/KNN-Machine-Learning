@@ -16,6 +16,6 @@ public class DiscreteFeatureGetValueTest {
 
     @Test
     public void testSize() {
-            assertEquals("Size should be 'old'.", "old", intFeat.getValue());
+            assertEquals("Value should be 'old'.", "old", intFeat.getValue());
         }
 }

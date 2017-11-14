@@ -16,6 +16,6 @@ public class IntegerFeatureGetValueTest {
 
     @Test
     public void testSize() {
-        assertEquals("Size should be 1000.", 1000, intFeat.getValue());
+        assertEquals("Value should be 1000.", 1000, intFeat.getValue());
     }
 }

@@ -16,6 +16,6 @@ public class IntegerFeatureGetNameTest {
 
     @Test
     public void testSize() {
-        assertEquals("Size should be 'price'.", "price", intFeat.getName());
+        assertEquals("Name should be 'price'.", "price", intFeat.getName());
     }
 }
