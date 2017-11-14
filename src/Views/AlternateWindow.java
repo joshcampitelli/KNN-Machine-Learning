@@ -87,6 +87,7 @@ public class AlternateWindow extends JFrame {
         /*Action Listener for MenuItems*/
         learnItem.addActionListener(event -> {
             featureController.learnInstance(listModel);
+            featureController.getPWC().getWindow().newScreen();
             this.dispose();
         });
 
