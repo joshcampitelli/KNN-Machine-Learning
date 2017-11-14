@@ -28,6 +28,10 @@ public class ProblemWindowController implements ActionListener, ListSelectionLis
 	private ProblemWindow frame;
 	private MachineLearning machineLearning;
 	
+	/** Constructor for ProblemWindowController
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	public ProblemWindowController(MachineLearning machine){
 		machineLearning = machine;
 		String[] keys = machine.getStorage().getLearned().keySet().toArray(new String[machine.getStorage().getLearned().size()]);
@@ -36,36 +40,54 @@ public class ProblemWindowController implements ActionListener, ListSelectionLis
 		}
 	}
 	
+	/** Sets the frame, used by ProblemWindow
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	public void setFrame(ProblemWindow frame) {
 		this.frame = frame;
 	}
 	
+	/** Returns the ProblemWindow this controller is assigned to
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	public ProblemWindow getWindow(){
 		return frame;
 	}
 	
+	/** Sets disabled options to enabled
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	public void valueChanged(ListSelectionEvent e) {
 		frame.enableAll(true);
 	}
 	
+	/** Performs various actions depending on which option is chosen
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("Edit")){
-			new AlternateWindow(new FeatureController(this,"edit","H1"));
+			new AlternateWindow(new FeatureController(this,"edit",frame.getJList().getSelectedValue()));
 		} else if(e.getActionCommand().equals("Learn Example")){
 			new AlternateWindow(new FeatureController(this, "add",name()));
 		} else if(e.getActionCommand().equals("Remove")){
 			machineLearning.getStorage().remove(frame.getJList().getSelectedValue());
 			frame.newScreen();
-		} else if(e.getActionCommand().equals("Predict Price")){
-			JPanel addPropsPanel = new JPanel();
-			JTextField nameField = new JTextField();
-			addPropsPanel.add(new JLabel("Please enter the name of the instance.\n"));
-			addPropsPanel.add(nameField);
-			
+		} else if(e.getActionCommand().equals("Predict Price")){			
 			new AlternateWindow(new FeatureController(this, "add",name()));
 		}
+		frame.newScreen();
 	}
 	
+	/** Returns all the keys for the problem
+	 * 
+	 * Error in this code, known issue for next release
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	public DefaultListModel<String> getProblems(){
 		DefaultListModel<String> tmp = new DefaultListModel<String>();
 		for(int i = 0; i < storageKeys.size(); i++){
@@ -74,22 +96,34 @@ public class ProblemWindowController implements ActionListener, ListSelectionLis
 		return tmp;  
 	}
 	
+	/** Returns a String[] of all the keys in storage
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	public String[] getProblemsArray(){
-		String[] arg = new String[storageKeys.size()];
-		for(int i = 0; i < arg.length; i++){
-			 arg[i] = storageKeys.get(i);
-		}
-		return arg;
+		return machineLearning.getStorage().getLearned().keySet().toArray(new String[machineLearning.getStorage().getLearned().size()]);
 	}
 	
+	/** Gets name of problem
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	public String toString(){
 		return machineLearning.getProblem();
 	}
 	
+	/** Used to pass the machine learning to other functions
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	public MachineLearning getMachine() {
 		return machineLearning;
 	}
 	
+	/** Gets the name for a new instance of the problem
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	private String name(){
 		String[] option = {"Enter"};
 		JPanel addPropsPanel = new JPanel();

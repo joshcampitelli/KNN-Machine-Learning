@@ -15,9 +15,12 @@ import Controller.MainWindowController;
 public class MainWindow extends JFrame{
 	private MainWindowController mainControl = new MainWindowController(this);
 	private JList<String> listOfProblems;
-	private JMenuItem editMenuItem = new JMenuItem("Edit");
-	private JMenuItem addMenuItem = new JMenuItem("Add");
+	private JMenuItem editMenuItem = new JMenuItem("View");
 	
+	/** Constructor
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	public MainWindow(){
 		super("Machine Learning");
 		
@@ -37,6 +40,10 @@ public class MainWindow extends JFrame{
 		setVisible(true);
 	}
 	
+	/** Creates JMenu for the JFrame
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	private void createMenu(){
 		// Create JMenuBar with a JMenu called File
 	
@@ -51,10 +58,6 @@ public class MainWindow extends JFrame{
 		fileMenu.add(addProblemMenuItem);
 		
 		// Add an Edit JMenuItem to the Edit JMenu
-		
-		addMenuItem.setEnabled(false);
-		addMenuItem.addActionListener(mainControl);
-		editMenu.add(addMenuItem);
 		editMenuItem.setEnabled(false);
 		editMenuItem.addActionListener(mainControl);
 		editMenu.add(editMenuItem);
@@ -63,21 +66,29 @@ public class MainWindow extends JFrame{
 		getContentPane().add(menuBar, BorderLayout.NORTH);
 	}
 	
+	/** Refreshes the JFrame
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	public void newScreen(){
 		listOfProblems.setListData(mainControl.getProblemsArray());
 	}
 	
+	/** Returns JList for getting selected value
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	public JList<String> getJList(){
 		return listOfProblems;
 	}
 	
+	/** Sets disabled options to enabled
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	public void enableAll(boolean val){
-		addMenuItem.setEnabled(val);
 		editMenuItem.setEnabled(val);
 	}
 
-	public static void main(String[] args) {
-		MainWindow mainWindow = new MainWindow();
-	}
 	
 }

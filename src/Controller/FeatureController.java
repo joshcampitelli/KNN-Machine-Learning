@@ -169,7 +169,7 @@ public class FeatureController {
         if (option == JOptionPane.OK_OPTION) {
             newInstance.add(new IntegerFeature("price", Integer.valueOf(intField.getText())));
             machineLearning.learn(key, newInstance);
-            control.getWindow().newScreen();
+           
         }
 
     }
@@ -231,5 +231,9 @@ public class FeatureController {
             predictError = machineLearning.predictError(Integer.valueOf(intField.getText()), newInstance);
             JOptionPane.showMessageDialog(null, "Predicted Error is: " + predictError);
         }
+    }
+    
+    public ProblemWindowController getPWC(){
+    	return control;
     }
 }

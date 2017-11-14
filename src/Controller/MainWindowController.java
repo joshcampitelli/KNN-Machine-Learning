@@ -18,20 +18,29 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 	private ArrayList<MachineLearning> machineLearningArray = new ArrayList<MachineLearning>();
 	private MainWindow frame;
 	
+	/** Constructor
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	public MainWindowController(MainWindow frame){
 		this.frame = frame;
 	}
 
+	/** Looks for a value to be selected from the JList
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	public void valueChanged(ListSelectionEvent e) {
 		frame.enableAll(true);
 	}
 	
+	/** Performs various actions based on the selected option
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equals("Edit")){
+		if(e.getActionCommand().equals("View")){
 			new ProblemWindow(new ProblemWindowController(machineLearningArray.get(frame.getJList().getSelectedIndex())));
-		} else if(e.getActionCommand().equals("Add")){
-			new ProblemWindow(new ProblemWindowController(machineLearningArray.get(frame.getJList().getSelectedIndex())));
-		
 		} else if(e.getActionCommand().equals("Add Problem")){
 			// Create the createPanel properties
 			JTextField nameField = new JTextField(5);
@@ -133,7 +142,7 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 						tmp.addFeatureLayout(new IntegerAbsoluteMetric(textFields[j].getText(), tmp.getStorage()));
 					}
 				}
-				machineLearningArray.get(machineLearningArray.size() - 1).addFeatureLayout(new IntegerAbsoluteMetric("Price", machineLearningArray.get(machineLearningArray.size() - 1).getStorage()));
+				//machineLearningArray.get(machineLearningArray.size() - 1).addFeatureLayout(new IntegerAbsoluteMetric("Price", machineLearningArray.get(machineLearningArray.size() - 1).getStorage()));
 				
 				frame.newScreen();
 				new ProblemWindow(new ProblemWindowController(machineLearningArray.get(machineLearningArray.size() - 1)));
@@ -148,6 +157,10 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 		}
 	}
 	
+	/** Gets all the Strings for the JList
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	public DefaultListModel<String> getProblems(){
 		DefaultListModel<String> tmp = new DefaultListModel<String>();
 		for(int i = 0; i < machineLearningArray.size(); i++){
@@ -156,6 +169,10 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 		return tmp;
 	}
 	
+	/** Gets all the Strings for setting the JList
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	public String[] getProblemsArray(){
 		String[] arg = new String[machineLearningArray.size()];
 		for(int i = 0; i < arg.length; i++){
