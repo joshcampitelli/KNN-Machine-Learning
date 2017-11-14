@@ -18,6 +18,7 @@ public class FeatureController {
     private MachineLearning machineLearning;
     private Storage storage; //HashMap Reference
     private State state; //Indicates edit or add
+    private ProblemWindowController control;
 
     public enum State {
         editProblem,
@@ -27,10 +28,11 @@ public class FeatureController {
     /**
      * @param machineLearning Reference to Model
      */
-    public FeatureController(MachineLearning machineLearning, String state) {
-        key = machineLearning.getProblem();
-        this.machineLearning = machineLearning;
-        storage = machineLearning.getStorage();
+    public FeatureController(ProblemWindowController pwc, String state, String key) {
+        this.control = pwc;
+    	this.machineLearning = pwc.getMachine();
+    	this.key = key;
+        this.storage = machineLearning.getStorage();
         if (state.toLowerCase().equals("add")) {
             this.state = State.addProblem;
         } else {
@@ -158,7 +160,9 @@ public class FeatureController {
         for (int i = 0; i < listModel.size(); i ++) {
             newInstance.add(listModel.get(i));
         }
+        System.out.println(key);
         machineLearning.learn(key, newInstance);
+        control.getWindow().newScreen();
     }
 
     /**
@@ -169,5 +173,6 @@ public class FeatureController {
     public void updateInstance(DefaultListModel<GenericFeature> listModel) {
         storage.remove(key);
         learnInstance(listModel);
+        
     }
 }

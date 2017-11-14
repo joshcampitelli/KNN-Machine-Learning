@@ -12,8 +12,8 @@ public class AlternateWindow extends JFrame {
     /*GUI Menu Attributes*/
     private JMenuBar menuBar = new JMenuBar();
     private JMenu machineLearnMenu = new JMenu("Machine Learning");
-    private JMenuItem learnItem = new JMenu("Learn Instance");
-    private JMenuItem updateItem = new JMenu("Update Instance");
+    private JMenuItem learnItem = new JMenuItem("Learn Instance");
+    private JMenuItem updateItem = new JMenuItem("Update Instance");
     private JMenuItem cancelItem = new JMenuItem("Cancel");
 
     private JMenu metricsMenu = new JMenu("Metrics");

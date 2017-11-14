@@ -4,6 +4,7 @@ import Views.AlternateWindow;
 import Model.MachineLearning;
 import Model.Metrics.*;
 import Views.MainWindow;
+import Views.ProblemWindow;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,9 +28,9 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("Edit")){
-			new AlternateWindow(new FeatureController(machineLearningArray.get(frame.getJList().getSelectedIndex()),"edit"));
+			new ProblemWindow(new ProblemWindowController(machineLearningArray.get(frame.getJList().getSelectedIndex())));
 		} else if(e.getActionCommand().equals("Add")){
-			new AlternateWindow(new FeatureController(machineLearningArray.get(frame.getJList().getSelectedIndex()),"add"));
+			new ProblemWindow(new ProblemWindowController(machineLearningArray.get(frame.getJList().getSelectedIndex())));
 		
 		} else if(e.getActionCommand().equals("Add Problem")){
 			// Create the createPanel properties
@@ -42,7 +43,7 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 			createPanel.add(new JLabel("Name:"));
 			createPanel.add(nameField);
 			createPanel.add(Box.createHorizontalStrut(15));
-			createPanel.add(new JLabel("Number of features:"));
+			createPanel.add(new JLabel("Number of features (in addition to Price):"));
 			createPanel.add(propertyField);
 			
 			// Send JOptionPane to user
@@ -132,8 +133,10 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 						tmp.addFeatureLayout(new IntegerAbsoluteMetric(textFields[j].getText(), tmp.getStorage()));
 					}
 				}
+				machineLearningArray.get(machineLearningArray.size() - 1).addFeatureLayout(new IntegerAbsoluteMetric("Price", machineLearningArray.get(machineLearningArray.size() - 1).getStorage()));
+				
 				frame.newScreen();
-				new AlternateWindow(new FeatureController(machineLearningArray.get(machineLearningArray.size() - 1), "add"));
+				new ProblemWindow(new ProblemWindowController(machineLearningArray.get(machineLearningArray.size() - 1)));
 		    } else {
 		    	optionForPanel[0] = "Okay";
 		    	JPanel addPropsPanel = new JPanel();
