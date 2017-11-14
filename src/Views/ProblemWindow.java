@@ -10,8 +10,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.ListSelectionModel;
-
-import Controller.MainWindowController;
 import Controller.ProblemWindowController;
 
 public class ProblemWindow extends JFrame {
@@ -21,6 +19,10 @@ public class ProblemWindow extends JFrame {
 	private JMenuItem removeMenuItem;
 	private JMenuItem predictMenuItem;
 	
+	/** Constructor
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	public ProblemWindow(ProblemWindowController control){
 		super(control.toString());
 		problemControl = control;
@@ -42,6 +44,10 @@ public class ProblemWindow extends JFrame {
 		setVisible(true);
 	}
 	
+	/** Creates the JMenu for the JFrame
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	private void createMenu(){
 		// Create JMenuBar with a JMenu called File
 	
@@ -73,15 +79,29 @@ public class ProblemWindow extends JFrame {
 		getContentPane().add(menuBar, BorderLayout.NORTH);
 	}
 	
+	/** Refreshes window
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	public void newScreen(){
+		
+		String[] str = problemControl.getProblemsArray();
 		listOfObjects.setListData(problemControl.getProblemsArray());
-		this.repaint();
+		this.invalidate();
 	}
 	
+	/** Gets the JList for identifying selected value
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	public JList<String> getJList(){
 		return listOfObjects;
 	}
 	
+	/** Sets disabled options to enabled
+	 * 
+	 * @author Logan MacGillivray
+	 */
 	public void enableAll(boolean val){
 		removeMenuItem.setEnabled(val);
 		editMenuItem.setEnabled(val);
