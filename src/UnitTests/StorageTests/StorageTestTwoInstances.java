@@ -21,14 +21,25 @@ public class StorageTestTwoInstances {
         instance1 = new ArrayList<>();
         instance2 = new ArrayList<>();
 
-        instance1.add(new IntegerFeature("",1));
-        instance2.add(new IntegerFeature("",2));
+        instance1.add(new IntegerFeature("key1",1));
+        instance2.add(new IntegerFeature("key2",2));
     }
 
     @Test
     public void testSize() {
-        storage.insert("", instance1);
-        storage.insert("", instance2);
-        assertEquals("Size should be 1.", 1, storage.getSize());
+        storage.insert("key1", instance1);
+        storage.insert("key2", instance2);
+        assertEquals("Size should be 2.", 2, storage.getSize());
+    }
+
+    @Test
+    public void testRemove() {
+        storage.insert("key1", instance1);
+        storage.insert("key2", instance2);
+        assertEquals("Size should be 2.", 2, storage.getSize());
+
+        storage.remove("key1");
+        storage.remove("key2");
+        assertEquals("Size should be 0.", 0, storage.getSize());
     }
 }
