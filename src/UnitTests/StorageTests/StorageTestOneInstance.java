@@ -10,6 +10,10 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
+/**
+ * Tests the Storage when size = 1
+ * @author Josh Campitelli
+ */
 public class StorageTestOneInstance {
     private Storage storage;
     private ArrayList<GenericFeature> instance;

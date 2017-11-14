@@ -20,6 +20,9 @@ public class FeatureController {
     private State state; //Indicates edit or add
     private ProblemWindowController control;
 
+    /*
+     * Represents the state in which the program was opened
+     */
     public enum State {
         editProblem,
         addProblem
@@ -36,6 +39,11 @@ public class FeatureController {
         }
     }
 
+    /**
+     * Initializes the gui according to the state of the program, gets data from storage if edit.
+     * @param listModel reference to gui list
+     * @author Josh Campitelli
+     */
     public void initialize(DefaultListModel<GenericFeature> listModel) {
         if (state == State.addProblem) {
             instantiateFeatures(listModel);
@@ -49,6 +57,11 @@ public class FeatureController {
         }
     }
 
+    /**\
+     * gets the current state of the program.
+     * @return State enum
+     * @author Josh Campitelli
+     */
     public State getState() {
         return state;
     }
@@ -59,6 +72,7 @@ public class FeatureController {
      * feature they are added to the DefaultListModel, upon completion they're 'learned' by
      * MachineLearning
      * @param listModel gui list to display features.
+     * @author Josh Campitelli
      */
     private void instantiateFeatures(DefaultListModel<GenericFeature> listModel) {
         GenericFeature feature = null;
@@ -78,8 +92,9 @@ public class FeatureController {
 
     /**
      * editFeature gets the selected feature from the JList and swaps it with the user's updated feature
-     * @param list
-     * @param listModel
+     * @param list JList on gui
+     * @param listModel DefaultListModel on gui
+     * @author Josh Campitelli
      */
     public void editFeature(JList list, DefaultListModel<GenericFeature> listModel) {
         int index = list.getSelectedIndex();
@@ -103,6 +118,7 @@ public class FeatureController {
      * cartesianFeatureWindow creates a new window which represents an cartesian feature, where the user
      * can enter the value. Creates a new CartesianFeature and returns it.
      * @return CartesianFeature
+     * @author Josh Campitelli
      */
     private CartesianFeature cartesianFeatureWindow(String name) {
         JTextField xField = new JTextField();
@@ -123,6 +139,7 @@ public class FeatureController {
      * enumFeatureWindow creates a new window which represents an enum feature, where the user
      * can enter the value. Creates a new EnumFeature and returns it.
      * @return EnumFeature
+     * @author Josh Campitelli
      */
     private EnumFeature enumFeatureWindow(String name) {
         JTextField enumField = new JTextField();
@@ -140,6 +157,7 @@ public class FeatureController {
      * integerFeatureWindow creates a new window which represents an integer feature, where the user
      * can enter the value. Creates a new IntegerFeature and returns it.
      * @return IntegerFeature
+     * @author Josh Campitelli
      */
     private IntegerFeature integerFeatureWindow(String name) {
         JTextField intField = new JTextField();
@@ -157,6 +175,7 @@ public class FeatureController {
      * learnInstance calls MachineLearning learn method with an ArrayList that represents
      * the instance's features.
      * @param listModel guiList which stores all the new features.
+     * @author Josh Campitelli
      */
     public void learnInstance(DefaultListModel<GenericFeature> listModel) {
         ArrayList<GenericFeature> newInstance = new ArrayList<>();
@@ -181,6 +200,7 @@ public class FeatureController {
      * updateInstance updates an instance stored in storage with the new instance which was
      * modified by the user.
      * @param listModel guiList which stores all the new features.
+     * @author Josh Campitelli
      */
     public void updateInstance(DefaultListModel<GenericFeature> listModel) {
         storage.remove(key);
@@ -188,6 +208,11 @@ public class FeatureController {
         
     }
 
+    /**
+     * priceExists determines whether or not a instance has a price parameter
+     * @return boolean
+     * @author Josh Campitelli
+     */
     public boolean priceExists() {
         ArrayList<GenericFeature> features = machineLearning.getStorage().getLearned().get(key);
         if (features != null) {
@@ -200,6 +225,11 @@ public class FeatureController {
         return false;
     }
 
+    /**
+     * predictPrice gets the k value from the user and calls the predict method within MachineLearning.
+     * @param listModel list on gui to display features
+     * @author Josh Campitelli
+     */
     public void predictPrice(DefaultListModel<GenericFeature> listModel) {
         int predictedValue = 0;
         ArrayList<GenericFeature> newInstance = new ArrayList<>();
@@ -218,6 +248,11 @@ public class FeatureController {
         }
     }
 
+    /**
+     * predictPrice gets the k value from the user and calls the predictError method within MachineLearning
+     * @param listModel list on gui to display features
+     * @author Josh Campitelli
+     */
     public void predictError(DefaultListModel<GenericFeature> listModel) {
         int predictError;
         ArrayList<GenericFeature> newInstance = new ArrayList<>();
@@ -235,7 +270,7 @@ public class FeatureController {
             JOptionPane.showMessageDialog(null, "Predicted Error is: " + predictError);
         }
     }
-    
+
     public ProblemWindowController getPWC(){
     	return control;
     }

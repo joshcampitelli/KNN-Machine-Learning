@@ -6,6 +6,10 @@ import Model.Features.GenericFeature;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Represents the Features for any given instance of a problem.
+ * @author Josh Campitelli
+ */
 public class AlternateWindow extends JFrame {
     private FeatureController featureController;
 
@@ -83,6 +87,10 @@ public class AlternateWindow extends JFrame {
         featureController.initialize(listModel);
     }
 
+    /**
+     * Adds the Action listeners to the menu items on the gui.
+     * @author Josh Campitelli
+     */
     private void addListeners() {
         /*Action Listener for MenuItems*/
         learnItem.addActionListener(event -> {
