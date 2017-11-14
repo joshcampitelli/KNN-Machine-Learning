@@ -154,14 +154,20 @@ public class FeatureController {
      * @param listModel guiList which stores all the new features.
      */
     public void learnInstance(DefaultListModel<GenericFeature> listModel) {
-        System.out.println("Learn");
-
-
         ArrayList<GenericFeature> newInstance = new ArrayList<>();
         for (int i = 0; i < listModel.size(); i ++) {
             newInstance.add(listModel.get(i));
         }
-        machineLearning.learn(key, newInstance);
+
+        JTextField intField = new JTextField();
+        Object[] message = {
+                "Price:", intField,
+        };
+        int option = JOptionPane.showConfirmDialog(null, message, "Price of Instance", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            newInstance.add(new IntegerFeature("price", Integer.valueOf(intField.getText())));
+            machineLearning.learn(key, newInstance);
+        }
     }
 
     /**
@@ -172,6 +178,18 @@ public class FeatureController {
     public void updateInstance(DefaultListModel<GenericFeature> listModel) {
         storage.remove(key);
         learnInstance(listModel);
+    }
+
+    public boolean priceExists() {
+        ArrayList<GenericFeature> features = machineLearning.getStorage().getLearned().get(key);
+        if (features != null) {
+            for (GenericFeature feature : machineLearning.getStorage().getLearned().get(key)) {
+                if (feature.getName().toLowerCase().equals("price")) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void predictPrice(DefaultListModel<GenericFeature> listModel) {
@@ -196,9 +214,7 @@ public class FeatureController {
     }
 
     public void predictError(DefaultListModel<GenericFeature> listModel) {
-        System.out.println("Predict Error");
-
-        int predictError = 0;
+        int predictError;
         ArrayList<GenericFeature> newInstance = new ArrayList<>();
         for (int i = 0; i < listModel.size(); i ++) {
             newInstance.add(listModel.get(i));

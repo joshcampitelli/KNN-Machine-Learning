@@ -12,10 +12,10 @@ public class AlternateWindow extends JFrame {
     /*GUI Menu Attributes*/
     private JMenuBar menuBar = new JMenuBar();
     private JMenu machineLearnMenu = new JMenu("Machine Learning");
-    private JMenuItem learnItem = new JMenu("Learn Instance");
-    private JMenuItem updateItem = new JMenu("Update Instance");
-    private JMenuItem predictPriceItem = new JMenu("Predict Price");
-    private JMenuItem predictErrorItem = new JMenu("Predict Error");
+    private JMenuItem learnItem = new JMenuItem("Learn Instance");
+    private JMenuItem updateItem = new JMenuItem("Update Instance");
+    private JMenuItem predictPriceItem = new JMenuItem("Predict Price");
+    private JMenuItem predictErrorItem = new JMenuItem("Predict Error");
 
 
     private JMenuItem cancelItem = new JMenuItem("Cancel");
@@ -52,6 +52,9 @@ public class AlternateWindow extends JFrame {
         updateItem.setEnabled(false);
         editItem.setEnabled(false);
 
+        if(!featureController.priceExists())
+            predictErrorItem.setEnabled(false);
+
         menuBar.add(machineLearnMenu);
         menuBar.add(metricsMenu);
         setJMenuBar(menuBar);
@@ -82,8 +85,16 @@ public class AlternateWindow extends JFrame {
 
     private void addListeners() {
         /*Action Listener for MenuItems*/
-        learnItem.addActionListener(event -> featureController.learnInstance(listModel));
-        updateItem.addActionListener(event -> featureController.updateInstance(listModel));
+        learnItem.addActionListener(event -> {
+            featureController.learnInstance(listModel);
+            this.dispose();
+        });
+
+        updateItem.addActionListener(event -> {
+            featureController.updateInstance(listModel);
+            this.dispose();
+        });
+
         predictPriceItem.addActionListener(event -> featureController.predictPrice(listModel));
         predictErrorItem.addActionListener(event -> featureController.predictError(listModel));
         cancelItem.addActionListener(event -> this.dispose());
