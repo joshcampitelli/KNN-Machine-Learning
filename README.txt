@@ -1,4 +1,4 @@
-SYSC 3110 Turn_Down_A_Bower Group: Deliverable 1
+SYSC 3110 Turn_Down_A_Bower Group: Deliverable 2
 ------------------------------------------------
 Josh Campitelli 	101010050
 Ryan Ribeiro 		100997936
@@ -18,12 +18,32 @@ The main class will then add GenericMetric
 objects to each MachineLearning object.  This   
 allows the program to "learn" how to predict a  
 price for the particular case.  		
-						
-Known Issues:					
-   - No Known Issues				
 
-The Map Ahead:
-  1) Fix the "Magic Value" in EnumMetric	
-  2) Implement a GUI
-  3) More flexibility (see point 1)
-  4) Saving/Loading data
+-----------------------------------------------
+UPDATE
+-----------------------------------------------
+Now the program has a working GUI.  The GUI	
+asks users to enter specifc data in order to 
+create the problems. This GUI consists of three
+JFrames.
+
+The first JFrame has all the problems in a JList.
+From there, new problems will be created, which 
+ask the user for what kind of metrics they want
+measuring their features.
+
+Once a problem has been created, the user will
+be able to access the ProblemWindow.  This will
+allow the user to create instances of the 
+problem where they can specify what features are 
+to be added. 
+
+
+Known Issues:					
+   - Program hangs when Predict is run through 
+   	the GUI
+
+The Map Ahead:	
+  1) More flexibility 
+  2) Saving/Loading data
+  3) Bug fix on the Hanging Predict through GUI
