@@ -14,6 +14,10 @@ public class AlternateWindow extends JFrame {
     private JMenu machineLearnMenu = new JMenu("Machine Learning");
     private JMenuItem learnItem = new JMenu("Learn Instance");
     private JMenuItem updateItem = new JMenu("Update Instance");
+    private JMenuItem predictPriceItem = new JMenu("Predict Price");
+    private JMenuItem predictErrorItem = new JMenu("Predict Error");
+
+
     private JMenuItem cancelItem = new JMenuItem("Cancel");
 
     private JMenu metricsMenu = new JMenu("Metrics");
@@ -37,6 +41,8 @@ public class AlternateWindow extends JFrame {
 
         machineLearnMenu.add(learnItem);
         machineLearnMenu.add(updateItem);
+        machineLearnMenu.add(predictPriceItem);
+        machineLearnMenu.add(predictErrorItem);
         machineLearnMenu.add(cancelItem);
 
         metricsMenu.add(editItem);
@@ -78,6 +84,8 @@ public class AlternateWindow extends JFrame {
         /*Action Listener for MenuItems*/
         learnItem.addActionListener(event -> featureController.learnInstance(listModel));
         updateItem.addActionListener(event -> featureController.updateInstance(listModel));
+        predictPriceItem.addActionListener(event -> featureController.predictPrice(listModel));
+        predictErrorItem.addActionListener(event -> featureController.predictError(listModel));
         cancelItem.addActionListener(event -> this.dispose());
         editItem.addActionListener(event -> featureController.editFeature(list, listModel));
     }

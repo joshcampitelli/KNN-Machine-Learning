@@ -154,6 +154,9 @@ public class FeatureController {
      * @param listModel guiList which stores all the new features.
      */
     public void learnInstance(DefaultListModel<GenericFeature> listModel) {
+        System.out.println("Learn");
+
+
         ArrayList<GenericFeature> newInstance = new ArrayList<>();
         for (int i = 0; i < listModel.size(); i ++) {
             newInstance.add(listModel.get(i));
@@ -169,5 +172,46 @@ public class FeatureController {
     public void updateInstance(DefaultListModel<GenericFeature> listModel) {
         storage.remove(key);
         learnInstance(listModel);
+    }
+
+    public void predictPrice(DefaultListModel<GenericFeature> listModel) {
+        System.out.println("Predict Price");
+
+
+        int predictedValue = 0;
+        ArrayList<GenericFeature> newInstance = new ArrayList<>();
+        for (int i = 0; i < listModel.size(); i ++) {
+            newInstance.add(listModel.get(i));
+        }
+
+        JTextField intField = new JTextField();
+        Object[] message = {
+                "Value for K:", intField,
+        };
+        int option = JOptionPane.showConfirmDialog(null, message, "KNN Algorithm", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            predictedValue = machineLearning.predict(Integer.valueOf(intField.getText()), newInstance);
+            JOptionPane.showMessageDialog(null, "Predicted Value is: " + predictedValue);
+        }
+    }
+
+    public void predictError(DefaultListModel<GenericFeature> listModel) {
+        System.out.println("Predict Error");
+
+        int predictError = 0;
+        ArrayList<GenericFeature> newInstance = new ArrayList<>();
+        for (int i = 0; i < listModel.size(); i ++) {
+            newInstance.add(listModel.get(i));
+        }
+
+        JTextField intField = new JTextField();
+        Object[] message = {
+                "Value for K:", intField,
+        };
+        int option = JOptionPane.showConfirmDialog(null, message, "KNN Algorithm", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            predictError = machineLearning.predictError(Integer.valueOf(intField.getText()), newInstance);
+            JOptionPane.showMessageDialog(null, "Predicted Error is: " + predictError);
+        }
     }
 }
