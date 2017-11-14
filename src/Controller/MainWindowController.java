@@ -121,6 +121,7 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 						
 						JTextField[] discreteField = new JTextField[Integer.parseInt(numOfDiscrete.getText())];
 						JPanel discretePanel = new JPanel();
+						discretePanel.add(new JLabel("Please enter all the values for your Discrete Metric"));
 						for(int k = 0; k < Integer.parseInt(numOfDiscrete.getText()); k++){
 							discreteField[k] = new JTextField(5);
 							discretePanel.add(discreteField[k]);
