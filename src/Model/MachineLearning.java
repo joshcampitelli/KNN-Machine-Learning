@@ -97,7 +97,10 @@ public class MachineLearning {
 				}
 			}
 			//sums the values for each of the smallest distances
-			tempPredictedValue += distancesSum.get(minimumDistance.getKey());
+			HashMap<String, GenericFeature> allPrices = new HashMap<>();
+			allPrices = storage.getFeature("price");
+			tempPredictedValue += (int)(allPrices.get(minimumDistance.getKey()).getValue());
+			//tempPredictedValue += distancesSum.get(minimumDistance.getKey());
 			//removes smallest distance so that the next iteration will produce the next smallest distance
 			distancesSum.remove(minimumDistance.getKey());
 		}
