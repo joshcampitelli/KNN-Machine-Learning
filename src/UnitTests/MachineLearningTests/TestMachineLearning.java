@@ -118,6 +118,7 @@ public class TestMachineLearning {
 		testFeatureLayout.add(new FeatureLayout(new DiscreteBinaryMetric("age", machineLearning.getStorage(), allowableDiscreteValues)));
 		testFeatureLayout.add(new FeatureLayout(new IntegerAbsoluteMetric("price", machineLearning.getStorage())));
 		
+		assertEquals("", testFeatureLayout.size(), machineLearning.getFeatureLayout().size());
 		assertEquals("", testFeatureLayout.get(0).getName(), machineLearning.getFeatureLayout().get(0).getName());
 		assertEquals("", testFeatureLayout.get(1).getName(), machineLearning.getFeatureLayout().get(1).getName());
 		assertEquals("", testFeatureLayout.get(2).getName(), machineLearning.getFeatureLayout().get(2).getName());
