@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -56,7 +57,11 @@ public class TestMachineLearning {
 		machineLearning.learn("h3", featuresToLearn3);
 	}
 	
-	//Should I test learn(...)
+	/*
+	 * learn() isn't tested because it is only ever passed correct parameters since it is being check
+	 * in another class before that class calls learn(). Also, learn() was used in setup(), and it worked
+	 * fine.
+	 */
 	
 	@Test
 	public void testGetProblem() {
@@ -77,6 +82,34 @@ public class TestMachineLearning {
 		
 		
 		assertEquals("", testStorageLearned.get("h1"), learned.get("h1"));
+		assertEquals("", testStorageLearned.get("h2"), learned.get("h2"));
+		assertEquals("", testStorageLearned.get("h3"), learned.get("h3"));
 	}
 	
+	/*
+	 * I don't need to test addFeatureLayout here. The way it is set up is that it is only ever
+	 * called with correct parameters because the parameters are checked by another class when they
+	 * are initially entered. Also, I know the method works because it is used in the setup().
+	*/
+	
+	@Test
+	public void testGetFeatureLayoutByIndex() {
+		List<FeatureLayout> testFeatureLayout = new ArrayList<>();
+		String[] allowableDiscreteValues = {"old", "new"};
+		
+		testFeatureLayout.add(new FeatureLayout(new CartesianEuclideanMetric("coordinates", machineLearning.getStorage())));
+		testFeatureLayout.add(new FeatureLayout(new IntegerAbsoluteMetric("sq. ft.", machineLearning.getStorage())));
+		testFeatureLayout.add(new FeatureLayout(new DiscreteBinaryMetric("coordinates", machineLearning.getStorage(), allowableDiscreteValues)));
+		testFeatureLayout.add(new FeatureLayout(new IntegerAbsoluteMetric("price", machineLearning.getStorage())));
+		
+		assertEquals("", testFeatureLayout.get(0).getName(), machineLearning.getFeatureLayout(0).getName());
+		assertEquals("", testFeatureLayout.get(1).getName(), machineLearning.getFeatureLayout(1).getName());
+		assertEquals("", testFeatureLayout.get(2).getName(), machineLearning.getFeatureLayout(2).getName());
+		assertEquals("", testFeatureLayout.get(3).getName(), machineLearning.getFeatureLayout(3).getName());	
+	}
+	
+	@Test
+	public void testGetFeatureLayoutList() {
+		
+	}
 }
