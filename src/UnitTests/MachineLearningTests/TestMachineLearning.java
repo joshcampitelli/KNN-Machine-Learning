@@ -32,7 +32,7 @@ public class TestMachineLearning {
 		
 		machineLearning.addFeatureLayout(new CartesianEuclideanMetric("coordinates", machineLearning.getStorage()));
 		machineLearning.addFeatureLayout(new IntegerAbsoluteMetric("sq. ft.", machineLearning.getStorage()));
-		machineLearning.addFeatureLayout(new DiscreteBinaryMetric("coordinates", machineLearning.getStorage(), allowableDiscreteValues));
+		machineLearning.addFeatureLayout(new DiscreteBinaryMetric("age", machineLearning.getStorage(), allowableDiscreteValues));
 		machineLearning.addFeatureLayout(new IntegerAbsoluteMetric("price", machineLearning.getStorage()));
 	
 		featuresToLearn1 = new ArrayList<>();
@@ -99,7 +99,7 @@ public class TestMachineLearning {
 		
 		testFeatureLayout.add(new FeatureLayout(new CartesianEuclideanMetric("coordinates", machineLearning.getStorage())));
 		testFeatureLayout.add(new FeatureLayout(new IntegerAbsoluteMetric("sq. ft.", machineLearning.getStorage())));
-		testFeatureLayout.add(new FeatureLayout(new DiscreteBinaryMetric("coordinates", machineLearning.getStorage(), allowableDiscreteValues)));
+		testFeatureLayout.add(new FeatureLayout(new DiscreteBinaryMetric("age", machineLearning.getStorage(), allowableDiscreteValues)));
 		testFeatureLayout.add(new FeatureLayout(new IntegerAbsoluteMetric("price", machineLearning.getStorage())));
 		
 		assertEquals("", testFeatureLayout.get(0).getName(), machineLearning.getFeatureLayout(0).getName());
@@ -110,6 +110,60 @@ public class TestMachineLearning {
 	
 	@Test
 	public void testGetFeatureLayoutList() {
+		List<FeatureLayout> testFeatureLayout = new ArrayList<>();
+		String[] allowableDiscreteValues = {"old", "new"};
 		
+		testFeatureLayout.add(new FeatureLayout(new CartesianEuclideanMetric("coordinates", machineLearning.getStorage())));
+		testFeatureLayout.add(new FeatureLayout(new IntegerAbsoluteMetric("sq. ft.", machineLearning.getStorage())));
+		testFeatureLayout.add(new FeatureLayout(new DiscreteBinaryMetric("age", machineLearning.getStorage(), allowableDiscreteValues)));
+		testFeatureLayout.add(new FeatureLayout(new IntegerAbsoluteMetric("price", machineLearning.getStorage())));
+		
+		assertEquals("", testFeatureLayout.get(0).getName(), machineLearning.getFeatureLayout().get(0).getName());
+		assertEquals("", testFeatureLayout.get(1).getName(), machineLearning.getFeatureLayout().get(1).getName());
+		assertEquals("", testFeatureLayout.get(2).getName(), machineLearning.getFeatureLayout().get(2).getName());
+		assertEquals("", testFeatureLayout.get(3).getName(), machineLearning.getFeatureLayout().get(3).getName());
 	}
+	
+	@Test
+	public void testDeleteLearned() {
+		Storage testStorage = new Storage();
+		testStorage.insert("h1", featuresToLearn1);
+		testStorage.insert("h2", featuresToLearn2);
+		testStorage.insert("h3", featuresToLearn3);
+		
+		machineLearning.deleteLearned("h1");
+		testStorage.remove("h1");		
+		assertEquals("", testStorage.getSize(), machineLearning.getStorage().getSize());
+		
+		machineLearning.deleteLearned("h2");
+		testStorage.remove("h2");		
+		assertEquals("", testStorage.getSize(), machineLearning.getStorage().getSize());
+		
+		machineLearning.deleteLearned("h3");
+		testStorage.remove("h3");		
+		assertEquals("", testStorage.getSize(), machineLearning.getStorage().getSize());
+	}
+	
+	@Test
+	public void testPredict() {
+		ArrayList<GenericFeature> featuresToLearn4 = new ArrayList<>();
+		
+		featuresToLearn4.add(new CartesianFeature("coordinates", 15, 20));
+		featuresToLearn4.add(new IntegerFeature("sq. ft.", 1000));
+		featuresToLearn4.add(new EnumFeature("age", "new"));		
+		
+		int k;
+		int testPredictedPrice;
+		
+		k = 1; testPredictedPrice = 300000;		
+		assertEquals("", testPredictedPrice, machineLearning.predict(k, featuresToLearn4));
+		
+
+		k = 2; testPredictedPrice = 400000;		
+		assertEquals("", testPredictedPrice, machineLearning.predict(k, featuresToLearn4));
+
+		k = 3; testPredictedPrice = 400000;		
+		assertEquals("", testPredictedPrice, machineLearning.predict(k, featuresToLearn4));
+	}
+	
 }
