@@ -156,14 +156,60 @@ public class TestMachineLearning {
 		int testPredictedPrice;
 		
 		k = 1; testPredictedPrice = 300000;		
-		assertEquals("", testPredictedPrice, machineLearning.predict(k, featuresToLearn4));
-		
+		assertEquals("", testPredictedPrice, machineLearning.predict(k, featuresToLearn4));		
 
 		k = 2; testPredictedPrice = 400000;		
 		assertEquals("", testPredictedPrice, machineLearning.predict(k, featuresToLearn4));
 
 		k = 3; testPredictedPrice = 400000;		
 		assertEquals("", testPredictedPrice, machineLearning.predict(k, featuresToLearn4));
+	}
+	
+	@Test
+	public void testPredictError() {
+		ArrayList<GenericFeature> featuresToLearn4 = new ArrayList<>();
+		
+		featuresToLearn4.add(new CartesianFeature("coordinates", 15, 20));
+		featuresToLearn4.add(new IntegerFeature("sq. ft.", 1000));
+		featuresToLearn4.add(new EnumFeature("age", "new"));
+		featuresToLearn4.add(new IntegerFeature("price", 300000));
+		
+		int k;
+		int testPredictedError;
+		
+		k = 1; testPredictedError = 0;		
+		assertEquals("", testPredictedError, machineLearning.predictError(k, featuresToLearn4));		
+
+		k = 2; testPredictedError = 100000;		
+		assertEquals("", testPredictedError, machineLearning.predictError(k, featuresToLearn4));
+
+		k = 3; testPredictedError = 100000;		
+		assertEquals("", testPredictedError, machineLearning.predictError(k, featuresToLearn4));
+	}
+	
+	@Test
+	public void testGetTotalError() {
+		ArrayList<GenericFeature> featuresToLearn4 = new ArrayList<>();
+		
+		featuresToLearn4.add(new CartesianFeature("coordinates", 15, 20));
+		featuresToLearn4.add(new IntegerFeature("sq. ft.", 1000));
+		featuresToLearn4.add(new EnumFeature("age", "new"));
+		featuresToLearn4.add(new IntegerFeature("price", 300000));
+		
+		int k;
+		int testPredictedTotalError;
+		
+		k = 1; testPredictedTotalError = 0;
+		machineLearning.predictError(k, featuresToLearn4);
+		assertEquals("", testPredictedTotalError, machineLearning.getTotalError());
+		
+		k = 2; testPredictedTotalError = 100000;	
+		machineLearning.predictError(k, featuresToLearn4);
+		assertEquals("", testPredictedTotalError, machineLearning.getTotalError());
+		
+		k = 3; testPredictedTotalError = 200000;		
+		machineLearning.predictError(k, featuresToLearn4);
+		assertEquals("", testPredictedTotalError, machineLearning.getTotalError());
 	}
 	
 }
