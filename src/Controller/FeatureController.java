@@ -204,8 +204,11 @@ public class FeatureController {
      */
     public void updateInstance(DefaultListModel<GenericFeature> listModel) {
         storage.remove(key);
-        learnInstance(listModel);
-        
+        ArrayList<GenericFeature> newInstance = new ArrayList<>();
+        for (int i = 0; i < listModel.size(); i ++) {
+            newInstance.add(listModel.get(i));
+        }
+        machineLearning.update(key, newInstance);
     }
 
     /**

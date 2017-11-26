@@ -229,4 +229,13 @@ public class MachineLearning {
 		//the error trapping for this one has to happen on the end of 'remove' in Storage
 		storage.remove(key);
 	}
+
+	/**
+	 * Updates an existing problem in storage.
+	 * @param key key to HashMap in storage
+	 * @param updatedInfo new array list to be inserted
+	 */
+	public void update(String key, ArrayList<GenericFeature> updatedInfo){
+		storage.update(key, updatedInfo);
+	}
 }
