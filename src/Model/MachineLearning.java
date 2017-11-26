@@ -17,6 +17,16 @@ public class MachineLearning {
 	private int totalError;
 	private Map<String, Integer> distancesSum;
 
+	public enum FeatureTypes {
+		CartesianFeature,
+		EnumFeature,
+		IntegerFeature,
+		ComplexFeature
+	}
+
+	//Array List for the features that are required for each problem
+	private ArrayList<FeatureTypes> requiredFeatures;
+
 	public MachineLearning(String problem) {
 		this.problem = problem;
 		storage = new Storage();
