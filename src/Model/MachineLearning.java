@@ -17,6 +17,16 @@ public class MachineLearning {
 	private int totalError;
 	private Map<String, Integer> distancesSum;
 
+	public enum FeatureTypes {
+		CartesianFeature,
+		EnumFeature,
+		IntegerFeature,
+		ComplexFeature
+	}
+
+	//Array List for the features that are required for each problem
+	private ArrayList<FeatureTypes> requiredFeatures;
+
 	public MachineLearning(String problem) {
 		this.problem = problem;
 		storage = new Storage();
@@ -218,5 +228,14 @@ public class MachineLearning {
 	public void deleteLearned (String key) {
 		//the error trapping for this one has to happen on the end of 'remove' in Storage
 		storage.remove(key);
+	}
+
+	/**
+	 * Updates an existing problem in storage.
+	 * @param key key to HashMap in storage
+	 * @param updatedInfo new array list to be inserted
+	 */
+	public void update(String key, ArrayList<GenericFeature> updatedInfo){
+		storage.update(key, updatedInfo);
 	}
 }
