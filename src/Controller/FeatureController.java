@@ -27,6 +27,7 @@ public class FeatureController {
         editProblem,
         addProblem
     }
+
     public FeatureController(ProblemWindowController pwc, String state, String key) {
         this.control = pwc;
     	this.machineLearning = pwc.getMachine();
@@ -57,7 +58,7 @@ public class FeatureController {
         }
     }
 
-    /**\
+    /**
      * gets the current state of the program.
      * @return State enum
      * @author Josh Campitelli
@@ -130,7 +131,15 @@ public class FeatureController {
         };
         int option = JOptionPane.showConfirmDialog(null, message, name + " (Cartesian):", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
-            return new CartesianFeature(name, Integer.valueOf(xField.getText()), Integer.valueOf(yField.getText()));
+            int x, y;
+            try {
+                x = Integer.valueOf(xField.getText());
+                y = Integer.valueOf(yField.getText());
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Incorrect coordinate.");
+                return cartesianFeatureWindow(name); //Testing recursion here.
+            }
+            return new CartesianFeature(name, x, y);
         }
         return null;
     }
@@ -140,6 +149,7 @@ public class FeatureController {
      * can enter the value. Creates a new EnumFeature and returns it.
      * @return EnumFeature
      * @author Josh Campitelli
+     * todo: input validation, check if its an accepted DiscreteValue
      */
     private EnumFeature enumFeatureWindow(String name) {
         JTextField enumField = new JTextField();
@@ -166,7 +176,15 @@ public class FeatureController {
         };
         int option = JOptionPane.showConfirmDialog(null, message, name + " (Integer):", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
-            return new IntegerFeature(name, Integer.valueOf(intField.getText()));
+            int value;
+            try {
+                value = Integer.valueOf(intField.getText());
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Incorrect value.");
+                return integerFeatureWindow(name); //Testing recursion here.
+            }
+
+            return new IntegerFeature(name, value);
         }
         return null;
     }
@@ -189,11 +207,16 @@ public class FeatureController {
         };
         int option = JOptionPane.showConfirmDialog(null, message, "Price of Instance", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
-            newInstance.add(new IntegerFeature("price", Integer.valueOf(intField.getText())));
-            machineLearning.learn(key, newInstance);
-           
-        }
+            int price = getInteger(intField.getText());
 
+            if (price >= 0) {
+                newInstance.add(new IntegerFeature("price", price));
+                machineLearning.learn(key, newInstance);
+            } else {
+                JOptionPane.showMessageDialog(null, "Incorrect price value.");
+                learnInstance(listModel);
+            }
+        }
     }
 
     /**
@@ -215,6 +238,7 @@ public class FeatureController {
      * priceExists determines whether or not a instance has a price parameter
      * @return boolean
      * @author Josh Campitelli
+     * todo: fix hard coded name "price"
      */
     public boolean priceExists() {
         ArrayList<GenericFeature> features = machineLearning.getStorage().getLearned().get(key);
@@ -234,7 +258,7 @@ public class FeatureController {
      * @author Josh Campitelli
      */
     public void predictPrice(DefaultListModel<GenericFeature> listModel) {
-        int predictedValue = 0;
+        int predictedValue;
         ArrayList<GenericFeature> newInstance = new ArrayList<>();
         for (int i = 0; i < listModel.size(); i ++) {
             newInstance.add(listModel.get(i));
@@ -244,10 +268,17 @@ public class FeatureController {
         Object[] message = {
                 "Value for K:", intField,
         };
+
         int option = JOptionPane.showConfirmDialog(null, message, "KNN Algorithm", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
-            predictedValue = machineLearning.predict(Integer.valueOf(intField.getText()), newInstance);
-            JOptionPane.showMessageDialog(null, "Predicted Value is: " + predictedValue);
+            int k = getInteger(intField.getText());
+            if (k > 0) {
+                predictedValue = machineLearning.predict(k, newInstance);
+                JOptionPane.showMessageDialog(null, "Predicted Error is: " + predictedValue);
+            } else {
+                JOptionPane.showMessageDialog(null, "Incorrect value for K.");
+                predictPrice(listModel);
+            }
         }
     }
 
@@ -267,10 +298,29 @@ public class FeatureController {
         Object[] message = {
                 "Value for K:", intField,
         };
+
         int option = JOptionPane.showConfirmDialog(null, message, "KNN Algorithm", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
-            predictError = machineLearning.predictError(Integer.valueOf(intField.getText()), newInstance);
-            JOptionPane.showMessageDialog(null, "Predicted Error is: " + predictError);
+            int k = getInteger(intField.getText());
+            if (k > 0) {
+                predictError = machineLearning.predictError(Integer.valueOf(intField.getText()), newInstance);
+                JOptionPane.showMessageDialog(null, "Predicted Error is: " + predictError);
+            } else {
+                JOptionPane.showMessageDialog(null, "Incorrect value for K.");
+                predictError(listModel);
+            }
+        }
+    }
+
+    /**
+     * Error Handling for gui components which require integer.
+     * @return integer value,
+     */
+    private int getInteger(String text){
+        try {
+            return Integer.valueOf(text);
+        } catch (NumberFormatException e) {
+            return -1;
         }
     }
 
