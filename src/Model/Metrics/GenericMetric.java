@@ -12,7 +12,7 @@ public interface GenericMetric {
 	 * does not match the current metric.  A metric parameter is required.
 	 * 
 	 */
-	public HashMap<String, Integer> getDistance(GenericFeature feature);
+	public HashMap<String, Double> getDistance(GenericFeature feature);
 
 
 	/* Funct will return the name of the feature which the metric is related to.

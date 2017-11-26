@@ -39,18 +39,18 @@ public class DiscreteBinaryMetric implements GenericMetric {
      *
      * @author Ethan Morrill
      */
-    public HashMap<String, Integer> getDistance(GenericFeature feature){
-        HashMap<String, Integer> distances = new HashMap<>();
+    public HashMap<String, Double> getDistance(GenericFeature feature){
+        HashMap<String, Double> distances = new HashMap<>();
         if(feature instanceof EnumFeature){
             HashMap<String, GenericFeature> learnedFeature = storage.getFeature(featureName);
             Set<String> keys = learnedFeature.keySet();
             for(String key : keys) {
                 if(permittedValues.containsKey(feature.getValue())){
                     if(permittedValues.get(learnedFeature.get(key).getValue()).equals(permittedValues.get(feature.getValue()))){
-                        distances.put(key,0);
+                        distances.put(key,0.0);
                     }
                     else{
-                        distances.put(key ,1);
+                        distances.put(key ,1.0);
                     }
                 }
                 else{

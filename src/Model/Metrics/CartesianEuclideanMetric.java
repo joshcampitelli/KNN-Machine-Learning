@@ -33,8 +33,8 @@ public class CartesianEuclideanMetric implements GenericMetric {
      *
      * @author Logan MacGillivray, Ethan Morrill
      */
-    public HashMap<String, Integer> getDistance(GenericFeature feature){
-        HashMap<String, Integer> distances = new HashMap<>();
+    public HashMap<String, Double> getDistance(GenericFeature feature){
+        HashMap<String, Double> distances = new HashMap<>();
         int[] value = (int[])feature.getValue();
         if(feature instanceof CartesianFeature){
             HashMap<String, GenericFeature> learnedFeature = storage.getFeature(featureName);
@@ -45,7 +45,7 @@ public class CartesianEuclideanMetric implements GenericMetric {
                 for(int i = 0; i < value.length; i++){
                     squareSum += Math.pow(value[i]-learnedValue[i], 2);
                 }
-                distances.put(key, (int)Math.sqrt(squareSum));
+                distances.put(key, Math.sqrt(squareSum));
 
             }
             return distances;
