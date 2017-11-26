@@ -12,7 +12,7 @@ import java.util.Map.Entry;
  */
 public class MachineLearning {
 	private String problem;
-	private List<FeatureLayout> featureLayout;
+	//private List<FeatureLayout> featureLayout;
 	private Storage storage;
 	private int totalError;
 	private Map<String, Integer> distancesSum;
@@ -31,7 +31,7 @@ public class MachineLearning {
 		this.problem = problem;
 		storage = new Storage();
 		distancesSum = new HashMap<>();
-		featureLayout = new ArrayList<>();
+		requiredFeatures = new ArrayList<>();
 		totalError = 0;
 	}
 
@@ -190,34 +190,34 @@ public class MachineLearning {
 	}
 	
 	/**
-	 * Adds a FeatureLayout to the ArrayList of FeatureLayouts
+	 * Adds a FeatureTypes to the ArrayList of requiredFeatures
 	 * 
 	 * @param metric
 	 */
-	public void addFeatureLayout(GenericMetric metric){
-		featureLayout.add(new FeatureLayout(metric));
+	public void addRequiredFeature(FeatureTypes featureType){
+		requiredFeatures.add(featureType);
 	}
   
 	/**
-	 * Returns the FeatureLayout at index i in the ArrayList of FeatureLayouts
+	 * Returns the FeatureType at index i in the ArrayList of requiredFeatures
 	 * 
 	 * @param i
-	 * @return	returns the FeatureLayout at index i of type FeatureLayout
+	 * @return	returns the FeatureType at index i of type requiredFeatures
 	 */
-	public FeatureLayout getFeatureLayout(int i){
-		if (i >= featureLayout.size() || i < 0) {
+	public FeatureTypes getRequiredFeatures(int i){
+		if (i >= requiredFeatures.size() || i < 0) {
 			//error
 		}
-		return featureLayout.get(i);
+		return requiredFeatures.get(i);
 	}
 
 	/**
 	 * Returns a list of FeatureLayouts
 	 * 
-	 * @return returns a list of FeatureLayouts of type List<FeatureLayout>
+	 * @return returns a list of requiredFeatures of type List<FeatureLayout>
 	 */
-	public List<FeatureLayout> getFeatureLayout() {
-		return featureLayout;
+	public List<FeatureTypes> getRequiredFeatures() {
+		return requiredFeatures;
 	}
 	
 	/**
