@@ -19,16 +19,16 @@ public class PolarMetric implements GenericMetric {
 
     }
 
-    /* See GenericMetrics.getDifference(GenericMetric metric) for full java doc
+    /* See GenericMetrics.getDifference(GenericFeature feature) for full java doc
      * This particular function will return a hashmap of the example key and euclidean distance
      * of the provided feature and each learned example.
-     * The value shall be returned as a Hashmap of {key, positive integer distance}.
+     * The value shall be returned as a Hashmap of {key, positive double distance}.
      * returns null if provided feature is of the wrong type.
      *
      * @author Ethan Morrill
      */
 
-    //requires complex to be of form double distance, int angle or fails. Currently returns int for distance should be double.
+    //requires complex to be of form double distance, int angle or fails.
     @SuppressWarnings("unchecked")
     public HashMap<String, Double> getDistance(GenericFeature feature){
         HashMap<String, Double> distances = new HashMap<>();
