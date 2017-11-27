@@ -21,10 +21,11 @@ public class GenericMetric {
 	 * between two metrics.  It will also return -1 when the metric passed 
 	 * does not match the current metric.  A metric parameter is required.
 	 * 
-	 */
-	public HashMap<String, Integer> getDistance(GenericFeature feature){
+
+	public HashMap<String, Double> getDistance(GenericFeature feature){
 		return null;
 	}
+
 
 
 	/* This function returns the feature name that the metric is afiliated with for viewing

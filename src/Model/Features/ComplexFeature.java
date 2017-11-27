@@ -26,7 +26,7 @@ public class ComplexFeature extends GenericFeature {
 	/** @author Logan
 	 *  This function writes out the ComplexFeature into a String
 	 *  
-	 *  @param none
+	 *  @param
 	 */
 	@SuppressWarnings("unchecked")
 	public String toString(){
