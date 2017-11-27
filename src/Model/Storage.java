@@ -85,8 +85,18 @@ public class Storage {
 				if(feature.getName().equals(featureName)){
 					targetFeatures.put(key,feature);
 				}
+				i++;
 			}
 		}
 		return targetFeatures;
+	}
+	
+	public String getFeatureString(String key) {
+		ArrayList<GenericFeature> list = learned.get(key);
+		String str = "";
+		for(int i = 0; i < list.size(); i++) {
+			str += list.get(i).toString() + "    ";
+		}
+		return str;
 	}
 }

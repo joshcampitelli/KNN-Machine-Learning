@@ -84,7 +84,7 @@ public class ProblemWindowController implements ActionListener, ListSelectionLis
 	public DefaultListModel<String> getProblems(){
 		DefaultListModel<String> tmp = new DefaultListModel<String>();
 		for(int i = 0; i < storageKeys.size(); i++){
-			tmp.addElement(storageKeys.get(i));
+			tmp.addElement(storageKeys.get(i) + ":    " + machineLearning.getStorage().getFeatureString(storageKeys.get(i)));
 		}
 		return tmp;  
 	}
@@ -94,7 +94,15 @@ public class ProblemWindowController implements ActionListener, ListSelectionLis
 	 * @author Logan MacGillivray
 	 */
 	public String[] getProblemsArray(){
-		return machineLearning.getStorage().getLearned().keySet().toArray(new String[machineLearning.getStorage().getLearned().size()]);
+		//System.out.println(machineLearning.getStorage().getSize());
+		String[] tmp = new String[machineLearning.getStorage().getSize()];
+		String[] keys = machineLearning.getStorage().getLearned().keySet().toArray(new String[machineLearning.getStorage().getLearned().size()]);
+		
+		for(int i = 0; i < machineLearning.getStorage().getSize(); i++){
+			tmp[i] = keys[i] + ":    " + machineLearning.getStorage().getFeatureString(keys[i]);
+		}
+		return tmp;
+		//return machineLearning.getStorage().getLearned().keySet().toArray(new String[machineLearning.getStorage().getLearned().size()]);
 	}
 	
 	/** Gets name of problem
