@@ -2,7 +2,6 @@ package Model;
 
 import Model.Features.*;
 import Model.Metrics.*;
-import Model.FeatureLayout;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -26,12 +25,14 @@ public class MachineLearning {
 
 	//Array List for the features that are required for each problem
 	private ArrayList<FeatureTypes> requiredFeatures;
+	private ArrayList<GenericMetric> metrics;
 
 	public MachineLearning(String problem) {
 		this.problem = problem;
 		storage = new Storage();
 		distancesSum = new HashMap<>();
 		requiredFeatures = new ArrayList<>();
+		metrics = new ArrayList<>();
 		totalError = 0;
 	}
 
@@ -66,13 +67,9 @@ public class MachineLearning {
 		
 		int predictedValue, tempPredictedValue = 0;
 		int i; //loop control variable
-		
-		//looping through all features passed to predict
 		for (GenericFeature feature : features) {
-			//temporary HashMap to store returned distances
-			Map<String, Integer> distances = new HashMap<>();
 			String name = feature.getName();
-			//looping through all FeatureTypes created from constructor
+			Map<String, Integer> distances = new HashMap<>();
 			i = 0;
 			for (FeatureTypes featureType : requiredFeatures) {
 				if (feature.isPredictable()) {
@@ -88,7 +85,7 @@ public class MachineLearning {
 							}
 							//gets all previously stored prices associated with their keys
 							HashMap<String, GenericFeature> allPrices = new HashMap<>();
-							allPrices = storage.getFeature(feature.getName());
+							allPrices = storage.getFeature(name);
 							//sums the values for each of the smallest distances
 							tempPredictedValue += (int)(allPrices.get(minimumDistance.getKey()).getValue());
 							//removes smallest distance so that the next iteration will produce the next smallest distance
@@ -96,11 +93,30 @@ public class MachineLearning {
 						}
 						//predictedValue is based on kNN, so divide by k to get average value
 						predictedValue = tempPredictedValue / k;
-					} else if (feature instanceof /*feature type we use for value (probably Discrete*/) {
-						//how to evaluate this?
+					} else if (feature instanceof EnumFeature) {
+						for (i = 0; i < k; i++) {
+							Entry<String, Integer> minimumDistance = null;
+							//loops over each distance, determines smallest
+							for(Entry<String, Integer> entry : distancesSum.entrySet()) {
+								if (minimumDistance == null || minimumDistance.getValue() > entry.getValue()) {
+									minimumDistance = entry;
+								}
+							}
+							//gets all previously stored actions associated with their keys
+							HashMap<String, GenericFeature> allActions = new HashMap<>();
+							allActions = storage.getFeature(name);
+							
+							
+//							//sums the values for each of the smallest distances
+//							tempPredictedValue += (int)(allActions.get(minimumDistance.getKey()).getValue());
+							
+							
+							//removes smallest distance so that the next iteration will produce the next smallest distance
+							distancesSum.remove(minimumDistance.getKey());
+						}
+						
 					}
 				} else {
-					distances = feature.getMetric().getDistance();
 					
 					for (String key : distances.keySet()) {
 						if (distancesSum.containsKey(key)) {
@@ -110,8 +126,8 @@ public class MachineLearning {
 						}
 					}
 				}
-			}			
-		}
+			}
+		}			
 		return predictedValue;
 	}
 
@@ -199,6 +215,7 @@ public class MachineLearning {
 	 * @param i
 	 * @return	returns the FeatureType at index i of type requiredFeatures
 	 */
+	//add GenericMetric param and store in an ArrayList<GenericMetric>
 	public FeatureTypes getRequiredFeatures(int i){
 		if (i >= requiredFeatures.size() || i < 0) {
 			//error
