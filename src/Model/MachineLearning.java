@@ -1,6 +1,6 @@
 package Model;
 
-import Model.Features.GenericFeature;
+import Model.Features.*;
 import Model.Metrics.*;
 import Model.FeatureLayout;
 import java.util.*;
@@ -72,13 +72,34 @@ public class MachineLearning {
 			//temporary HashMap to store returned distances
 			Map<String, Integer> distances = new HashMap<>();
 			String name = feature.getName();
-			//looping through all FeatureLayouts created from constructor
+			//looping through all FeatureTypes created from constructor
 			i = 0;
 			for (FeatureTypes featureType : requiredFeatures) {
 				if (feature.isPredictable()) {
-					//predict this one
+					if (feature instanceof IntegerFeature) {
+						//looping to determine the smallest distance 'k' times
+						for (i = 0; i < k; i++) {
+							Entry<String, Integer> minimumDistance = null;
+							//loops over each distance, determines smallest
+							for(Entry<String, Integer> entry : distancesSum.entrySet()) {
+								if (minimumDistance == null || minimumDistance.getValue() > entry.getValue()) {
+									minimumDistance = entry;
+								}
+							}
+							//gets all previously stored prices associated with their keys
+							HashMap<String, GenericFeature> allPrices = new HashMap<>();
+							allPrices = storage.getFeature(feature.getName());
+							//sums the values for each of the smallest distances
+							tempPredictedValue += (int)(allPrices.get(minimumDistance.getKey()).getValue());
+							//removes smallest distance so that the next iteration will produce the next smallest distance
+							distancesSum.remove(minimumDistance.getKey());
+						}
+						//predictedValue is based on kNN, so divide by k to get average value
+						predictedValue = tempPredictedValue / k;
+					} else if (feature instanceof /*feature type we use for value (probably Discrete*/) {
+						//how to evaluate this?
+					}
 				} else {
-					//distance stuff
 					distances = feature.getMetric().getDistance();
 					
 					for (String key : distances.keySet()) {
@@ -91,27 +112,6 @@ public class MachineLearning {
 				}
 			}			
 		}
-		
-		//looping to determine the smallest distance 'k' times
-		for (i = 0; i < k; i++) {
-			Entry<String, Integer> minimumDistance = null;
-			//loops over each distance, determines smallest
-			for(Entry<String, Integer> entry : distancesSum.entrySet()) {
-				if (minimumDistance == null || minimumDistance.getValue() > entry.getValue()) {
-					minimumDistance = entry;
-				}
-			}
-			//gets all previously stored prices associated with their keys
-			HashMap<String, GenericFeature> allPrices = new HashMap<>();
-			allPrices = storage.getFeature("price");
-			//sums the values for each of the smallest distances
-			tempPredictedValue += (int)(allPrices.get(minimumDistance.getKey()).getValue());
-			//removes smallest distance so that the next iteration will produce the next smallest distance
-			distancesSum.remove(minimumDistance.getKey());
-		}
-		//predictedValue is based on kNN, so divide by k to get average value
-		predictedValue = tempPredictedValue / k;
-
 		return predictedValue;
 	}
 
