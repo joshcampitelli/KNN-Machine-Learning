@@ -1,8 +1,6 @@
 package Model.Features;
 
-public class CartesianFeature implements GenericFeature {
-	private int[] coordinates = new int[2];
-	private String name;
+public class CartesianFeature extends GenericFeature {
 
 	/* This constructor requires a String and two integers.  The values are then stored into a
 	 * two element array as a x-value and a y-value, with the String being the feature name stored locally.
@@ -10,27 +8,11 @@ public class CartesianFeature implements GenericFeature {
 	 * @author Logan MacGillivray, Ethan Morrll
 	 */
 	public CartesianFeature(String name, int x, int y){
-		coordinates[0] = x;
-		coordinates[1] = y;
-		this.name = name;
+		super(name, new int[] {x, y});
 	}
-
-	/* See GenericFeature.getValue() for full java doc
-	 * This function returns an array stored in this feature
-	 * 
-	 * @author Logan MacGillivray
-	 */
-	public Object getValue(){
-		return coordinates;
-	}
-
-	/* See GenericFeature.getName() for full java doc
-	 * Function returns the name field of the feature
-	 * @author Ethan Morrill
-	 */
-	public String getName() { return name; }
 
 	public String toString() {
-		return name + " (Cartesian): X = " + coordinates[0] + ", Y = " + coordinates[1];
+		int[] value = (int[]) this.value;
+		return this.name + " (Cartesian): X = " + value[0] + ", Y = " + value[1];
 	}
 }

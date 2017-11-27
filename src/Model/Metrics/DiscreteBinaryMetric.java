@@ -5,10 +5,8 @@ import Model.Storage;
 import java.util.HashMap;
 import java.util.Set;
 
-public class DiscreteBinaryMetric implements GenericMetric {
-
-    private String featureName;
-    private Storage storage;
+public class DiscreteBinaryMetric extends GenericMetric {
+	
     private HashMap<String, Integer> permittedValues;
 
     /* This constructor requires a string value of the feature name, a reference to the problem storage,
@@ -18,9 +16,7 @@ public class DiscreteBinaryMetric implements GenericMetric {
      * @author Ethan Morrill
      */
     public DiscreteBinaryMetric(String name, Storage storage, String[] permitted){
-
-        featureName = name;
-        this.storage = storage;
+    	super(name, storage);
         permittedValues = new HashMap<>(); 
         int i = 0;
         while(i< permitted.length ){
@@ -61,16 +57,7 @@ public class DiscreteBinaryMetric implements GenericMetric {
         }
         return null;
     }
-
-    /* See GenericMetric.getName() for full java doc
-	 * This function returns the feature name that the metric is afiliated with for viewing
-	 *
-	 * @author Logan Macgllvray
-	 */
-    public String getName(){
-    	return featureName;
-    }
-
+    
     /*
 	 * This function returns the array of permitted string values for discrete features
 	 *

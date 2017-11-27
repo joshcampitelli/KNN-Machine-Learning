@@ -15,9 +15,7 @@ import Controller.ProblemWindowController;
 public class ProblemWindow extends JFrame {
 	private ProblemWindowController problemControl;
 	private JList<String> listOfObjects;
-	private JMenuItem editMenuItem;
-	private JMenuItem removeMenuItem;
-	private JMenuItem predictMenuItem;
+	private JMenuItem editMenuItem, removeMenuItem, predictMenuItem;
 	
 	/** Constructor
 	 * 
