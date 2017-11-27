@@ -7,15 +7,20 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class IntegerFeatureGetNameTest {
-    private IntegerFeature intFeat;
+    private IntegerFeature integerFeature;
 
     @Before
     public void setUp(){
-        intFeat = new IntegerFeature("price", 1000);
+        integerFeature = new IntegerFeature("price", 1000);
     }
 
     @Test
-    public void testSize() {
-        assertEquals("Size should be 'price'.", "price", intFeat.getName());
+    public void testGetName() {
+        assertEquals("Name should be 'price'.", "price", integerFeature.getName());
+    }
+
+    @Test
+    public void testGetValue() {
+        assertEquals("Value should be 1000.", 1000, integerFeature.getValue());
     }
 }

@@ -6,10 +6,7 @@ import Model.Storage;
 import java.util.HashMap;
 import java.util.Set;
 
-public class CartesianEuclideanMetric implements GenericMetric {
-
-    private String featureName;
-    private Storage storage;
+public class CartesianEuclideanMetric extends GenericMetric {
 
     /* This constructor requires two integers and a reference to the storage for the problem.
      * The values are then stored into a two element array as a x-value and a y-value.
@@ -18,11 +15,7 @@ public class CartesianEuclideanMetric implements GenericMetric {
      * @author Logan MacGillivray, Ethan Morrill
      */
     public CartesianEuclideanMetric(String name, Storage storage){
-
-        featureName = name;
-        this.storage = storage;
-
-
+    	super(name, storage);
     }
 
     /* See GenericMetrics.getDifference(GenericMetric metric) for full java doc
@@ -58,15 +51,4 @@ public class CartesianEuclideanMetric implements GenericMetric {
         }
         return null;
     }
-
-    /* See GenericMetric.getName() for full java doc
-	 * This function returns the feature name that the metric is afiliated with for viewing
-	 *
-	 * @author Logan Macgllvray
-	 */
-    public String getName(){
-    	return featureName;
-    }
-
-
 }

@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class DiscreteFeatureGetNameTest {
+public class DiscreteFeatureTest {
     private EnumFeature intFeat;
 
     @Before
@@ -15,7 +15,12 @@ public class DiscreteFeatureGetNameTest {
     }
 
     @Test
-    public void testSize() {
-        assertEquals("Size should be 'age'.", "age", intFeat.getName());
+    public void testGetName() {
+        assertEquals("Name should be 'age'.", "age", intFeat.getName());
+    }
+
+    @Test
+    public void testGetValue() {
+        assertEquals("Value should be 'old'.", "old", intFeat.getValue());
     }
 }

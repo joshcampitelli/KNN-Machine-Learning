@@ -17,6 +17,16 @@ public class MachineLearning {
 	private int totalError;
 	private Map<String, Integer> distancesSum;
 
+	public enum FeatureTypes {
+		CartesianFeature,
+		EnumFeature,
+		IntegerFeature,
+		ComplexFeature
+	}
+
+	//Array List for the features that are required for each problem
+	private ArrayList<FeatureTypes> requiredFeatures;
+
 	public MachineLearning(String problem) {
 		this.problem = problem;
 		storage = new Storage();
@@ -96,8 +106,11 @@ public class MachineLearning {
 					minimumDistance = entry;
 				}
 			}
+			//gets all previously stored prices associated with their keys
+			HashMap<String, GenericFeature> allPrices = new HashMap<>();
+			allPrices = storage.getFeature("price");
 			//sums the values for each of the smallest distances
-			tempPredictedValue += distancesSum.get(minimumDistance.getKey());
+			tempPredictedValue += (int)(allPrices.get(minimumDistance.getKey()).getValue());
 			//removes smallest distance so that the next iteration will produce the next smallest distance
 			distancesSum.remove(minimumDistance.getKey());
 		}
@@ -215,5 +228,14 @@ public class MachineLearning {
 	public void deleteLearned (String key) {
 		//the error trapping for this one has to happen on the end of 'remove' in Storage
 		storage.remove(key);
+	}
+
+	/**
+	 * Updates an existing problem in storage.
+	 * @param key key to HashMap in storage
+	 * @param updatedInfo new array list to be inserted
+	 */
+	public void update(String key, ArrayList<GenericFeature> updatedInfo){
+		storage.update(key, updatedInfo);
 	}
 }

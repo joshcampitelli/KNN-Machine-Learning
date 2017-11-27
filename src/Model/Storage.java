@@ -72,21 +72,26 @@ public class Storage {
 	 * @author Ethan Morrill
 	 */
 	public HashMap<String, GenericFeature> getFeature(String featureName){
-
-
 		HashMap<String, GenericFeature> targetFeatures = new HashMap<>();
 		Set<String> keys = learned.keySet();
 		for(String key : keys){
 			ArrayList<GenericFeature> values = learned.get(key);
-			int i = 0;
-			while(i< values.size()){
-
-				GenericFeature feature = values.get(i);
+			for (GenericFeature feature : values) {
 				if(feature.getName().equals(featureName)){
 					targetFeatures.put(key,feature);
 				}
+				i++;
 			}
 		}
 		return targetFeatures;
+	}
+	
+	public String getFeatureString(String key) {
+		ArrayList<GenericFeature> list = learned.get(key);
+		String str = "";
+		for(int i = 0; i < list.size(); i++) {
+			str += list.get(i).toString() + "    ";
+		}
+		return str;
 	}
 }

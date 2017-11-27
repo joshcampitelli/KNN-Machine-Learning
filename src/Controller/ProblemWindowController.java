@@ -4,9 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.Box;
 import javax.swing.DefaultListModel;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -15,11 +13,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import Model.MachineLearning;
-import Model.Storage;
-import Model.Features.GenericFeature;
-import Model.Metrics.CartesianEuclideanMetric;
-import Model.Metrics.DiscreteBinaryMetric;
-import Model.Metrics.IntegerAbsoluteMetric;
 import Views.AlternateWindow;
 import Views.ProblemWindow;
 
@@ -91,7 +84,7 @@ public class ProblemWindowController implements ActionListener, ListSelectionLis
 	public DefaultListModel<String> getProblems(){
 		DefaultListModel<String> tmp = new DefaultListModel<String>();
 		for(int i = 0; i < storageKeys.size(); i++){
-			tmp.addElement(storageKeys.get(i));
+			tmp.addElement(storageKeys.get(i) + ":    " + machineLearning.getStorage().getFeatureString(storageKeys.get(i)));
 		}
 		return tmp;  
 	}
@@ -101,7 +94,15 @@ public class ProblemWindowController implements ActionListener, ListSelectionLis
 	 * @author Logan MacGillivray
 	 */
 	public String[] getProblemsArray(){
-		return machineLearning.getStorage().getLearned().keySet().toArray(new String[machineLearning.getStorage().getLearned().size()]);
+		//System.out.println(machineLearning.getStorage().getSize());
+		String[] tmp = new String[machineLearning.getStorage().getSize()];
+		String[] keys = machineLearning.getStorage().getLearned().keySet().toArray(new String[machineLearning.getStorage().getLearned().size()]);
+		
+		for(int i = 0; i < machineLearning.getStorage().getSize(); i++){
+			tmp[i] = keys[i] + ":    " + machineLearning.getStorage().getFeatureString(keys[i]);
+		}
+		return tmp;
+		//return machineLearning.getStorage().getLearned().keySet().toArray(new String[machineLearning.getStorage().getLearned().size()]);
 	}
 	
 	/** Gets name of problem
@@ -134,6 +135,11 @@ public class ProblemWindowController implements ActionListener, ListSelectionLis
 		JOptionPane.showOptionDialog(null, addPropsPanel, "Problem Creation", 
 				JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, 
 				option, option[0]);
-		return nameField.getText();
+		
+		if(nameField.getText().equals("")){
+			return "Unknown Instance";
+		} else {
+			return nameField.getText();
+		}
 	}
 }
