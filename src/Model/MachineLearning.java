@@ -73,28 +73,38 @@ public class MachineLearning {
 			Map<String, Integer> distances = new HashMap<>();
 			String name = feature.getName();
 			//looping through all FeatureLayouts created from constructor
-			for (FeatureLayout featLay : featureLayout) {
-				//checks if it's the price metric, and if it is we don't want the distance of it
-				if (featLay.getName().toLowerCase() == "price") {
-					//Do nothing
+			i = 0;
+			for (FeatureTypes featureType : requiredFeatures) {
+				if (i < requiredFeatures.size() - 1) {
+					//predict stuff as normal
 				} else {
-					//matches the names to know which feature belongs to which FeatureLayout
-					if (featLay.getName().equals(name))
-						distances = featLay.getMetric().getDistance(feature);
-					
-					//summing the total distance from the existing distancesSum and the returned
-					//distances. Sums on a key by key basis 
-					for (String key : distances.keySet()) {
-						if (distancesSum.containsKey(key)) {
-							distancesSum.put(key, distancesSum.get(key) + distances.get(key));
-						} else {
-							distancesSum.put(key, distances.get(key));
-						}
-					}
-					//for each loop exists with distancesSum containing the sum of the distances
-					//for all features of a specific key 
+					//we're on the last one, meaning do either price or value stuff
 				}
-			}			
+				i++;
+			}
+			
+//			for (FeatureLayout featLay : featureLayout) {
+//				//checks if it's the price metric, and if it is we don't want the distance of it
+//				if (featLay.getName().toLowerCase() == "price") {
+//					//Do nothing
+//				} else {
+//					//matches the names to know which feature belongs to which FeatureLayout
+//					if (featLay.getName().equals(name))
+//						distances = featLay.getMetric().getDistance(feature);
+//					
+//					//summing the total distance from the existing distancesSum and the returned
+//					//distances. Sums on a key by key basis 
+//					for (String key : distances.keySet()) {
+//						if (distancesSum.containsKey(key)) {
+//							distancesSum.put(key, distancesSum.get(key) + distances.get(key));
+//						} else {
+//							distancesSum.put(key, distances.get(key));
+//						}
+//					}
+//					//for each loop exists with distancesSum containing the sum of the distances
+//					//for all features of a specific key 
+//				}
+//			}			
 		}
 		
 		//looping to determine the smallest distance 'k' times
