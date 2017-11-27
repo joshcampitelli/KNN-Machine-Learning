@@ -41,16 +41,26 @@ public class PolarMetric implements GenericMetric {
                 Set<String> keys = learnedFeature.keySet();
                 for (String key : keys) {
                     ArrayList<GenericFeature> internalLearnedFeature = (ArrayList<GenericFeature>) learnedFeature.get(key).getValue();
-                    double learnedDistance = (double) internalLearnedFeature.get(0).getValue();
-                    int learnedAngle = (int) internalLearnedFeature.get(1).getValue();
-                    double distance = Math.sqrt(Math.pow(featureDistance,2)+Math.pow(learnedDistance,2)-2
-                            *featureDistance*learnedDistance*(Math.cos(featureAngle-learnedAngle)));
+                    if(internalFeatures.get(0).getValue() == null || internalFeatures.get(1).getValue()==null){
+                        distances.put(key,0.0);
+                    }
+                    else if(internalLearnedFeature.get(0).getValue()==null || internalLearnedFeature.get(1).getValue()==null){
+                        distances.put(key,0.0);
+                    }
+                    else{
+                        double learnedDistance = (double) internalLearnedFeature.get(0).getValue();
+                        int learnedAngle = (int) internalLearnedFeature.get(1).getValue();
+                        double distance = Math.sqrt(Math.pow(featureDistance,2)+Math.pow(learnedDistance,2)-2
+                                *featureDistance*learnedDistance*(Math.cos(featureAngle-learnedAngle)));
 
-                    distances.put(key, distance);
+                        distances.put(key, distance);
+                    }
+
                 }
                 return distances;
             }
         }
+
 
         return null;
 

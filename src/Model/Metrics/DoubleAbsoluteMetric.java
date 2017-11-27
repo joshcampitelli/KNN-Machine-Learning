@@ -23,8 +23,13 @@ public class DoubleAbsoluteMetric implements GenericMetric {
             HashMap<String, GenericFeature> learnedFeature = storage.getFeature(featureName);
             Set<String> keys = learnedFeature.keySet();
             for(String key : keys) {
-                double distance = Math.abs((double)feature.getValue() - (double)learnedFeature.get(key).getValue());
-                distances.put(key, distance);
+                if(feature.getValue()==null || learnedFeature.get(key).getValue()==null){
+                    distances.put(key,0.0);
+                }
+                else{
+                    double distance = Math.abs((double)feature.getValue() - (double)learnedFeature.get(key).getValue());
+                    distances.put(key, distance);
+                }
             }
             return distances;
 

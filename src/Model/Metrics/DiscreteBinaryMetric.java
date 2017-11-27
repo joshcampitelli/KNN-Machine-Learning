@@ -45,7 +45,10 @@ public class DiscreteBinaryMetric implements GenericMetric {
             HashMap<String, GenericFeature> learnedFeature = storage.getFeature(featureName);
             Set<String> keys = learnedFeature.keySet();
             for(String key : keys) {
-                if(permittedValues.containsKey(feature.getValue())){
+                if(feature.getValue()==null || learnedFeature.get(key).getValue()==null){
+                    distances.put(key, 0.0);
+                }
+                else if(permittedValues.containsKey(feature.getValue())){
                     if(permittedValues.get(learnedFeature.get(key).getValue()).equals(permittedValues.get(feature.getValue()))){
                         distances.put(key,0.0);
                     }

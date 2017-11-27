@@ -37,9 +37,14 @@ public class IntegerAbsoluteMetric implements GenericMetric {
             HashMap<String, GenericFeature> learnedFeature = storage.getFeature(featureName);
             Set<String> keys = learnedFeature.keySet();
             for(String key : keys) {
-                double distance = Math.abs((int)learnedFeature.get(key).getValue() - (int)feature.getValue());
+                if(feature.getValue()==null || learnedFeature.get(key).getValue()==null){
+                    distances.put(key,0.0);
+                }
+                else{
+                    double distance = Math.abs((int)learnedFeature.get(key).getValue() - (int)feature.getValue());
 
-                distances.put(key, distance);
+                    distances.put(key, distance);
+                }
             }
             return distances;
         }

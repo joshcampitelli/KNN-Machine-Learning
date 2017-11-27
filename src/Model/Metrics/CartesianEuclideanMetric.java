@@ -37,15 +37,21 @@ public class CartesianEuclideanMetric implements GenericMetric {
         HashMap<String, Double> distances = new HashMap<>();
         int[] value = (int[])feature.getValue();
         if(feature instanceof CartesianFeature){
+
             HashMap<String, GenericFeature> learnedFeature = storage.getFeature(featureName);
             Set<String> keys = learnedFeature.keySet();
             for(String key : keys) {
-                int [] learnedValue = (int[]) learnedFeature.get(key).getValue();
-                double squareSum = 0;
-                for(int i = 0; i < value.length; i++){
-                    squareSum += Math.pow(value[i]-learnedValue[i], 2);
+                if(feature.getValue()==null || learnedFeature.get(key).getValue()==null){
+                    distances.put(key, 0.0);
                 }
-                distances.put(key, Math.sqrt(squareSum));
+                else{
+                    int [] learnedValue = (int[]) learnedFeature.get(key).getValue();
+                    double squareSum = 0;
+                    for(int i = 0; i < value.length; i++){
+                        squareSum += Math.pow(value[i]-learnedValue[i], 2);
+                    }
+                    distances.put(key, Math.sqrt(squareSum));
+                }
 
             }
             return distances;
