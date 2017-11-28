@@ -230,7 +230,11 @@ public class MachineLearning {
 	public void addRequiredFeature(GenericMetric metric){
 		metrics.add(metric);
 	}
-  
+
+	public ArrayList<GenericMetric> getMetrics() {
+		return metrics;
+	}
+
 	/**
 	 * Returns the FeatureType at index i in the ArrayList of requiredFeatures
 	 * 
@@ -250,7 +254,7 @@ public class MachineLearning {
 	 * 
 	 * @return returns a list of requiredFeatures of type List<FeatureLayout>
 	 */
-	public List<FeatureTypes> getRequiredFeatures() {
+	public ArrayList<FeatureTypes> getRequiredFeatures() {
 		return requiredFeatures;
 	}
 	
