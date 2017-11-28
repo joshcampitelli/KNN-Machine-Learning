@@ -102,11 +102,7 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 						tmp.addRequiredFeature(new IntegerAbsoluteMetric(textFields[j].getText(), tmp.getStorage()));
 					}
 				}
-				
-				FindPredictable predict = new FindPredictable(textFields);
-				// ---
-				// Code to set predictable feature goes here
-				// ---
+				machineLearningArray.get(machineLearningArray.size()).setPredictable(new FindPredictable(textFields).getStr());
 				frame.newScreen();
 				new ProblemWindow(new ProblemWindowController(machineLearningArray.get(machineLearningArray.size() - 1)));
 		    } else {
