@@ -38,12 +38,19 @@ allow the user to create instances of the
 problem where they can specify what features are 
 to be added. 
 
+-----------------------------------------------
+UPDATE 2
+-----------------------------------------------
+The program now supports complex features.  The
+program is able to support multiple different  
+scenarios.
 
 Known Issues:					
-   - Program hangs when Predict is run through 
-   	the GUI
+   - Predict has a bug where the list being passed
+   	was empty, working through that bug until 
+	deadline approached
 
 The Map Ahead:	
-  1) More flexibility 
+  1) Replace CartesianFeature with a ComplexFeature
   2) Saving/Loading data
-  3) Bug fix on the Hanging Predict through GUI
+  3) Bug fix on the Predict
