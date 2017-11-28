@@ -10,11 +10,14 @@ public abstract class GenericMetric {
 	protected String featureName;
 	protected Storage storage;
 	private boolean predictable;
+	protected HashMap<String, Integer> permittedValues;
 	
 	public GenericMetric(String name, Storage storage) {
 		this.featureName = name;
 		this.storage = storage;
 		predictable = false;
+		permittedValues = null;
+		
 	}
 	
 	/* This function will return a positive whole number as a difference
@@ -38,5 +41,13 @@ public abstract class GenericMetric {
     
     public boolean isPredictable() {
     	return predictable;
+    }
+    
+    public HashMap<String, Integer> getPermittedValues() {
+    	return permittedValues;
+    }
+    
+    public void setPermittedValues(HashMap<String, Integer> permitVal) {
+    	this.permittedValues = permitVal;
     }
 }
