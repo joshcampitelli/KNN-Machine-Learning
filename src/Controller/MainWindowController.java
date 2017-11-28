@@ -106,7 +106,7 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 						tmp.addRequiredFeature(new PolarMetric(textFields[j].getText(), tmp.getStorage()));
 					}
 				}
-				machineLearningArray.get(machineLearningArray.size()).setPredictable(new FindPredictable(textFields).getStr());
+				machineLearningArray.get(machineLearningArray.size() - 1).setPredictable(new FindPredictable(textFields).getStr());
 				frame.newScreen();
 				new ProblemWindow(new ProblemWindowController(machineLearningArray.get(machineLearningArray.size() - 1)));
 		    } else {
