@@ -49,6 +49,7 @@ Known Issues:
    - Predict has a bug where the list being passed
    	was empty, working through that bug until 
 	deadline approached
+   - UML not up to date
 
 The Map Ahead:	
   1) Replace CartesianFeature with a ComplexFeature
