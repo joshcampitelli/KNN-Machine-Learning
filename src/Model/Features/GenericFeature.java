@@ -32,4 +32,8 @@ public class GenericFeature {
     public GenericMetric getMetric() {
     	return metric;
     }
+    
+    public boolean isPredictable() {
+    	return metric.isPredictable();
+    }
 }
