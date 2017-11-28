@@ -219,8 +219,8 @@ public class MachineLearning {
 	 * 
 	 * @param metric
 	 */
-	public void addRequiredFeature(GenericMetric featureType){
-		//requiredFeatures.add(featureType);
+	public void addRequiredFeature(GenericMetric metric){
+		metrics.add(metric);
 	}
   
 	/**
