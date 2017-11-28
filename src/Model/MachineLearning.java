@@ -1,8 +1,7 @@
 package Model;
 
-import Model.Features.GenericFeature;
+import Model.Features.*;
 import Model.Metrics.*;
-import Model.FeatureLayout;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -12,16 +11,28 @@ import java.util.Map.Entry;
  */
 public class MachineLearning {
 	private String problem;
-	private List<FeatureLayout> featureLayout;
+	//private List<FeatureLayout> featureLayout;
 	private Storage storage;
 	private int totalError;
 	private Map<String, Integer> distancesSum;
+
+	public enum FeatureTypes {
+		CartesianFeature,
+		EnumFeature,
+		IntegerFeature,
+		ComplexFeature
+	}
+
+	//Array List for the features that are required for each problem
+	private ArrayList<FeatureTypes> requiredFeatures;
+	private ArrayList<GenericMetric> metrics;
 
 	public MachineLearning(String problem) {
 		this.problem = problem;
 		storage = new Storage();
 		distancesSum = new HashMap<>();
-		featureLayout = new ArrayList<>();
+		requiredFeatures = new ArrayList<>();
+		metrics = new ArrayList<>();
 		totalError = 0;
 	}
 
@@ -49,65 +60,82 @@ public class MachineLearning {
 	 * @return returns the predicted value for a problem with an unknown value. Return type is of int.
 	 * @author Ryan Ribeiro
 	 */	
-	public int predict(int k, ArrayList<GenericFeature> features) {
+	public String predict(int k, ArrayList<GenericFeature> features) {
 		if (k > storage.getSize() || k < 0) {
 			//error
 		}
 		
 		int predictedValue, tempPredictedValue = 0;
 		int i; //loop control variable
-		
-		//looping through all features passed to predict
 		for (GenericFeature feature : features) {
-			//temporary HashMap to store returned distances
-			Map<String, Integer> distances = new HashMap<>();
 			String name = feature.getName();
-			//looping through all FeatureLayouts created from constructor
-			for (FeatureLayout featLay : featureLayout) {
-				//checks if it's the price metric, and if it is we don't want the distance of it
-				if (featLay.getName().toLowerCase() == "price") {
-					//Do nothing
-				} else {
-					//matches the names to know which feature belongs to which FeatureLayout
-					if (featLay.getName().equals(name))
-						distances = featLay.getMetric().getDistance(feature);
-					
-					//summing the total distance from the existing distancesSum and the returned
-					//distances. Sums on a key by key basis 
+			Map<String, Integer> distances = new HashMap<>();
+			i = 0;
+			for (FeatureTypes featureType : requiredFeatures) {
+				if (feature.isPredictable()) {
+					if (feature instanceof IntegerFeature) {
+						//looping to determine the smallest distance 'k' times
+						for (i = 0; i < k; i++) {
+							Entry<String, Integer> minimumDistance = null;
+							//loops over each distance, determines smallest
+							for(Entry<String, Integer> entry : distancesSum.entrySet()) {
+								if (minimumDistance == null || minimumDistance.getValue() > entry.getValue()) {
+									minimumDistance = entry;
+								}
+							}
+							//gets all previously stored prices associated with their keys
+							HashMap<String, GenericFeature> allPrices = new HashMap<>();
+							allPrices = storage.getFeature(name);
+							//sums the values for each of the smallest distances
+							tempPredictedValue += (int)(allPrices.get(minimumDistance.getKey()).getValue());
+							//removes smallest distance so that the next iteration will produce the next smallest distance
+							distancesSum.remove(minimumDistance.getKey());
+						}
+						//predictedValue is based on kNN, so divide by k to get average value
+						predictedValue = tempPredictedValue / k;
+						return predictedValue + "";
+					} else if (feature instanceof EnumFeature) {
+						HashMap<String, Integer> permittedValues = feature.getMetric().getPermittedValues();
+						HashMap<String, Integer> valuesTally = new HashMap<>();
+						HashMap<String, GenericFeature> allActions = new HashMap<>();
+						allActions = storage.getFeature(name);
+						for (i = 0; i < k; i++) {
+							Entry<String, Integer> minimumDistance = null;
+							//loops over each distance, determines smallest
+							for(Entry<String, Integer> entry : distancesSum.entrySet()) {
+								if (minimumDistance == null || permittedValues.get(minimumDistance.getValue()) > permittedValues.get(entry.getValue())) {
+									minimumDistance = entry;
+								}
+							}
+							//gets all previously stored actions associated with their keys
+							
+							//sums the values for each of the smallest distances
+							//tempPredictedValue += permittedValues.get(allActions.get(minimumDistance.getKey()).getValue());
+							if (valuesTally.containsKey(minimumDistance.getKey())) {
+								valuesTally.put(minimumDistance.getKey(), valuesTally.get(minimumDistance.getKey()) + 1);
+							}							
+							//removes smallest distance so that the next iteration will produce the next smallest distance
+							distancesSum.remove(minimumDistance.getKey());							
+						}
+						Entry<String, Integer> maxTally = null;
+						for (Entry<String, Integer> entry : valuesTally.entrySet()) {
+							if (maxTally == null || valuesTally.get(entry.getKey()) > valuesTally.get(maxTally.getKey())) {
+								maxTally = entry;
+							}
+						}
+						return (maxTally.getKey()); 
+					}
+				} else {					
 					for (String key : distances.keySet()) {
 						if (distancesSum.containsKey(key)) {
 							distancesSum.put(key, distancesSum.get(key) + distances.get(key));
 						} else {
-							distancesSum.put(key, distances.get(key));
+							distancesSum.put(key,  distances.get(key));
 						}
 					}
-					//for each loop exists with distancesSum containing the sum of the distances
-					//for all features of a specific key 
-				}
-			}			
-		}
-		
-		//looping to determine the smallest distance 'k' times
-		for (i = 0; i < k; i++) {
-			Entry<String, Integer> minimumDistance = null;
-			//loops over each distance, determines smallest
-			for(Entry<String, Integer> entry : distancesSum.entrySet()) {
-				if (minimumDistance == null || minimumDistance.getValue() > entry.getValue()) {
-					minimumDistance = entry;
 				}
 			}
-			//gets all previously stored prices associated with their keys
-			HashMap<String, GenericFeature> allPrices = new HashMap<>();
-			allPrices = storage.getFeature("price");
-			//sums the values for each of the smallest distances
-			tempPredictedValue += (int)(allPrices.get(minimumDistance.getKey()).getValue());
-			//removes smallest distance so that the next iteration will produce the next smallest distance
-			distancesSum.remove(minimumDistance.getKey());
 		}
-		//predictedValue is based on kNN, so divide by k to get average value
-		predictedValue = tempPredictedValue / k;
-
-		return predictedValue;
 	}
 
 	/**
@@ -125,14 +153,21 @@ public class MachineLearning {
 		}
 		
 		int expectedValue = 0;
+		int predictedValue = 0;
 		
 		//looping to find the feature that contains the value for that set of features
 		for (GenericFeature genFeat : features) {
-			if (genFeat.getName().toLowerCase() == "price")
-				//"price" is going to always be an IntegerFeature, so casting it to int is safe
-				expectedValue = (int)(genFeat.getValue());			
-		}	
-		int predictedValue = this.predict(k, features);
+			HashMap<String, Integer> permittedValues = genFeat.getMetric().getPermittedValues();
+			if (genFeat.isPredictable()) {
+				if (genFeat instanceof IntegerFeature) {
+					expectedValue = Integer.parseInt((String)genFeat.getValue());
+					predictedValue = Integer.parseInt(this.predict(k, features));
+				} else if (genFeat instanceof EnumFeature) {
+					expectedValue = permittedValues.get(genFeat.getValue());
+					predictedValue = permittedValues.get(this.predict(k, features));
+				}
+			}
+		}
 		//error is the difference between the predicted value and the expected value
 		int error = Math.abs(predictedValue-expectedValue);
 		addError(error);
@@ -179,35 +214,44 @@ public class MachineLearning {
 		return storage;
 	}
 	
+	public void setPredictable(String name) {
+		for(GenericMetric metric : metrics) {
+			if (metric.getName().equals(name)) {
+				metric.setPredictable();
+			}
+		}
+	}
+	
 	/**
-	 * Adds a FeatureLayout to the ArrayList of FeatureLayouts
+	 * Adds a FeatureTypes to the ArrayList of requiredFeatures
 	 * 
 	 * @param metric
 	 */
-	public void addFeatureLayout(GenericMetric metric){
-		featureLayout.add(new FeatureLayout(metric));
+	public void addRequiredFeature(GenericMetric metric){
+		metrics.add(metric);
 	}
   
 	/**
-	 * Returns the FeatureLayout at index i in the ArrayList of FeatureLayouts
+	 * Returns the FeatureType at index i in the ArrayList of requiredFeatures
 	 * 
 	 * @param i
-	 * @return	returns the FeatureLayout at index i of type FeatureLayout
+	 * @return	returns the FeatureType at index i of type requiredFeatures
 	 */
-	public FeatureLayout getFeatureLayout(int i){
-		if (i >= featureLayout.size() || i < 0) {
+	//add GenericMetric param and store in an ArrayList<GenericMetric>
+	public FeatureTypes getRequiredFeatures(int i){
+		if (i >= requiredFeatures.size() || i < 0) {
 			//error
 		}
-		return featureLayout.get(i);
+		return requiredFeatures.get(i);
 	}
 
 	/**
 	 * Returns a list of FeatureLayouts
 	 * 
-	 * @return returns a list of FeatureLayouts of type List<FeatureLayout>
+	 * @return returns a list of requiredFeatures of type List<FeatureLayout>
 	 */
-	public List<FeatureLayout> getFeatureLayout() {
-		return featureLayout;
+	public List<FeatureTypes> getRequiredFeatures() {
+		return requiredFeatures;
 	}
 	
 	/**
@@ -218,5 +262,14 @@ public class MachineLearning {
 	public void deleteLearned (String key) {
 		//the error trapping for this one has to happen on the end of 'remove' in Storage
 		storage.remove(key);
+	}
+
+	/**
+	 * Updates an existing problem in storage.
+	 * @param key key to HashMap in storage
+	 * @param updatedInfo new array list to be inserted
+	 */
+	public void update(String key, ArrayList<GenericFeature> updatedInfo){
+		storage.update(key, updatedInfo);
 	}
 }

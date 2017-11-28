@@ -84,4 +84,13 @@ public class Storage {
 		}
 		return targetFeatures;
 	}
+	
+	public String getFeatureString(String key) {
+		ArrayList<GenericFeature> list = learned.get(key);
+		String str = "";
+		for(int i = 0; i < list.size(); i++) {
+			str += list.get(i).toString() + "    ";
+		}
+		return str;
+	}
 }

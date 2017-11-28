@@ -1,22 +1,42 @@
 package Model.Metrics;
+import Model.Storage;
 /* @author Logan MacGillivray
  */
 import Model.Features.*;
 
 import java.util.HashMap;
 
-public interface GenericMetric {
-
+public abstract class GenericMetric {
+	protected String featureName;
+	protected Storage storage;
+	private boolean predictable;
+	
+	public GenericMetric(String name, Storage storage) {
+		this.featureName = name;
+		this.storage = storage;
+		predictable = false;
+	}
+	
 	/* This function will return a positive whole number as a difference
 	 * between two metrics.  It will also return -1 when the metric passed 
 	 * does not match the current metric.  A metric parameter is required.
 	 * 
-	 */
-	public HashMap<String, Integer> getDistance(GenericFeature feature);
+	*/
+	public abstract HashMap<String, Double> getDistance(GenericFeature feature);	
 
-
-	/* Funct will return the name of the feature which the metric is related to.
-	 * No Parameters required.
+	/* This function returns the feature name that the metric is afiliated with for viewing
+	 *
+	 * @author Logan Macgllvray
 	 */
-	public String getName();
+    public String getName(){
+    	return featureName;
+    }
+
+    public void setPredictable() {
+    	predictable = true;
+    }
+    
+    public boolean isPredictable() {
+    	return predictable;
+    }
 }

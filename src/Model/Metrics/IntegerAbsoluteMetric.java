@@ -5,10 +5,7 @@ import Model.Storage;
 import java.util.HashMap;
 import java.util.Set;
 
-public class IntegerAbsoluteMetric implements GenericMetric {
-
-    private String featureName;
-    private Storage storage;
+public class IntegerAbsoluteMetric extends GenericMetric {
 
     /* Old metric class placed here temporarily, will function differently post design meeting
      */
@@ -19,9 +16,7 @@ public class IntegerAbsoluteMetric implements GenericMetric {
      * @author Logan MacGillivray, Ethan Morrill
      */
     public IntegerAbsoluteMetric(String name, Storage storage){
-
-        featureName = name;
-        this.storage = storage;
+    	super(name,storage);
 
     }
 
@@ -31,27 +26,23 @@ public class IntegerAbsoluteMetric implements GenericMetric {
      *
      * @author Logan MacGillivray, Ethan Morrill
      */
-    public HashMap<String, Integer> getDistance(GenericFeature feature){
-        HashMap<String, Integer> distances = new HashMap<>();
+    public HashMap<String, Double> getDistance(GenericFeature feature){
+        HashMap<String, Double> distances = new HashMap<>();
         if((feature instanceof IntegerFeature)){
             HashMap<String, GenericFeature> learnedFeature = storage.getFeature(featureName);
             Set<String> keys = learnedFeature.keySet();
             for(String key : keys) {
-                int distance = Math.abs((int)learnedFeature.get(key).getValue() - (int)feature.getValue());
+                if(feature.getValue()==null || learnedFeature.get(key).getValue()==null){
+                    distances.put(key,0.0);
+                }
+                else{
+                    double distance = Math.abs((int)learnedFeature.get(key).getValue() - (int)feature.getValue());
 
-                distances.put(key, distance);
+                    distances.put(key, distance);
+                }
             }
             return distances;
         }
         return null;
-    }
-
-    /* See GenericMetric.getName() for full java doc
-	 * This function returns the feature name that the metric is afiliated with for viewing
-	 *
-	 * @author Logan Macgllvray
-	 */
-    public String getName(){
-    	return featureName;
     }
 }
