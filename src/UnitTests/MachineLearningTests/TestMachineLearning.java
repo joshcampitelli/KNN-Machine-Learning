@@ -24,16 +24,25 @@ public class TestMachineLearning {
 	private ArrayList<GenericFeature> featuresToLearn2;
 	private ArrayList<GenericFeature> featuresToLearn3;
 	
+	public enum FeatureTypes {
+		CartesianFeature,
+		EnumFeature,
+		IntegerFeature,
+		ComplexFeature
+	}
+	
 	@Before
 	public void setup() {
 		problem = "Housing";
 		machineLearning = new MachineLearning(problem);
 		String[] allowableDiscreteValues = {"old", "new"};
+		CartesianEuclideanMetric cartMet = new CartesianEuclideanMetric("coordinates", machineLearning.getStorage());
+		IntegerAbsoluteMetric intMet = new IntegerAbsoluteMetric("sq. ft.", machineLearning.getStorage());
 		
-		machineLearning.addFeatureLayout(new CartesianEuclideanMetric("coordinates", machineLearning.getStorage()));
-		machineLearning.addFeatureLayout(new IntegerAbsoluteMetric("sq. ft.", machineLearning.getStorage()));
-		machineLearning.addFeatureLayout(new DiscreteBinaryMetric("age", machineLearning.getStorage(), allowableDiscreteValues));
-		machineLearning.addFeatureLayout(new IntegerAbsoluteMetric("price", machineLearning.getStorage()));
+		machineLearning.addRequiredFeature(new CartesianEuclideanMetric("coordinates", machineLearning.getStorage()));
+		machineLearning.addRequiredFeature(new IntegerAbsoluteMetric("sq. ft.", machineLearning.getStorage()));
+		machineLearning.addRequiredFeature(new DiscreteBinaryMetric("age", machineLearning.getStorage(), allowableDiscreteValues));
+		machineLearning.addRequiredFeature(new IntegerAbsoluteMetric("price", machineLearning.getStorage()));
 	
 		featuresToLearn1 = new ArrayList<>();
 		featuresToLearn1.add(new CartesianFeature("coordinates", 12, 25));
