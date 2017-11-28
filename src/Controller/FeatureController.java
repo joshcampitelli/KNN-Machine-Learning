@@ -252,6 +252,27 @@ public class FeatureController {
         for (int i = 0; i < listModel.size(); i ++) {
             newInstance.add(listModel.get(i));
         }
+        GenericFeature predictFeature;
+
+        if (predictMetric != null) {
+            if (predictMetric instanceof CartesianEuclideanMetric) {
+                predictFeature = cartesianFeatureWindow(predictMetric);
+                newInstance.add(predictFeature);
+            } else if (predictMetric instanceof IntegerAbsoluteMetric) {
+                predictFeature = integerFeatureWindow(predictMetric);
+                newInstance.add(predictFeature);
+            } else if (predictMetric instanceof DiscreteBinaryMetric) {
+                predictFeature = enumFeatureWindow(predictMetric);
+                newInstance.add(predictFeature);
+            } else if (predictMetric instanceof DoubleAbsoluteMetric) {
+                predictFeature = doubleFeatureWindow(predictMetric);
+                newInstance.add(predictFeature);
+            } else if (predictMetric instanceof PolarMetric) {
+                predictFeature = complexPolarFeature(predictMetric);
+                newInstance.add(predictFeature);
+            }
+        }
+
         machineLearning.learn(key, newInstance);
     }
 
@@ -306,7 +327,7 @@ public class FeatureController {
             int k = getInteger(intField.getText());
             if (k > 0) {
                 predictedValue = machineLearning.predict(k, newInstance);
-                JOptionPane.showMessageDialog(null, "Predicted Error is: " + predictedValue);
+                JOptionPane.showMessageDialog(null, "Predicted Value is: " + predictedValue);
             } else {
                 JOptionPane.showMessageDialog(null, "Incorrect value for K.");
                 predictPrice(listModel);
