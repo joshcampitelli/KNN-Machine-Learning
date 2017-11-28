@@ -60,7 +60,7 @@ public class MachineLearning {
 	 * @return returns the predicted value for a problem with an unknown value. Return type is of int.
 	 * @author Ryan Ribeiro
 	 */	
-	public int predict(int k, ArrayList<GenericFeature> features) {
+	public String predict(int k, ArrayList<GenericFeature> features) {
 		if (k > storage.getSize() || k < 0) {
 			//error
 		}
@@ -93,31 +93,39 @@ public class MachineLearning {
 						}
 						//predictedValue is based on kNN, so divide by k to get average value
 						predictedValue = tempPredictedValue / k;
+						return predictedValue + "";
 					} else if (feature instanceof EnumFeature) {
+						HashMap<String, Integer> permittedValues = feature.getMetric().getPermittedValues();
+						HashMap<String, Integer> valuesTally = new HashMap<>();
+						HashMap<String, GenericFeature> allActions = new HashMap<>();
+						allActions = storage.getFeature(name);
 						for (i = 0; i < k; i++) {
 							Entry<String, Integer> minimumDistance = null;
 							//loops over each distance, determines smallest
 							for(Entry<String, Integer> entry : distancesSum.entrySet()) {
-								if (minimumDistance == null || minimumDistance.getValue() > entry.getValue()) {
+								if (minimumDistance == null || permittedValues.get(minimumDistance.getValue()) > permittedValues.get(entry.getValue())) {
 									minimumDistance = entry;
 								}
 							}
 							//gets all previously stored actions associated with their keys
-							HashMap<String, GenericFeature> allActions = new HashMap<>();
-							allActions = storage.getFeature(name);
 							
-							
-//							//sums the values for each of the smallest distances
-//							tempPredictedValue += (int)(allActions.get(minimumDistance.getKey()).getValue());
-							
-							
+							//sums the values for each of the smallest distances
+							//tempPredictedValue += permittedValues.get(allActions.get(minimumDistance.getKey()).getValue());
+							if (valuesTally.containsKey(minimumDistance.getKey())) {
+								valuesTally.put(minimumDistance.getKey(), valuesTally.get(minimumDistance.getKey()) + 1);
+							}							
 							//removes smallest distance so that the next iteration will produce the next smallest distance
-							distancesSum.remove(minimumDistance.getKey());
+							distancesSum.remove(minimumDistance.getKey());							
 						}
-						
+						Entry<String, Integer> maxTally = null;
+						for (Entry<String, Integer> entry : valuesTally.entrySet()) {
+							if (maxTally == null || valuesTally.get(entry.getKey()) > valuesTally.get(maxTally.getKey())) {
+								maxTally = entry;
+							}
+						}
+						return (maxTally.getKey()); 
 					}
-				} else {
-					
+				} else {					
 					for (String key : distances.keySet()) {
 						if (distancesSum.containsKey(key)) {
 							distancesSum.put(key, distancesSum.get(key) + distances.get(key));
@@ -127,8 +135,7 @@ public class MachineLearning {
 					}
 				}
 			}
-		}			
-		return predictedValue;
+		}
 	}
 
 	/**
@@ -146,14 +153,21 @@ public class MachineLearning {
 		}
 		
 		int expectedValue = 0;
+		int predictedValue = 0;
 		
 		//looping to find the feature that contains the value for that set of features
 		for (GenericFeature genFeat : features) {
-			if (genFeat.getName().toLowerCase() == "price")
-				//"price" is going to always be an IntegerFeature, so casting it to int is safe
-				expectedValue = (int)(genFeat.getValue());			
-		}	
-		int predictedValue = this.predict(k, features);
+			HashMap<String, Integer> permittedValues = genFeat.getMetric().getPermittedValues();
+			if (genFeat.isPredictable()) {
+				if (genFeat instanceof IntegerFeature) {
+					expectedValue = Integer.parseInt((String)genFeat.getValue());
+					predictedValue = Integer.parseInt(this.predict(k, features));
+				} else if (genFeat instanceof EnumFeature) {
+					expectedValue = permittedValues.get(genFeat.getValue());
+					predictedValue = permittedValues.get(this.predict(k, features));
+				}
+			}
+		}
 		//error is the difference between the predicted value and the expected value
 		int error = Math.abs(predictedValue-expectedValue);
 		addError(error);
