@@ -19,7 +19,7 @@ public class AlternateWindow extends JFrame {
     private JMenuItem learnItem = new JMenuItem("Learn Instance");
     private JMenuItem updateItem = new JMenuItem("Update Instance");
 
-    private JMenuItem predictPriceItem = new JMenuItem("Predict Price");
+    private JMenuItem predictPriceItem = new JMenuItem("Predict Value");
     private JMenuItem predictErrorItem = new JMenuItem("Predict Error");
   
     private JMenuItem cancelItem = new JMenuItem("Cancel");
