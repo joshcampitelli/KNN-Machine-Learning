@@ -70,7 +70,7 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 				// Add a JTextField for every property required for the problem
 				for(int i = 0; i < Integer.parseInt(propertyField.getText()); i++){
 					textFields[i] = new JTextField(5);
-					String[] arrayOfMetrics = {"CartesianEuclideanMetric", "DiscreteBinaryMetric", "IntegerAbsoluteMetric", "DoubleIntegerAbsoluteMetric", "PolarMetric"};
+					String[] arrayOfMetrics = {"CartesianEuclideanMetric", "DiscreteBinaryMetric", "IntegerAbsoluteMetric", "DoubleAbsoluteMetric", "PolarMetric"};
 					comboBoxes[i] = new JComboBox(arrayOfMetrics);
 					addPropsPanel = addToPanel(addPropsPanel, new JComponent[] {textFields[i], comboBoxes[i],(JComponent) Box.createHorizontalStrut(15)});
 				}
