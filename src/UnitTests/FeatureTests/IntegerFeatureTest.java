@@ -3,15 +3,20 @@ package UnitTests.FeatureTests;
 import Model.Features.IntegerFeature;
 import org.junit.Before;
 import org.junit.Test;
+import Model.Storage;
+import Model.Metrics.IntegerAbsoluteMetric;
 
 import static org.junit.Assert.*;
 
-public class IntegerFeatureGetNameTest {
+public class IntegerFeatureTest {
     private IntegerFeature integerFeature;
+    private IntegerAbsoluteMetric intMetric;
 
     @Before
     public void setUp(){
-        integerFeature = new IntegerFeature("price", 1000);
+        Storage storage = new Storage();
+        intMetric = new IntegerAbsoluteMetric("price", storage);
+        integerFeature = new IntegerFeature("price", 1000, intMetric);
     }
 
     @Test
@@ -22,5 +27,10 @@ public class IntegerFeatureGetNameTest {
     @Test
     public void testGetValue() {
         assertEquals("Value should be 1000.", 1000, integerFeature.getValue());
+    }
+
+    @Test
+    public void testGetMetric(){
+        assertEquals("Metric comparison should return true",true,intMetric.equals(integerFeature.getMetric()));
     }
 }

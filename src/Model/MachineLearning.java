@@ -139,7 +139,7 @@ public class MachineLearning {
 				}
 			}
 		}
-		return null;
+		return "";
 	}
 
 	/**

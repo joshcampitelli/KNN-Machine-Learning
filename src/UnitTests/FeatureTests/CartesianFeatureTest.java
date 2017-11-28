@@ -7,14 +7,19 @@ import org.junit.Test;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
+import Model.Storage;
+import Model.Metrics.CartesianEuclideanMetric;
 
 public class CartesianFeatureTest {
     private CartesianFeature cartesianFeature;
     private int[] testValues;
+    private CartesianEuclideanMetric cartMetric;
 
     @Before
     public void setUp(){
-        cartesianFeature = new CartesianFeature("coordinates", 10,5);
+        Storage storage = new Storage();
+        cartMetric = new CartesianEuclideanMetric("coordinates", storage);
+        cartesianFeature = new CartesianFeature("coordinates", 10,5, cartMetric);
         testValues = new int[]{10,5};
     }
 
@@ -26,5 +31,10 @@ public class CartesianFeatureTest {
     @Test
     public void testGetValue() {
         assertEquals("Array comparison should return true.",true, Arrays.equals(testValues,(int[]) cartesianFeature.getValue()));
+    }
+
+    @Test
+    public void testGetMetric(){
+        assertEquals("The metric comparison should return true.", true, cartMetric.equals(cartesianFeature.getMetric()));
     }
 }
