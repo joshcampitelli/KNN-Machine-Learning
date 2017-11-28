@@ -22,7 +22,6 @@ public class ComplexDifferenceMetric extends GenericMetric {
      */
 
      //Has temporary getMetric until implementation is known
-    @Override
     public HashMap<String, Double> getDistance(GenericFeature feature) {
         HashMap<String, Double> distances = new HashMap<>();
         if(feature instanceof ComplexFeature){
