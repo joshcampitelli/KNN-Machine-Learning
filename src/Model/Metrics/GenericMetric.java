@@ -6,7 +6,7 @@ import Model.Features.*;
 
 import java.util.HashMap;
 
-public class GenericMetric {
+public abstract class GenericMetric {
 	protected String featureName;
 	protected Storage storage;
 	private boolean predictable;
@@ -21,12 +21,8 @@ public class GenericMetric {
 	 * between two metrics.  It will also return -1 when the metric passed 
 	 * does not match the current metric.  A metric parameter is required.
 	 * 
-
-	public HashMap<String, Double> getDistance(GenericFeature feature){
-		return null;
-	}
-
-
+	*/
+	public abstract HashMap<String, Double> getDistance(GenericFeature feature);	
 
 	/* This function returns the feature name that the metric is afiliated with for viewing
 	 *

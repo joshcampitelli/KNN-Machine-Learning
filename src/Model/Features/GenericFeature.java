@@ -2,7 +2,7 @@ package Model.Features;
 
 import Model.Metrics.GenericMetric;
 
-public class GenericFeature {
+public abstract class GenericFeature {
 	protected Object value;
 	protected String name;
 	protected GenericMetric metric;
