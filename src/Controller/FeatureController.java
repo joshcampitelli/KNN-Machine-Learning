@@ -1,13 +1,9 @@
 package Controller;
 
-import Model.FeatureLayout;
+import Model.Features.*;
 import Model.MachineLearning;
 
-import Model.Features.GenericFeature;
-import Model.Features.IntegerFeature;
-import Model.Features.CartesianFeature;
-import Model.Features.EnumFeature;
-
+import Model.Metrics.*;
 import Model.Storage;
 
 import javax.swing.*;
@@ -19,9 +15,12 @@ public class FeatureController {
     private Storage storage; //HashMap Reference
     private State state; //Indicates edit or add
     private ProblemWindowController control;
+    private GenericMetric predictMetric = null;
 
     /*
-     * Represents the state in which the program was opened
+     * Represents the state in which the program was opened:
+     * editProblem State - Gets all current attributes from the Storage and allows user to modify.
+     * addProblem State - Prompts the user for new values for attributes
      */
     public enum State {
         editProblem,
@@ -30,8 +29,8 @@ public class FeatureController {
 
     public FeatureController(ProblemWindowController pwc, String state, String key) {
         this.control = pwc;
-    	this.machineLearning = pwc.getMachine();
-    	this.key = key;
+        this.machineLearning = pwc.getMachine();
+        this.key = key;
         this.storage = machineLearning.getStorage();
         if (state.toLowerCase().equals("add")) {
             this.state = State.addProblem;
@@ -76,19 +75,43 @@ public class FeatureController {
      * @author Josh Campitelli
      */
     private void instantiateFeatures(DefaultListModel<GenericFeature> listModel) {
+        ArrayList<GenericMetric> metrics = machineLearning.getMetrics();
         GenericFeature feature = null;
-        for (FeatureLayout featureLayout : machineLearning.getFeatureLayout()) {
-            if (featureLayout.getFeatureType() == FeatureLayout.FeatureType.CartesianFeature) {
-                feature = cartesianFeatureWindow(featureLayout.getName());
-            } else if (featureLayout.getFeatureType() == FeatureLayout.FeatureType.IntegerFeature) {
-                feature = integerFeatureWindow(featureLayout.getName());
-            } else if (featureLayout.getFeatureType() == FeatureLayout.FeatureType.DiscreteFeature) {
-                feature = enumFeatureWindow(featureLayout.getName());
+
+        //Loop through the required features & their metrics and get user input.
+        for (GenericMetric metric : metrics) {
+            //Get the predictable metric type.
+            if (metric.isPredictable()) {
+                predictMetric = metric;
+                continue;
             }
-            if (feature != null) {
+
+            if (metric instanceof CartesianEuclideanMetric) {
+                feature = cartesianFeatureWindow(metric);
+            } else if (metric instanceof IntegerAbsoluteMetric) {
+                feature = integerFeatureWindow(metric);
+            } else if (metric instanceof DiscreteBinaryMetric) {
+                feature = enumFeatureWindow(metric);
+            } else if (metric instanceof DoubleAbsoluteMetric) {
+                feature = doubleFeatureWindow(metric);
+            } else if (metric instanceof PolarMetric) {
+                feature = complexPolarFeature(metric);
+            }
+
+            //Add to gui feature to gui JList
+            if (feature != null)
                 listModel.addElement(feature);
-            }
         }
+    }
+
+
+    private GenericFeature complexPolarFeature(GenericMetric metric) {
+        GenericFeature subFeature1 = integerFeatureWindow(metric);
+        GenericFeature subFeature2 = doubleFeatureWindow(metric);
+        ArrayList<GenericFeature> subFeatures = new ArrayList<>();
+        subFeatures.add(subFeature1);
+        subFeatures.add(subFeature2);
+        return new ComplexFeature(metric.getName(), subFeatures, metric);
     }
 
     /**
@@ -100,14 +123,18 @@ public class FeatureController {
     public void editFeature(JList list, DefaultListModel<GenericFeature> listModel) {
         int index = list.getSelectedIndex();
         GenericFeature feature = listModel.getElementAt(index);
+
         if (feature instanceof CartesianFeature) {
-            feature = cartesianFeatureWindow(feature.getName());
+            feature = cartesianFeatureWindow(feature.getMetric());
         } else if (feature instanceof EnumFeature) {
-            feature = enumFeatureWindow(feature.getName());
+            feature = enumFeatureWindow(feature.getMetric());
         } else if (feature instanceof IntegerFeature) {
-            feature = integerFeatureWindow(feature.getName());
+            feature = integerFeatureWindow(feature.getMetric());
+        } else if (feature instanceof DoubleFeature) {
+            feature = doubleFeatureWindow(feature.getMetric());
         }
 
+        //todo: add complex feature implementation
         if (feature != null) {
             /*Replace the current feature with updated*/
             listModel.removeElementAt(index);
@@ -121,15 +148,15 @@ public class FeatureController {
      * @return CartesianFeature
      * @author Josh Campitelli
      */
-    private CartesianFeature cartesianFeatureWindow(String name) {
+    private CartesianFeature cartesianFeatureWindow(GenericMetric metric) {
         JTextField xField = new JTextField();
         JTextField yField = new JTextField();
 
         Object[] message = {
-            "X Coordinate:", xField,
-            "Y Coordinate:", yField,
+                "X Coordinate:", xField,
+                "Y Coordinate:", yField,
         };
-        int option = JOptionPane.showConfirmDialog(null, message, name + " (Cartesian):", JOptionPane.OK_CANCEL_OPTION);
+        int option = JOptionPane.showConfirmDialog(null, message, metric.getName() + " (Cartesian):", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
             int x, y;
             try {
@@ -137,9 +164,9 @@ public class FeatureController {
                 y = Integer.valueOf(yField.getText());
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null, "Incorrect coordinate.");
-                return cartesianFeatureWindow(name); //Testing recursion here.
+                return cartesianFeatureWindow(metric); //Testing recursion here.
             }
-            return new CartesianFeature(name, x, y);
+            return new CartesianFeature(metric.getName(), x, y, metric);
         }
         return null;
     }
@@ -151,14 +178,14 @@ public class FeatureController {
      * @author Josh Campitelli
      * todo: input validation, check if its an accepted DiscreteValue
      */
-    private EnumFeature enumFeatureWindow(String name) {
+    private EnumFeature enumFeatureWindow(GenericMetric metric) {
         JTextField enumField = new JTextField();
         Object[] message = {
-            "Discrete Value:", enumField,
+                "Discrete Value:", enumField,
         };
-        int option = JOptionPane.showConfirmDialog(null, message, name + " (Discrete):", JOptionPane.OK_CANCEL_OPTION);
+        int option = JOptionPane.showConfirmDialog(null, message, metric.getName() + " (Discrete):", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
-            return new EnumFeature(name, enumField.getText());
+            return new EnumFeature(metric.getName(), enumField.getText(), metric);
         }
         return null;
     }
@@ -169,22 +196,47 @@ public class FeatureController {
      * @return IntegerFeature
      * @author Josh Campitelli
      */
-    private IntegerFeature integerFeatureWindow(String name) {
+    private IntegerFeature integerFeatureWindow(GenericMetric metric) {
         JTextField intField = new JTextField();
         Object[] message = {
-            "Integer Value:", intField,
+                "Integer Value:", intField,
         };
-        int option = JOptionPane.showConfirmDialog(null, message, name + " (Integer):", JOptionPane.OK_CANCEL_OPTION);
+        int option = JOptionPane.showConfirmDialog(null, message, metric.getName() + " (Integer):", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
             int value;
             try {
                 value = Integer.valueOf(intField.getText());
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null, "Incorrect value.");
-                return integerFeatureWindow(name); //Testing recursion here.
+                return integerFeatureWindow(metric); //Testing recursion here.
             }
 
-            return new IntegerFeature(name, value);
+            return new IntegerFeature(metric.getName(), value, metric);
+        }
+        return null;
+    }
+
+    /**
+     * doubleFeatureWindow creates a new window which represents a double feature, where the user
+     * can enter the value. Creates a new DoubleFeature and returns it.
+     * @return DoubleFeature
+     * @author Josh Campitelli
+     */
+    private DoubleFeature doubleFeatureWindow(GenericMetric metric) {
+        JTextField doubleField = new JTextField();
+        Object[] message = {
+                "Double Value:", doubleField
+        };
+        int option = JOptionPane.showConfirmDialog(null, message, metric.getName() + " (Double):", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            double value;
+            try {
+                value = Double.valueOf(doubleField.getText());
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Incorrect value.");
+                return doubleFeatureWindow(metric); //Testing recursion here.
+            }
+            return new DoubleFeature(metric.getName(), value, metric);
         }
         return null;
     }
@@ -200,23 +252,7 @@ public class FeatureController {
         for (int i = 0; i < listModel.size(); i ++) {
             newInstance.add(listModel.get(i));
         }
-
-        JTextField intField = new JTextField();
-        Object[] message = {
-                "Price:", intField,
-        };
-        int option = JOptionPane.showConfirmDialog(null, message, "Price of Instance", JOptionPane.OK_CANCEL_OPTION);
-        if (option == JOptionPane.OK_OPTION) {
-            int price = getInteger(intField.getText());
-
-            if (price >= 0) {
-                newInstance.add(new IntegerFeature("price", price));
-                machineLearning.learn(key, newInstance);
-            } else {
-                JOptionPane.showMessageDialog(null, "Incorrect price value.");
-                learnInstance(listModel);
-            }
-        }
+        machineLearning.learn(key, newInstance);
     }
 
     /**
@@ -235,18 +271,14 @@ public class FeatureController {
     }
 
     /**
-     * priceExists determines whether or not a instance has a price parameter
+     * predictable determines whether or not a instance has a predictable feature
      * @return boolean
      * @author Josh Campitelli
-     * todo: fix hard coded name "price"
      */
-    public boolean priceExists() {
-        ArrayList<GenericFeature> features = machineLearning.getStorage().getLearned().get(key);
-        if (features != null) {
-            for (GenericFeature feature : machineLearning.getStorage().getLearned().get(key)) {
-                if (feature.getName().toLowerCase().equals("price")) {
-                    return true;
-                }
+    public boolean predictableExists() {
+        for (GenericMetric metric : machineLearning.getMetrics()) {
+            if (metric.isPredictable()) {
+                return true;
             }
         }
         return false;
@@ -258,7 +290,7 @@ public class FeatureController {
      * @author Josh Campitelli
      */
     public void predictPrice(DefaultListModel<GenericFeature> listModel) {
-        int predictedValue;
+        String predictedValue;
         ArrayList<GenericFeature> newInstance = new ArrayList<>();
         for (int i = 0; i < listModel.size(); i ++) {
             newInstance.add(listModel.get(i));
@@ -325,6 +357,6 @@ public class FeatureController {
     }
 
     public ProblemWindowController getPWC(){
-    	return control;
+        return control;
     }
 }

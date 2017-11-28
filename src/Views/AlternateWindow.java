@@ -56,7 +56,7 @@ public class AlternateWindow extends JFrame {
         updateItem.setEnabled(false);
         editItem.setEnabled(false);
 
-        if(!featureController.priceExists())
+        if(!featureController.predictableExists())
             predictErrorItem.setEnabled(false);
 
         menuBar.add(machineLearnMenu);
