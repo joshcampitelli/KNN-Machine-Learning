@@ -66,12 +66,12 @@ public class MachineLearning {
 		}
 		
 		int predictedValue, tempPredictedValue = 0;
-		int i; //loop control variable
+		int i, j; //loop control variable
 		for (GenericFeature feature : features) {
 			String name = feature.getName();
 			Map<String, Integer> distances = new HashMap<>();
 			i = 0;
-			for (FeatureTypes featureType : requiredFeatures) {
+			for (j = 0; j < features.size(); j++) {
 				if (feature.isPredictable()) {
 					if (feature instanceof IntegerFeature) {
 						//looping to determine the smallest distance 'k' times
