@@ -38,6 +38,8 @@ public class TestMachineLearning {
 		String[] allowableDiscreteValues = {"old", "new"};
 		CartesianEuclideanMetric cartMet = new CartesianEuclideanMetric("coordinates", machineLearning.getStorage());
 		IntegerAbsoluteMetric intMet = new IntegerAbsoluteMetric("sq. ft.", machineLearning.getStorage());
+		DiscreteBinaryMetric disBiMet = new DiscreteBinaryMetric("age", machineLearning.getStorage(), allowableDiscreteValues);
+		IntegerAbsoluteMetric intPriceMet = new IntegerAbsoluteMetric("price", machineLearning.getStorage());
 		
 		machineLearning.addRequiredFeature(new CartesianEuclideanMetric("coordinates", machineLearning.getStorage()));
 		machineLearning.addRequiredFeature(new IntegerAbsoluteMetric("sq. ft.", machineLearning.getStorage()));
