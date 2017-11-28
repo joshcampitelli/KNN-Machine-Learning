@@ -70,7 +70,7 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 				// Add a JTextField for every property required for the problem
 				for(int i = 0; i < Integer.parseInt(propertyField.getText()); i++){
 					textFields[i] = new JTextField(5);
-					String[] arrayOfMetrics = {"CartesianEuclideanMetric", "DiscreteBinaryMetric", "IntegerAbsoluteMetric"};
+					String[] arrayOfMetrics = {"CartesianEuclideanMetric", "DiscreteBinaryMetric", "IntegerAbsoluteMetric", "IntegerAbsoluteMetric", "PolarMetric"};
 					comboBoxes[i] = new JComboBox(arrayOfMetrics);
 					addPropsPanel = addToPanel(addPropsPanel, new JComponent[] {textFields[i], comboBoxes[i],(JComponent) Box.createHorizontalStrut(15)});
 				}
@@ -100,6 +100,10 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 						tmp.addRequiredFeature(new DiscreteBinaryMetric(textFields[j].getText(), tmp.getStorage(), dfs.getVals()));
 					} else if(comboBoxes[j].getSelectedItem().equals("IntegerAbsoluteMetric")){
 						tmp.addRequiredFeature(new IntegerAbsoluteMetric(textFields[j].getText(), tmp.getStorage()));
+					} else if(comboBoxes[j].getSelectedItem().equals("DoubleAbsoluteMetric")){
+						tmp.addRequiredFeature(new DoubleAbsoluteMetric(textFields[j].getText(), tmp.getStorage()));
+					} else if(comboBoxes[j].getSelectedItem().equals("PolarMetric")){
+						tmp.addRequiredFeature(new PolarMetric(textFields[j].getText(), tmp.getStorage()));
 					}
 				}
 				machineLearningArray.get(machineLearningArray.size()).setPredictable(new FindPredictable(textFields).getStr());
