@@ -93,7 +93,9 @@ public class MachineLearning {
 						}
 						//predictedValue is based on kNN, so divide by k to get average value
 						predictedValue = tempPredictedValue / k;
+						
 						return predictedValue + "";
+						
 					} else if (feature instanceof EnumFeature) {
 						HashMap<String, Integer> permittedValues = feature.getMetric().getPermittedValues();
 						HashMap<String, Integer> valuesTally = new HashMap<>();
@@ -123,6 +125,7 @@ public class MachineLearning {
 								maxTally = entry;
 							}
 						}
+						
 						return (maxTally.getKey()); 
 					}
 				} else {					
@@ -136,6 +139,7 @@ public class MachineLearning {
 				}
 			}
 		}
+		return null;
 	}
 
 	/**
