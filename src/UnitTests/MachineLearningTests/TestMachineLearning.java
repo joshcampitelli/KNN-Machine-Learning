@@ -9,7 +9,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import Model.FeatureLayout;
 import Model.MachineLearning;
 import Model.Storage;
 import Model.Features.*;
@@ -54,17 +53,17 @@ public class TestMachineLearning {
 		machineLearning.learn("h1", featuresToLearn1);
 		
 		featuresToLearn2 = new ArrayList<>();
-		featuresToLearn2.add(new CartesianFeature("coordinates", 10, 50)); 
-		featuresToLearn2.add(new IntegerFeature("sq. ft.", 1000));
-		featuresToLearn2.add(new EnumFeature("age", "old"));
-		featuresToLearn2.add(new IntegerFeature("price", 300000));
+		featuresToLearn2.add(new CartesianFeature("coordinates", 10, 50, cartMet)); 
+		featuresToLearn2.add(new IntegerFeature("sq. ft.", 1000, intMet));
+		featuresToLearn2.add(new EnumFeature("age", "old", disBiMet));
+		featuresToLearn2.add(new IntegerFeature("price", 300000, intPriceMet));
 		machineLearning.learn("h2", featuresToLearn2);
 		
 		featuresToLearn3 = new ArrayList<>();
-		featuresToLearn3.add(new CartesianFeature("coordinates", 30, 100));
-		featuresToLearn3.add(new IntegerFeature("sq. ft.", 800));
-		featuresToLearn3.add(new EnumFeature("age", "new"));
-		featuresToLearn3.add(new IntegerFeature("price", 400000));
+		featuresToLearn3.add(new CartesianFeature("coordinates", 30, 100, cartMet));
+		featuresToLearn3.add(new IntegerFeature("sq. ft.", 800, intMet));
+		featuresToLearn3.add(new EnumFeature("age", "new", disBiMet));
+		featuresToLearn3.add(new IntegerFeature("price", 400000, intPriceMet));
 		machineLearning.learn("h3", featuresToLearn3);
 	}
 	
@@ -104,39 +103,6 @@ public class TestMachineLearning {
 	*/
 	
 	@Test
-	public void testGetFeatureLayoutByIndex() {
-		List<FeatureLayout> testFeatureLayout = new ArrayList<>();
-		String[] allowableDiscreteValues = {"old", "new"};
-		
-		testFeatureLayout.add(new FeatureLayout(new CartesianEuclideanMetric("coordinates", machineLearning.getStorage())));
-		testFeatureLayout.add(new FeatureLayout(new IntegerAbsoluteMetric("sq. ft.", machineLearning.getStorage())));
-		testFeatureLayout.add(new FeatureLayout(new DiscreteBinaryMetric("age", machineLearning.getStorage(), allowableDiscreteValues)));
-		testFeatureLayout.add(new FeatureLayout(new IntegerAbsoluteMetric("price", machineLearning.getStorage())));
-		
-		assertEquals("", testFeatureLayout.get(0).getName(), machineLearning.getFeatureLayout(0).getName());
-		assertEquals("", testFeatureLayout.get(1).getName(), machineLearning.getFeatureLayout(1).getName());
-		assertEquals("", testFeatureLayout.get(2).getName(), machineLearning.getFeatureLayout(2).getName());
-		assertEquals("", testFeatureLayout.get(3).getName(), machineLearning.getFeatureLayout(3).getName());	
-	}
-	
-	@Test
-	public void testGetFeatureLayoutList() {
-		List<FeatureLayout> testFeatureLayout = new ArrayList<>();
-		String[] allowableDiscreteValues = {"old", "new"};
-		
-		testFeatureLayout.add(new FeatureLayout(new CartesianEuclideanMetric("coordinates", machineLearning.getStorage())));
-		testFeatureLayout.add(new FeatureLayout(new IntegerAbsoluteMetric("sq. ft.", machineLearning.getStorage())));
-		testFeatureLayout.add(new FeatureLayout(new DiscreteBinaryMetric("age", machineLearning.getStorage(), allowableDiscreteValues)));
-		testFeatureLayout.add(new FeatureLayout(new IntegerAbsoluteMetric("price", machineLearning.getStorage())));
-		
-		assertEquals("", testFeatureLayout.size(), machineLearning.getFeatureLayout().size());
-		assertEquals("", testFeatureLayout.get(0).getName(), machineLearning.getFeatureLayout().get(0).getName());
-		assertEquals("", testFeatureLayout.get(1).getName(), machineLearning.getFeatureLayout().get(1).getName());
-		assertEquals("", testFeatureLayout.get(2).getName(), machineLearning.getFeatureLayout().get(2).getName());
-		assertEquals("", testFeatureLayout.get(3).getName(), machineLearning.getFeatureLayout().get(3).getName());
-	}
-	
-	@Test
 	public void testDeleteLearned() {
 		Storage testStorage = new Storage();
 		testStorage.insert("h1", featuresToLearn1);
@@ -159,10 +125,15 @@ public class TestMachineLearning {
 	@Test
 	public void testPredict() {
 		ArrayList<GenericFeature> featuresToLearn4 = new ArrayList<>();
+		String[] allowableDiscreteValues = {"old", "new"};
+		CartesianEuclideanMetric cartMet = new CartesianEuclideanMetric("coordinates", machineLearning.getStorage());
+		IntegerAbsoluteMetric intMet = new IntegerAbsoluteMetric("sq. ft.", machineLearning.getStorage());
+		DiscreteBinaryMetric disBiMet = new DiscreteBinaryMetric("age", machineLearning.getStorage(), allowableDiscreteValues);
+		IntegerAbsoluteMetric intPriceMet = new IntegerAbsoluteMetric("price", machineLearning.getStorage());
 		
-		featuresToLearn4.add(new CartesianFeature("coordinates", 15, 20));
-		featuresToLearn4.add(new IntegerFeature("sq. ft.", 1000));
-		featuresToLearn4.add(new EnumFeature("age", "new"));		
+		featuresToLearn4.add(new CartesianFeature("coordinates", 15, 20, cartMet));
+		featuresToLearn4.add(new IntegerFeature("sq. ft.", 1000, intMet));
+		featuresToLearn4.add(new EnumFeature("age", "new", disBiMet));		
 		
 		int k;
 		int testPredictedPrice;
@@ -180,33 +151,42 @@ public class TestMachineLearning {
 	@Test
 	public void testPredictError() {
 		ArrayList<GenericFeature> featuresToLearn4 = new ArrayList<>();
+		String[] allowableDiscreteValues = {"old", "new"};
+		CartesianEuclideanMetric cartMet = new CartesianEuclideanMetric("coordinates", machineLearning.getStorage());
+		IntegerAbsoluteMetric intMet = new IntegerAbsoluteMetric("sq. ft.", machineLearning.getStorage());
+		DiscreteBinaryMetric disBiMet = new DiscreteBinaryMetric("age", machineLearning.getStorage(), allowableDiscreteValues);
+		IntegerAbsoluteMetric intPriceMet = new IntegerAbsoluteMetric("price", machineLearning.getStorage());
 		
-		featuresToLearn4.add(new CartesianFeature("coordinates", 15, 20));
-		featuresToLearn4.add(new IntegerFeature("sq. ft.", 1000));
-		featuresToLearn4.add(new EnumFeature("age", "new"));
-		featuresToLearn4.add(new IntegerFeature("price", 300000));
+		featuresToLearn4.add(new CartesianFeature("coordinates", 15, 20, cartMet));
+		featuresToLearn4.add(new IntegerFeature("sq. ft.", 1000, intMet));
+		featuresToLearn4.add(new EnumFeature("age", "new", disBiMet));
+		featuresToLearn4.add(new IntegerFeature("price", 300000, intPriceMet));
 		
 		int k;
-		int testPredictedError;
 		
-		k = 1; testPredictedError = 0;		
-		assertEquals("", testPredictedError, machineLearning.predictError(k, featuresToLearn4));		
+		k = 1;
+		assertEquals("", "0", machineLearning.predictError(k, featuresToLearn4));		
 
-		k = 2; testPredictedError = 100000;		
-		assertEquals("", testPredictedError, machineLearning.predictError(k, featuresToLearn4));
+		k = 2;	
+		assertEquals("", "100000", machineLearning.predictError(k, featuresToLearn4));
 
-		k = 3; testPredictedError = 100000;		
-		assertEquals("", testPredictedError, machineLearning.predictError(k, featuresToLearn4));
+		k = 3; 	
+		assertEquals("", "100000", machineLearning.predictError(k, featuresToLearn4));
 	}
 	
 	@Test
 	public void testGetTotalError() {
 		ArrayList<GenericFeature> featuresToLearn4 = new ArrayList<>();
+		String[] allowableDiscreteValues = {"old", "new"};
+		CartesianEuclideanMetric cartMet = new CartesianEuclideanMetric("coordinates", machineLearning.getStorage());
+		IntegerAbsoluteMetric intMet = new IntegerAbsoluteMetric("sq. ft.", machineLearning.getStorage());
+		DiscreteBinaryMetric disBiMet = new DiscreteBinaryMetric("age", machineLearning.getStorage(), allowableDiscreteValues);
+		IntegerAbsoluteMetric intPriceMet = new IntegerAbsoluteMetric("price", machineLearning.getStorage());
 		
-		featuresToLearn4.add(new CartesianFeature("coordinates", 15, 20));
-		featuresToLearn4.add(new IntegerFeature("sq. ft.", 1000));
-		featuresToLearn4.add(new EnumFeature("age", "new"));
-		featuresToLearn4.add(new IntegerFeature("price", 300000));
+		featuresToLearn4.add(new CartesianFeature("coordinates", 15, 20, cartMet));
+		featuresToLearn4.add(new IntegerFeature("sq. ft.", 1000, intMet));
+		featuresToLearn4.add(new EnumFeature("age", "new", disBiMet));
+		featuresToLearn4.add(new IntegerFeature("price", 300000, intPriceMet));
 		
 		int k;
 		int testPredictedTotalError;
