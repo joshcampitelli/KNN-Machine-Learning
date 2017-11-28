@@ -2,6 +2,8 @@ package Model.Features;
 
 import java.util.ArrayList;
 
+import Model.Metrics.GenericMetric;
+
 public class ComplexFeature extends GenericFeature {
 
 	/** @author Logan
@@ -9,8 +11,8 @@ public class ComplexFeature extends GenericFeature {
 	 *  
 	 *  @param name of the feature (String), other features that make up this one (ArrayList)
 	 */
-	public ComplexFeature(String name, ArrayList<GenericFeature> feature) {
-		super(name, feature);
+	public ComplexFeature(String name, ArrayList<GenericFeature> feature, GenericMetric metric) {
+		super(name, feature, metric);
 	}
 
 	/** @author Logan

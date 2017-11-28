@@ -1,5 +1,7 @@
 package Model.Features;
 
+import Model.Metrics.GenericMetric;
+
 public class IntegerFeature extends GenericFeature {
 	
 	/* This constructor requires an integer.  The value becomes the only
@@ -7,8 +9,8 @@ public class IntegerFeature extends GenericFeature {
 	 * 
 	 * @author Logan MacGillivray
 	 */
-	public IntegerFeature(String name, int value){
-		super(name, value);
+	public IntegerFeature(String name, int value, GenericMetric metric){
+		super(name, value, metric);
 	}
 
 	public String toString() {

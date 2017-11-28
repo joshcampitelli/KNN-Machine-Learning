@@ -1,5 +1,7 @@
 package Model.Features;
 
+import Model.Metrics.GenericMetric;
+
 public class DoubleFeature extends GenericFeature {
 
     /* This constructor requires an integer.  The value becomes the only
@@ -7,8 +9,8 @@ public class DoubleFeature extends GenericFeature {
 	 *
 	 * @author Ethan Morrill
 	 */
-    public DoubleFeature(String name, double value){
-        super(name, value);
+    public DoubleFeature(String name, double value, GenericMetric metric){
+        super(name, value, metric);
     }
 
     /* This function will return the name of the feature stored in each feature.  This

@@ -1,5 +1,7 @@
 package Model.Features;
 
+import Model.Metrics.GenericMetric;
+
 public class CartesianFeature extends GenericFeature {
 
 	/* This constructor requires a String and two integers.  The values are then stored into a
@@ -7,8 +9,10 @@ public class CartesianFeature extends GenericFeature {
 	 * 
 	 * @author Logan MacGillivray, Ethan Morrll
 	 */
-	public CartesianFeature(String name, int x, int y){
-		super(name, new int[] {x, y});
+	private GenericMetric metric;
+	
+	public CartesianFeature(String name, int x, int y, GenericMetric metric){
+		super(name, new int[] {x, y}, metric);
 	}
 
 	public String toString() {

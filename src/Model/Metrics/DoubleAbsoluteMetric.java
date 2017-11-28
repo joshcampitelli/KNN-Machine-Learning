@@ -5,16 +5,10 @@ import Model.Storage;
 import java.util.HashMap;
 import java.util.Set;
 
-public class DoubleAbsoluteMetric implements GenericMetric {
-
-    private String featureName;
-    private Storage storage;
+public class DoubleAbsoluteMetric extends GenericMetric {
 
     public DoubleAbsoluteMetric(String name, Storage storage){
-
-        featureName = name;
-        this.storage = storage;
-
+    	super(name, storage);
     }
 
     public HashMap<String, Double> getDistance(GenericFeature feature){
