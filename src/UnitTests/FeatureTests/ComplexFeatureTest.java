@@ -40,7 +40,7 @@ public class ComplexFeatureTest {
 
     @Test
     public void testGetName() {
-        assertEquals("Name should be 'Ball'.", "Ball", integerFeature.getName());
+        assertEquals("Name should be 'Ball'.", "Ball", complexFeature.getName());
     }
 
     @Test
