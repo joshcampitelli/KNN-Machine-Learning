@@ -80,7 +80,6 @@ public class Storage {
 				if(feature.getName().equals(featureName)){
 					targetFeatures.put(key,feature);
 				}
-				i++;
 			}
 		}
 		return targetFeatures;

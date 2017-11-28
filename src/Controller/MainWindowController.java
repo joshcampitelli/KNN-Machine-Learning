@@ -94,19 +94,15 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 					}
 					MachineLearning tmp = machineLearningArray.get(machineLearningArray.size() - 1);
 					if(comboBoxes[j].getSelectedItem().equals("CartesianEuclideanMetric")){
-						tmp.addFeatureLayout(new CartesianEuclideanMetric(textFields[j].getText(), tmp.getStorage()));
+						tmp.addRequiredFeature(new CartesianEuclideanMetric(textFields[j].getText(), tmp.getStorage()));
 					} else if(comboBoxes[j].getSelectedItem().equals("DiscreteBinaryMetric")){
 						DiscreteFeatureSettings dfs = new DiscreteFeatureSettings();
-						tmp.addFeatureLayout(new DiscreteBinaryMetric(textFields[j].getText(), tmp.getStorage(), dfs.getVals()));
+						tmp.addRequiredFeature(new DiscreteBinaryMetric(textFields[j].getText(), tmp.getStorage(), dfs.getVals()));
 					} else if(comboBoxes[j].getSelectedItem().equals("IntegerAbsoluteMetric")){
-						tmp.addFeatureLayout(new IntegerAbsoluteMetric(textFields[j].getText(), tmp.getStorage()));
+						tmp.addRequiredFeature(new IntegerAbsoluteMetric(textFields[j].getText(), tmp.getStorage()));
 					}
 				}
-				
-				FindPredictable predict = new FindPredictable(textFields);
-				// ---
-				// Code to set predictable feature goes here
-				// ---
+				machineLearningArray.get(machineLearningArray.size()).setPredictable(new FindPredictable(textFields).getStr());
 				frame.newScreen();
 				new ProblemWindow(new ProblemWindowController(machineLearningArray.get(machineLearningArray.size() - 1)));
 		    } else {

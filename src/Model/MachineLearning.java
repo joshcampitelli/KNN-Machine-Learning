@@ -214,13 +214,21 @@ public class MachineLearning {
 		return storage;
 	}
 	
+	public void setPredictable(String name) {
+		for(GenericMetric metric : metrics) {
+			if (metric.getName().equals(name)) {
+				metric.setPredictable();
+			}
+		}
+	}
+	
 	/**
 	 * Adds a FeatureTypes to the ArrayList of requiredFeatures
 	 * 
 	 * @param metric
 	 */
-	public void addRequiredFeature(FeatureTypes featureType){
-		requiredFeatures.add(featureType);
+	public void addRequiredFeature(GenericMetric metric){
+		metrics.add(metric);
 	}
   
 	/**
