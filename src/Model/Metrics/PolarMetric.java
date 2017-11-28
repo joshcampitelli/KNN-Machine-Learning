@@ -7,16 +7,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-public class PolarMetric implements GenericMetric {
+public class PolarMetric extends GenericMetric {
 
-    private String featureName;
-    private Storage storage;
-
-    public PolarMetric(String name, Storage storage) {
-
-        featureName = name;
-        this.storage = storage;
-
+	public PolarMetric(String name, Storage storage) {
+    	super(name, storage);
     }
 
     /* See GenericMetrics.getDifference(GenericFeature feature) for full java doc

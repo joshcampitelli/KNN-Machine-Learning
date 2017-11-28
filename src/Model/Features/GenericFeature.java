@@ -1,12 +1,16 @@
 package Model.Features;
 
+import Model.Metrics.GenericMetric;
+
 public class GenericFeature {
 	protected Object value;
 	protected String name;
+	protected GenericMetric metric;
 	
-	public GenericFeature(String name, Object val) {
+	public GenericFeature(String name, Object val, GenericMetric metric) {
 		this.value = val;
 		this.name = name;
+		this.metric = metric;
 	}
 	
     /* This function will return the value stored in each metric.  This
@@ -23,5 +27,9 @@ public class GenericFeature {
 	 */
     public String getName() {
     	return name;
+    }
+    
+    public GenericMetric getMetric() {
+    	return metric;
     }
 }

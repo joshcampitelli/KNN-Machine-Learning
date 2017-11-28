@@ -6,16 +6,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-public class ComplexDifferenceMetric implements GenericMetric {
-
-    private String featureName;
-    private Storage storage;
+public class ComplexDifferenceMetric extends GenericMetric {
 
     public ComplexDifferenceMetric(String name, Storage storage){
-
-        featureName = name;
-        this.storage = storage;
-
+    	super(name, storage);
     }
 
      /* See GenericMetrics.getDifference(GenericFeature feature) for full java doc
