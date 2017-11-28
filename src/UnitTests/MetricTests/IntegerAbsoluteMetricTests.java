@@ -12,13 +12,12 @@ import java.util.HashMap;
 
 public class IntegerAbsoluteMetricTests {
     private IntegerFeature intFeat;
-    private Storage storage;
     private IntegerAbsoluteMetric intMetric;
     private HashMap<String, Double> testMap;
 
     @Before
     public void setUp(){
-        storage = new Storage();
+        Storage storage = new Storage();
         intMetric = new IntegerAbsoluteMetric("sqr ft",storage);
         ArrayList<GenericFeature> instance = new ArrayList<>();
         instance.add(new IntegerFeature("sqr ft", 500, intMetric ));
@@ -31,7 +30,7 @@ public class IntegerAbsoluteMetricTests {
     @Test
     public void testGetDistance(){
 
-        assertEquals("Distance should be 500", true, (testMap.get("h1").equals(intMetric.getDistance(intFeat).get("h1"))));
+        assertEquals("Distance should be 500.0 and the comparison should be true", true, (testMap.get("h1").equals(intMetric.getDistance(intFeat).get("h1"))));
 
     }
 }
