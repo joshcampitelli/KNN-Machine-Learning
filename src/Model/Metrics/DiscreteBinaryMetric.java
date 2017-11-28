@@ -70,4 +70,13 @@ public class DiscreteBinaryMetric extends GenericMetric {
     	return permittedValues.keySet().toArray(new String[permittedValues.size()]);
     	
     }
+    
+    /**
+     * Returns the HashMap of permittedValues
+     * @return HashMap<String, Integer> permittedValues
+     * @author Ryan Ribeiro
+     */
+    public HashMap<String, Integer> getPermittedValue() {
+    	return permittedValues;
+    }
 }
