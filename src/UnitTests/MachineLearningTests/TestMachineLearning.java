@@ -47,10 +47,10 @@ public class TestMachineLearning {
 		machineLearning.addRequiredFeature(new IntegerAbsoluteMetric("price", machineLearning.getStorage()));
 	
 		featuresToLearn1 = new ArrayList<>();
-		featuresToLearn1.add(new CartesianFeature("coordinates", 12, 25));
-		featuresToLearn1.add(new IntegerFeature("sq. ft.", 1200));
-		featuresToLearn1.add(new EnumFeature("age", "new"));
-		featuresToLearn1.add(new IntegerFeature("price", 500000));		
+		featuresToLearn1.add(new CartesianFeature("coordinates", 12, 25, cartMet));
+		featuresToLearn1.add(new IntegerFeature("sq. ft.", 1200, intMet));
+		featuresToLearn1.add(new EnumFeature("age", "new", disBiMet));
+		featuresToLearn1.add(new IntegerFeature("price", 500000, intPriceMet));		
 		machineLearning.learn("h1", featuresToLearn1);
 		
 		featuresToLearn2 = new ArrayList<>();
