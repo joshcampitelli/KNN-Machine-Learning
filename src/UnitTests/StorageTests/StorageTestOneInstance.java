@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-
+import Model.Metrics.IntegerAbsoluteMetric;
 import static org.junit.Assert.*;
 
 /**
@@ -17,12 +17,14 @@ import static org.junit.Assert.*;
 public class StorageTestOneInstance {
     private Storage storage;
     private ArrayList<GenericFeature> instance;
+    private IntegerAbsoluteMetric intMetric;
 
     @Before
     public void setUp() {
         storage = new Storage();
         instance = new ArrayList<>();
-        instance.add(new IntegerFeature("key",1));
+        intMetric = new IntegerAbsoluteMetric("test", storage);
+        instance.add(new IntegerFeature("key",1, intMetric));
     }
 
     @Test
