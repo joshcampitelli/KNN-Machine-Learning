@@ -14,7 +14,6 @@ public class MachineLearning {
 	//private List<FeatureLayout> featureLayout;
 	private Storage storage;
 	private int totalError;
-	private Map<String, Integer> distancesSum;
 
 	public enum FeatureTypes {
 		CartesianFeature,
@@ -30,7 +29,6 @@ public class MachineLearning {
 	public MachineLearning(String problem) {
 		this.problem = problem;
 		storage = new Storage();
-		distancesSum = new HashMap<>();
 		requiredFeatures = new ArrayList<>();
 		metrics = new ArrayList<>();
 		totalError = 0;
@@ -61,83 +59,102 @@ public class MachineLearning {
 	 * @author Ryan Ribeiro
 	 */	
 	public String predict(int k, ArrayList<GenericFeature> features) {
-		if (k > storage.getSize() || k < 0) {
-			//error
-		}
+		int predictedValue, tempPredictedValue = 0, i = 0, j = 0;;
+		String name = metrics.get(metrics.size() - 1).getName();
+		Map<String, Double> distancesSum = new HashMap<>(); //Sum of distances between passed data and all previously stored data, sorted by keys of the stored data
 		
-		int predictedValue, tempPredictedValue = 0;
-		int i, j; //loop control variable
+		//This first for loop goes through the passed features and sums up the distances between them and all the previously stored features.
 		for (GenericFeature feature : features) {
-			String name = feature.getName();
-			Map<String, Integer> distances = new HashMap<>();
-			i = 0;
-			for (j = 0; j < features.size(); j++) {
-				if (feature.isPredictable()) {
-					if (feature instanceof IntegerFeature) {
-						//looping to determine the smallest distance 'k' times
-						for (i = 0; i < k; i++) {
-							Entry<String, Integer> minimumDistance = null;
-							//loops over each distance, determines smallest
-							for(Entry<String, Integer> entry : distancesSum.entrySet()) {
-								if (minimumDistance == null || minimumDistance.getValue() > entry.getValue()) {
-									minimumDistance = entry;
-								}
-							}
-							//gets all previously stored prices associated with their keys
-							HashMap<String, GenericFeature> allPrices = new HashMap<>();
-							allPrices = storage.getFeature(name);
-							//sums the values for each of the smallest distances
-							tempPredictedValue += (int)(allPrices.get(minimumDistance.getKey()).getValue());
-							//removes smallest distance so that the next iteration will produce the next smallest distance
-							distancesSum.remove(minimumDistance.getKey());
-						}
-						//predictedValue is based on kNN, so divide by k to get average value
-						predictedValue = tempPredictedValue / k;
-						
-						return predictedValue + "";
-						
-					} else if (feature instanceof EnumFeature) {
-						HashMap<String, Integer> permittedValues = feature.getMetric().getPermittedValues();
-						HashMap<String, Integer> valuesTally = new HashMap<>();
-						HashMap<String, GenericFeature> allActions = new HashMap<>();
-						allActions = storage.getFeature(name);
-						for (i = 0; i < k; i++) {
-							Entry<String, Integer> minimumDistance = null;
-							//loops over each distance, determines smallest
-							for(Entry<String, Integer> entry : distancesSum.entrySet()) {
-								if (minimumDistance == null || permittedValues.get(minimumDistance.getValue()) > permittedValues.get(entry.getValue())) {
-									minimumDistance = entry;
-								}
-							}
-							//gets all previously stored actions associated with their keys
-							
-							//sums the values for each of the smallest distances
-							//tempPredictedValue += permittedValues.get(allActions.get(minimumDistance.getKey()).getValue());
-							if (valuesTally.containsKey(minimumDistance.getKey())) {
-								valuesTally.put(minimumDistance.getKey(), valuesTally.get(minimumDistance.getKey()) + 1);
-							}							
-							//removes smallest distance so that the next iteration will produce the next smallest distance
-							distancesSum.remove(minimumDistance.getKey());							
-						}
-						Entry<String, Integer> maxTally = null;
-						for (Entry<String, Integer> entry : valuesTally.entrySet()) {
-							if (maxTally == null || valuesTally.get(entry.getKey()) > valuesTally.get(maxTally.getKey())) {
-								maxTally = entry;
-							}
-						}
-						
-						return (maxTally.getKey()); 
-					}
-				} else {					
-					for (String key : distances.keySet()) {
-						if (distancesSum.containsKey(key)) {
-							distancesSum.put(key, distancesSum.get(key) + distances.get(key));
-						} else {
-							distancesSum.put(key,  distances.get(key));
-						}
-					}
+			/*
+			 * It's necessary to ensure that the feature is not the final predictable feature, as when we do predictError(), predict() is called with the
+			 * final value already given. If this check isn't done, then that final feature will be used in the prediction, giving an incorrect prediction.  
+			 */
+			if (!(metrics.get(i).isPredictable())) {
+				Map<String, Double> distances = new HashMap<>(); //distances between a specific feature and all stored data of that specific feature, sorted by keys of the stored data
+
+				distances = feature.getMetric().getDistance(feature);
+			
+				//Loop through distances and add values to distancesSum
+				for (String key : distances.keySet()) {
+					//If there is already an entry with that key, as there will be if there is more than 1 GenericFeature in features, then it sums the values but saves it with the same key
+					if (distancesSum.containsKey(key)) {
+						distancesSum.put(key, distancesSum.get(key) + distances.get(key));
+					} else {
+						distancesSum.put(key,  distances.get(key));
+					}	
 				}
 			}
+			i++; //This is used to know which metric in the ArrayList metrics we are at
+		}
+		
+		GenericMetric lastMetric = metrics.get(metrics.size() - 1); //this is the last GenericMetric stored in the ArrayList metrics
+		
+		if (lastMetric instanceof IntegerAbsoluteMetric) {
+			for (j = 0; j < k; j++) {
+				Entry<String, Double> minimumDistance = null;
+				//loops over each distance, determines smallest
+				for(Entry<String, Double> entry : distancesSum.entrySet()) {
+					if (minimumDistance == null || minimumDistance.getValue() > entry.getValue()) {
+						minimumDistance = entry;
+					}
+				}
+				
+				//gets all previously stored prices associated with their keys
+				HashMap<String, GenericFeature> allPrices = new HashMap<>();
+				allPrices = storage.getFeature(name);
+				
+				//sums the values for each of the smallest distances
+				tempPredictedValue += (int)(allPrices.get(minimumDistance.getKey()).getValue());
+				//removes smallest distance so that the next iteration will produce the next smallest distance
+				distancesSum.remove(minimumDistance.getKey());
+			}
+			//predictedValue is based on kNN, so divide by k to get average value
+			predictedValue = tempPredictedValue / k;			
+			return Integer.toString(predictedValue);
+			
+		} else if (lastMetric instanceof DiscreteBinaryMetric) {
+			String tempGuess; //the name of the action being predicted as the best option
+			HashMap<String, Integer> bestMatchValuesTally = new HashMap<>(); //Running tally of how many times a given value is selected as the one with the minimum distance to our problem
+			for (j = 0; j < k; j++) {
+				Entry<String, Double> minimumDistance = null;
+				//loops over each distance, determines smallest
+				for(Entry<String, Double> entry : distancesSum.entrySet()) {
+					if (minimumDistance == null || minimumDistance.getValue() > entry.getValue()) {
+						minimumDistance = entry;
+					}
+				}
+				
+				//gets all previously stored actions associated with their keys
+				HashMap<String, GenericFeature> allActions = new HashMap<>();
+				allActions = storage.getFeature(name);
+				
+				//Gets the action associated with a given piece of learned data
+				tempGuess = (String) allActions.get(minimumDistance.getKey()).getValue();
+				
+				//If a value has already been chosen before as the value with the minimum distance to our problem, we add another tally to show that it has been chosen as the best option multiple times
+				if (bestMatchValuesTally.containsKey(tempGuess)) {
+					bestMatchValuesTally.put(tempGuess, bestMatchValuesTally.get(tempGuess) + 1);
+				} else {
+					//Otherwise, we add it with a tally of 1 to indicate it's the first occurrence of it being choose
+					bestMatchValuesTally.put(tempGuess, 1);
+				}
+				distancesSum.remove(minimumDistance.getKey());
+			}
+			
+			Entry<String, Integer> bestMatchedValuesMaxTally = null;
+			/* 
+			 * Loops over the HashMap of the values and the number of tallys they got, selecting the one with the most tallys.
+			 * If there is ever a tie, presumably the one that was entered into the table first was the one that had the first occurrence of a best choice for our given problem. Therefore, if 
+			 * it has an equal number of tallys, it probably was closer to being the best answer than the other option. This is not foolproof, since you could have it be the first occurrence,
+			 * have a two of the next best occur, have the first occur again, and it would be debatable that two and three are a better estimate than one and four. 
+			 */
+			for (Entry<String, Integer> entry : bestMatchValuesTally.entrySet()) {
+				if (bestMatchedValuesMaxTally == null || bestMatchValuesTally.get(entry.getKey()) > bestMatchValuesTally.get(bestMatchedValuesMaxTally.getKey())) {
+					bestMatchedValuesMaxTally = entry;
+				}
+			}
+			//returns the key, which is the name of the value, 
+			return bestMatchedValuesMaxTally.getKey();
 		}
 		return "";
 	}
@@ -158,20 +175,17 @@ public class MachineLearning {
 		
 		int expectedValue = 0;
 		int predictedValue = 0;
-		
-		//looping to find the feature that contains the value for that set of features
-		for (GenericFeature genFeat : features) {
-			HashMap<String, Integer> permittedValues = genFeat.getMetric().getPermittedValues();
-			if (genFeat.isPredictable()) {
-				if (genFeat instanceof IntegerFeature) {
-					expectedValue = Integer.parseInt((String)genFeat.getValue());
-					predictedValue = Integer.parseInt(this.predict(k, features));
-				} else if (genFeat instanceof EnumFeature) {
-					expectedValue = permittedValues.get(genFeat.getValue());
-					predictedValue = permittedValues.get(this.predict(k, features));
-				}
-			}
+
+		GenericFeature feature = features.get(features.size() - 1);
+		HashMap<String, Integer> permittedValues = feature.getMetric().getPermittedValues();
+		if (feature instanceof IntegerFeature) {
+			expectedValue = (int) feature.getValue();
+			predictedValue = Integer.parseInt(this.predict(k, features));
+		} else if (feature instanceof EnumFeature) {
+			expectedValue = permittedValues.get(feature.getValue());
+			predictedValue = permittedValues.get(this.predict(k, features));
 		}
+		
 		//error is the difference between the predicted value and the expected value
 		int error = Math.abs(predictedValue-expectedValue);
 		addError(error);
