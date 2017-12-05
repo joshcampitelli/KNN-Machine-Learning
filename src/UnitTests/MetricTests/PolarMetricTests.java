@@ -47,11 +47,11 @@ public class PolarMetricTests {
         storageFeatures.add(new IntegerFeature("Direction", 2, intMetric));
         instance.add(new ComplexFeature("Ball", storageFeatures, polarMetric));
         storage.insert("h1",instance);
-        testMap.put("h1",1.507695809);
+        testMap.put("h1",3.3509084263777376);
     }
 
     @Test
     public void testGetDistance(){
-        assertEquals("Distance should be 2.0 and compare to true", true, testMap.get("h1").equals(polarMetric.getDistance(complexFeature).get("h1")));
+        assertEquals("Distance should be 3.3509084263777376 and compare to true", true, testMap.get("h1").equals(polarMetric.getDistance(complexFeature).get("h1")));
     }
 }
