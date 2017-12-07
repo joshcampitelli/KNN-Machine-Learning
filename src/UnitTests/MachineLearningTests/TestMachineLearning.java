@@ -204,4 +204,57 @@ public class TestMachineLearning {
 		assertEquals("", testPredictedTotalError, machineLearning.getTotalError());
 	}
 	
+	@Test
+	public void testEquals() {
+		String problem2 = "Housing";
+		MachineLearning machineLearning2 = new MachineLearning(problem2);
+		String[] allowableDiscreteValues = {"old", "new"};
+		CartesianEuclideanMetric cartMet = new CartesianEuclideanMetric("coordinates", machineLearning2.getStorage());
+		IntegerAbsoluteMetric intMet = new IntegerAbsoluteMetric("sq. ft.", machineLearning2.getStorage());
+		DiscreteBinaryMetric disBiMet = new DiscreteBinaryMetric("age", machineLearning2.getStorage(), allowableDiscreteValues);
+		IntegerAbsoluteMetric intPriceMet = new IntegerAbsoluteMetric("price", machineLearning2.getStorage());
+		ArrayList<GenericFeature> featuresToLearnA;
+		ArrayList<GenericFeature> featuresToLearnB;
+		ArrayList<GenericFeature> featuresToLearnC;
+		
+		intPriceMet.setPredictable();
+		
+		machineLearning2.addRequiredFeature(cartMet);
+		machineLearning2.addRequiredFeature(intMet);
+		machineLearning2.addRequiredFeature(disBiMet);
+		machineLearning2.addRequiredFeature(intPriceMet);
+	
+		featuresToLearnA = new ArrayList<>();
+		featuresToLearnA.add(new CartesianFeature("coordinates", 12, 25, cartMet));
+		featuresToLearnA.add(new IntegerFeature("sq. ft.", 1200, intMet));
+		featuresToLearnA.add(new EnumFeature("age", "new", disBiMet));
+		featuresToLearnA.add(new IntegerFeature("price", 500000, intPriceMet));		
+		machineLearning2.learn("h1", featuresToLearnA);
+		
+		featuresToLearnB = new ArrayList<>();
+		featuresToLearnB.add(new CartesianFeature("coordinates", 10, 50, cartMet)); 
+		featuresToLearnB.add(new IntegerFeature("sq. ft.", 1000, intMet));
+		featuresToLearnB.add(new EnumFeature("age", "old", disBiMet));
+		featuresToLearnB.add(new IntegerFeature("price", 300000, intPriceMet));
+		machineLearning2.learn("h2", featuresToLearnB);
+		
+		featuresToLearnC = new ArrayList<>();
+		featuresToLearnC.add(new CartesianFeature("coordinates", 30, 100, cartMet));
+		featuresToLearnC.add(new IntegerFeature("sq. ft.", 800, intMet));
+		featuresToLearnC.add(new EnumFeature("age", "new", disBiMet));
+		featuresToLearnC.add(new IntegerFeature("price", 400000, intPriceMet));
+		machineLearning2.learn("h3", featuresToLearnC);
+		
+		assertEquals("", true, machineLearning.equals(machineLearning2));
+	}
+	
+	@Test
+	public void testSerialSaveAndOpen() {
+		MachineLearning createdMachineLearning = null;
+		machineLearning.serialSave("test.ser");
+		createdMachineLearning = machineLearning.serialOpen("test.ser");
+		
+		assertEquals("", true, createdMachineLearning.equals(machineLearning));
+	}
+	
 }

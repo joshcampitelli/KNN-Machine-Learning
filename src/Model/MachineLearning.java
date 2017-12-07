@@ -2,6 +2,14 @@ package Model;
 
 import Model.Features.*;
 import Model.Metrics.*;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -9,7 +17,7 @@ import java.util.Map.Entry;
  *
  * @author Ryan Ribeiro
  */
-public class MachineLearning {
+public class MachineLearning implements Serializable {
 	private String problem;
 	//private List<FeatureLayout> featureLayout;
 	private Storage storage;
@@ -291,5 +299,62 @@ public class MachineLearning {
 	 */
 	public void update(String key, ArrayList<GenericFeature> updatedInfo){
 		storage.update(key, updatedInfo);
+	}
+	
+	public void serialSave(String fileName) {
+		try {
+			FileOutputStream fileOut = new FileOutputStream(fileName);
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(this);
+			out.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
+	}
+	
+	public MachineLearning serialOpen(String fileName) {
+		MachineLearning createdMachineLearning = null;
+		
+		try {
+			FileInputStream fileIn = new FileInputStream(fileName);
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			createdMachineLearning = (MachineLearning) in.readObject();
+			in.close();
+			fileIn.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return createdMachineLearning;
+	}
+	
+	public boolean equals(MachineLearning compareMachineLearning) {
+		if (!(this.problem.equals(compareMachineLearning.getProblem()))) {
+			return false;
+		}
+		if (!(this.totalError == compareMachineLearning.getTotalError())) {
+			return false;
+		}
+//		if (!(this.metrics.equals(compareMachineLearning.getMetrics()))) {
+//			return false;
+//		}
+		int i;
+		ArrayList<GenericMetric> compareMetrics = compareMachineLearning.getMetrics();
+		for (i = 0; i < metrics.size(); i++) {
+			if (!(metrics.get(i).getName().equals(compareMetrics.get(i).getName()))) {
+				return false;
+			}
+		}
+		
+		if (!(this.storage.equals(compareMachineLearning.getStorage()))) {
+			return false;
+		}		
+		return true;
 	}
 }

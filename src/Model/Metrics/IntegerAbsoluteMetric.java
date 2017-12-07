@@ -2,10 +2,12 @@ package Model.Metrics;
 
 import Model.Features.*;
 import Model.Storage;
+
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Set;
 
-public class IntegerAbsoluteMetric extends GenericMetric {
+public class IntegerAbsoluteMetric extends GenericMetric implements Serializable {
 
     /* Old metric class placed here temporarily, will function differently post design meeting
      */

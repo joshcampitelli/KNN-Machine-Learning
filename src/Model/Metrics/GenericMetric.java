@@ -4,9 +4,10 @@ import Model.Storage;
  */
 import Model.Features.*;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public abstract class GenericMetric {
+public abstract class GenericMetric implements Serializable {
 	protected String featureName;
 	protected Storage storage;
 	private boolean predictable;

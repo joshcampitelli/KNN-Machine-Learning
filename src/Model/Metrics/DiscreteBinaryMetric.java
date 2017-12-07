@@ -2,10 +2,12 @@ package Model.Metrics;
 
 import Model.Features.*;
 import Model.Storage;
+
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Set;
 
-public class DiscreteBinaryMetric extends GenericMetric {
+public class DiscreteBinaryMetric extends GenericMetric implements Serializable {
 	
     private HashMap<String, Integer> permittedValues;
 

@@ -1,8 +1,10 @@
 package Model.Features;
 
+import java.io.Serializable;
+
 import Model.Metrics.GenericMetric;
 
-public class CartesianFeature extends GenericFeature {
+public class CartesianFeature extends GenericFeature implements Serializable {
 
 	/* This constructor requires a String and two integers.  The values are then stored into a
 	 * two element array as a x-value and a y-value, with the String being the feature name stored locally.

@@ -1,8 +1,10 @@
 package Model.Features;
 
+import java.io.Serializable;
+
 import Model.Metrics.GenericMetric;
 
-public class EnumFeature extends GenericFeature {
+public class EnumFeature extends GenericFeature implements Serializable {
 	
 	/* This constructor requires two string values the name of the feature, and the discrete value.
 	 * 

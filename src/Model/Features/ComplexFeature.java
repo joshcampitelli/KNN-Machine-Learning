@@ -1,10 +1,11 @@
 package Model.Features;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import Model.Metrics.GenericMetric;
 
-public class ComplexFeature extends GenericFeature {
+public class ComplexFeature extends GenericFeature implements Serializable {
 
 	/** @author Logan
 	 *  Construct a ComplexFeature made of smaller GenericFeatures

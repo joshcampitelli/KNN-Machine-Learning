@@ -2,10 +2,12 @@ package Model.Metrics;
 
 import Model.Features.*;
 import Model.Storage;
+
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Set;
 
-public class DoubleAbsoluteMetric extends GenericMetric {
+public class DoubleAbsoluteMetric extends GenericMetric implements Serializable {
 
     public DoubleAbsoluteMetric(String name, Storage storage){
     	super(name, storage);

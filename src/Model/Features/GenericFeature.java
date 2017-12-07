@@ -1,8 +1,10 @@
 package Model.Features;
 
+import java.io.Serializable;
+
 import Model.Metrics.GenericMetric;
 
-public class GenericFeature {
+public class GenericFeature implements Serializable {
 	protected Object value;
 	protected String name;
 	protected GenericMetric metric;
