@@ -14,18 +14,16 @@ public class MachineLearning {
 	//private List<FeatureLayout> featureLayout;
 	private Storage storage;
 	private int totalError;
-
+	private ArrayList<FeatureTypes> requiredFeatures;
+	private ArrayList<GenericMetric> metrics;
+	
 	public enum FeatureTypes {
 		CartesianFeature,
 		EnumFeature,
 		IntegerFeature,
 		ComplexFeature
 	}
-
-	//Array List for the features that are required for each problem
-	private ArrayList<FeatureTypes> requiredFeatures;
-	private ArrayList<GenericMetric> metrics;
-
+	
 	public MachineLearning(String problem) {
 		this.problem = problem;
 		storage = new Storage();
