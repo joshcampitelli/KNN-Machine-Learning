@@ -32,10 +32,10 @@ public class ComplexFeature extends GenericFeature {
 	 */
 	@SuppressWarnings("unchecked")
 	public String toString(){
-		String rtn = name + "has the following features in it:\n";
+		String rtn = name + " features:\n";
 		ArrayList<GenericFeature> features = (ArrayList<GenericFeature>)value;
 		for(int i = 0; i < features.size(); i++) {
-			rtn += features.get(i).toString();
+			rtn += features.get(i).toString() + " ";
 		}
 		return rtn;
 	}
