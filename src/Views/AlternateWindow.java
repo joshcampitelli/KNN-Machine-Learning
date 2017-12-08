@@ -19,15 +19,15 @@ public class AlternateWindow extends JFrame {
     private JMenuItem learnItem = new JMenuItem("Learn Instance");
     private JMenuItem updateItem = new JMenuItem("Update Instance");
 
-    private JMenuItem predictPriceItem = new JMenuItem("Predict Value");
+    private JMenuItem predictPriceItem = new JMenuItem("Predict Price");
     private JMenuItem predictErrorItem = new JMenuItem("Predict Error");
   
     private JMenuItem cancelItem = new JMenuItem("Cancel");
 
-    private JMenu metricsMenu = new JMenu("Metrics");
-    private JMenuItem editItem = new JMenuItem("Edit Metric");
+    private JMenu featureMenu = new JMenu("Features");
+    private JMenuItem editItem = new JMenuItem("Edit Feature");
 
-    /*GUI List of Metrics*/
+    /*GUI List of Features*/
     private JList<GenericFeature> list;
     private DefaultListModel<GenericFeature> listModel;
     private JScrollPane scrollPane;
@@ -49,7 +49,7 @@ public class AlternateWindow extends JFrame {
         machineLearnMenu.add(predictErrorItem);
         machineLearnMenu.add(cancelItem);
 
-        metricsMenu.add(editItem);
+        featureMenu.add(editItem);
 
         /*Disable until user adds feature*/
         learnItem.setEnabled(false);
@@ -60,7 +60,7 @@ public class AlternateWindow extends JFrame {
             predictErrorItem.setEnabled(false);
 
         menuBar.add(machineLearnMenu);
-        menuBar.add(metricsMenu);
+        menuBar.add(featureMenu);
         setJMenuBar(menuBar);
 
         listModel = new DefaultListModel<>();
@@ -110,3 +110,4 @@ public class AlternateWindow extends JFrame {
         editItem.addActionListener(event -> featureController.editFeature(list, listModel));
     }
 }
+

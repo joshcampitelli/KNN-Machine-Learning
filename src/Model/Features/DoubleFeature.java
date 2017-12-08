@@ -20,4 +20,8 @@ public class DoubleFeature extends GenericFeature {
     public String getName() {
         return name;
     }
+
+    public String toString() {
+        return name + " (Double): Value = " + value;
+    }
 }

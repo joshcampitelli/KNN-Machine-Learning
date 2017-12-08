@@ -89,11 +89,11 @@ public class FeatureController {
             if (metric instanceof CartesianEuclideanMetric) {
                 feature = cartesianFeatureWindow(metric);
             } else if (metric instanceof IntegerAbsoluteMetric) {
-                feature = integerFeatureWindow(metric);
+                feature = integerFeatureWindow(metric, "");
             } else if (metric instanceof DiscreteBinaryMetric) {
                 feature = enumFeatureWindow(metric);
             } else if (metric instanceof DoubleAbsoluteMetric) {
-                feature = doubleFeatureWindow(metric);
+                feature = doubleFeatureWindow(metric, "");
             } else if (metric instanceof PolarMetric) {
                 feature = complexPolarFeature(metric);
             }
@@ -106,8 +106,8 @@ public class FeatureController {
 
 
     private GenericFeature complexPolarFeature(GenericMetric metric) {
-        GenericFeature subFeature1 = integerFeatureWindow(metric);
-        GenericFeature subFeature2 = doubleFeatureWindow(metric);
+        GenericFeature subFeature1 = integerFeatureWindow(metric, "Degree"); //open different window with "angle" name
+        GenericFeature subFeature2 = doubleFeatureWindow(metric, "Distance");
         ArrayList<GenericFeature> subFeatures = new ArrayList<>();
         subFeatures.add(subFeature1);
         subFeatures.add(subFeature2);
@@ -129,9 +129,9 @@ public class FeatureController {
         } else if (feature instanceof EnumFeature) {
             feature = enumFeatureWindow(feature.getMetric());
         } else if (feature instanceof IntegerFeature) {
-            feature = integerFeatureWindow(feature.getMetric());
+            feature = integerFeatureWindow(feature.getMetric(), "");
         } else if (feature instanceof DoubleFeature) {
-            feature = doubleFeatureWindow(feature.getMetric());
+            feature = doubleFeatureWindow(feature.getMetric(), "");
         }
 
         //todo: add complex feature implementation
@@ -196,10 +196,10 @@ public class FeatureController {
      * @return IntegerFeature
      * @author Josh Campitelli
      */
-    private IntegerFeature integerFeatureWindow(GenericMetric metric) {
+    private IntegerFeature integerFeatureWindow(GenericMetric metric, String text) {
         JTextField intField = new JTextField();
         Object[] message = {
-                "Integer Value:", intField,
+                text + " (Integer) Value:", intField,
         };
         int option = JOptionPane.showConfirmDialog(null, message, metric.getName() + " (Integer):", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
@@ -208,7 +208,7 @@ public class FeatureController {
                 value = Integer.valueOf(intField.getText());
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null, "Incorrect value.");
-                return integerFeatureWindow(metric); //Testing recursion here.
+                return integerFeatureWindow(metric, text); //Testing recursion here.
             }
 
             return new IntegerFeature(metric.getName(), value, metric);
@@ -222,10 +222,10 @@ public class FeatureController {
      * @return DoubleFeature
      * @author Josh Campitelli
      */
-    private DoubleFeature doubleFeatureWindow(GenericMetric metric) {
+    private DoubleFeature doubleFeatureWindow(GenericMetric metric, String text) {
         JTextField doubleField = new JTextField();
         Object[] message = {
-                "Double Value:", doubleField
+                text + " (Double) Value:", doubleField
         };
         int option = JOptionPane.showConfirmDialog(null, message, metric.getName() + " (Double):", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
@@ -234,7 +234,7 @@ public class FeatureController {
                 value = Double.valueOf(doubleField.getText());
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null, "Incorrect value.");
-                return doubleFeatureWindow(metric); //Testing recursion here.
+                return doubleFeatureWindow(metric, text); //Testing recursion here.
             }
             return new DoubleFeature(metric.getName(), value, metric);
         }
@@ -259,13 +259,13 @@ public class FeatureController {
                 predictFeature = cartesianFeatureWindow(predictMetric);
                 newInstance.add(predictFeature);
             } else if (predictMetric instanceof IntegerAbsoluteMetric) {
-                predictFeature = integerFeatureWindow(predictMetric);
+                predictFeature = integerFeatureWindow(predictMetric, "");
                 newInstance.add(predictFeature);
             } else if (predictMetric instanceof DiscreteBinaryMetric) {
                 predictFeature = enumFeatureWindow(predictMetric);
                 newInstance.add(predictFeature);
             } else if (predictMetric instanceof DoubleAbsoluteMetric) {
-                predictFeature = doubleFeatureWindow(predictMetric);
+                predictFeature = doubleFeatureWindow(predictMetric, "");
                 newInstance.add(predictFeature);
             } else if (predictMetric instanceof PolarMetric) {
                 predictFeature = complexPolarFeature(predictMetric);
