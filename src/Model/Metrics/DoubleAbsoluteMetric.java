@@ -9,7 +9,9 @@ import java.util.Set;
 
 public class DoubleAbsoluteMetric extends GenericMetric implements Serializable {
 
-    public DoubleAbsoluteMetric(String name, Storage storage){
+	private static final long serialVersionUID = 1L;
+
+	public DoubleAbsoluteMetric(String name, Storage storage){
     	super(name, storage);
     }
 

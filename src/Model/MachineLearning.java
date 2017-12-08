@@ -16,6 +16,7 @@ import java.util.Map.Entry;
 /**
  *
  * @author Ryan Ribeiro
+ * 
  */
 public class MachineLearning implements Serializable {
 	private static final long serialVersionUID = 1L;

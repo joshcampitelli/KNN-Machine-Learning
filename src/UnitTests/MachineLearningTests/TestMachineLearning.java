@@ -14,20 +14,17 @@ import Model.Features.*;
 import Model.Metrics.CartesianEuclideanMetric;
 import Model.Metrics.DiscreteBinaryMetric;
 import Model.Metrics.IntegerAbsoluteMetric;
-
+/**
+ * 
+ * @author Ryan Ribeiro
+ * 
+ */
 public class TestMachineLearning {
 	private String problem = null;
 	private MachineLearning machineLearning = null;
 	private ArrayList<GenericFeature> featuresToLearn1;
 	private ArrayList<GenericFeature> featuresToLearn2;
 	private ArrayList<GenericFeature> featuresToLearn3;
-	
-	public enum FeatureTypes {
-		CartesianFeature,
-		EnumFeature,
-		IntegerFeature,
-		ComplexFeature
-	}
 	
 	@Before
 	public void setup() {
@@ -96,12 +93,6 @@ public class TestMachineLearning {
 		assertEquals("", testStorageLearned.get("h2"), learned.get("h2"));
 		assertEquals("", testStorageLearned.get("h3"), learned.get("h3"));
 	}
-	
-	/*
-	 * I don't need to test addFeatureLayout here. The way it is set up is that it is only ever
-	 * called with correct parameters because the parameters are checked by another class when they
-	 * are initially entered. Also, I know the method works because it is used in the setup().
-	*/
 	
 	@Test
 	public void testDeleteLearned() {

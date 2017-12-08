@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 public abstract class GenericMetric implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	protected String featureName;
 	protected Storage storage;
 	private boolean predictable;

@@ -7,6 +7,8 @@ import Model.Metrics.GenericMetric;
 
 public class ComplexFeature extends GenericFeature implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** @author Logan
 	 *  Construct a ComplexFeature made of smaller GenericFeatures
 	 *  

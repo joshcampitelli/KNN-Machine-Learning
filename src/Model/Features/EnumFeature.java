@@ -5,7 +5,9 @@ import java.io.Serializable;
 import Model.Metrics.GenericMetric;
 
 public class EnumFeature extends GenericFeature implements Serializable {
-	
+
+	private static final long serialVersionUID = 1L;
+
 	/* This constructor requires two string values the name of the feature, and the discrete value.
 	 * 
 	 * @author Logan MacGillivray, Ethan Morrill

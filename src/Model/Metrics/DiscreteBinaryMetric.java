@@ -8,8 +8,9 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class DiscreteBinaryMetric extends GenericMetric implements Serializable {
-	
-    private HashMap<String, Integer> permittedValues;
+
+	private static final long serialVersionUID = 1L;
+	private HashMap<String, Integer> permittedValues;
 
     /* This constructor requires a string value of the feature name, a reference to the problem storage,
      * and an array of permitted values.
