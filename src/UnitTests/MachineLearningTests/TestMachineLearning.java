@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -40,10 +39,12 @@ public class TestMachineLearning {
 		DiscreteBinaryMetric disBiMet = new DiscreteBinaryMetric("age", machineLearning.getStorage(), allowableDiscreteValues);
 		IntegerAbsoluteMetric intPriceMet = new IntegerAbsoluteMetric("price", machineLearning.getStorage());
 		
-		machineLearning.addRequiredFeature(new CartesianEuclideanMetric("coordinates", machineLearning.getStorage()));
-		machineLearning.addRequiredFeature(new IntegerAbsoluteMetric("sq. ft.", machineLearning.getStorage()));
-		machineLearning.addRequiredFeature(new DiscreteBinaryMetric("age", machineLearning.getStorage(), allowableDiscreteValues));
-		machineLearning.addRequiredFeature(new IntegerAbsoluteMetric("price", machineLearning.getStorage()));
+		intPriceMet.setPredictable();
+		
+		machineLearning.addRequiredFeature(cartMet);
+		machineLearning.addRequiredFeature(intMet);
+		machineLearning.addRequiredFeature(disBiMet);
+		machineLearning.addRequiredFeature(intPriceMet);
 	
 		featuresToLearn1 = new ArrayList<>();
 		featuresToLearn1.add(new CartesianFeature("coordinates", 12, 25, cartMet));
@@ -129,22 +130,21 @@ public class TestMachineLearning {
 		CartesianEuclideanMetric cartMet = new CartesianEuclideanMetric("coordinates", machineLearning.getStorage());
 		IntegerAbsoluteMetric intMet = new IntegerAbsoluteMetric("sq. ft.", machineLearning.getStorage());
 		DiscreteBinaryMetric disBiMet = new DiscreteBinaryMetric("age", machineLearning.getStorage(), allowableDiscreteValues);
-		IntegerAbsoluteMetric intPriceMet = new IntegerAbsoluteMetric("price", machineLearning.getStorage());
 		
 		featuresToLearn4.add(new CartesianFeature("coordinates", 15, 20, cartMet));
 		featuresToLearn4.add(new IntegerFeature("sq. ft.", 1000, intMet));
 		featuresToLearn4.add(new EnumFeature("age", "new", disBiMet));		
 		
 		int k;
-		int testPredictedPrice;
+		String testPredictedPrice;
 		
-		k = 1; testPredictedPrice = 300000;		
+		k = 1; testPredictedPrice = "300000";		
 		assertEquals("", testPredictedPrice, machineLearning.predict(k, featuresToLearn4));		
 
-		k = 2; testPredictedPrice = 400000;		
+		k = 2; testPredictedPrice = "400000";		
 		assertEquals("", testPredictedPrice, machineLearning.predict(k, featuresToLearn4));
 
-		k = 3; testPredictedPrice = 400000;		
+		k = 3; testPredictedPrice = "400000";		
 		assertEquals("", testPredictedPrice, machineLearning.predict(k, featuresToLearn4));
 	}
 	
@@ -162,16 +162,16 @@ public class TestMachineLearning {
 		featuresToLearn4.add(new EnumFeature("age", "new", disBiMet));
 		featuresToLearn4.add(new IntegerFeature("price", 300000, intPriceMet));
 		
-		int k;
+		int k, expectedError;
 		
-		k = 1;
-		assertEquals("", "0", machineLearning.predictError(k, featuresToLearn4));		
+		k = 1; expectedError = 0;
+		assertEquals("", expectedError, machineLearning.predictError(k, featuresToLearn4));		
 
-		k = 2;	
-		assertEquals("", "100000", machineLearning.predictError(k, featuresToLearn4));
+		k = 2; expectedError = 100000;
+		assertEquals("", expectedError, machineLearning.predictError(k, featuresToLearn4));
 
-		k = 3; 	
-		assertEquals("", "100000", machineLearning.predictError(k, featuresToLearn4));
+		k = 3; expectedError = 100000;	
+		assertEquals("", expectedError, machineLearning.predictError(k, featuresToLearn4));
 	}
 	
 	@Test

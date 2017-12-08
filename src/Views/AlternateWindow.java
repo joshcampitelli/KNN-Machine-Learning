@@ -110,3 +110,4 @@ public class AlternateWindow extends JFrame {
         editItem.addActionListener(event -> featureController.editFeature(list, listModel));
     }
 }
+
