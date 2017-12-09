@@ -15,7 +15,7 @@ import Controller.ProblemWindowController;
 public class ProblemWindow extends JFrame {
 	private ProblemWindowController problemControl;
 	private JList<String> listOfObjects;
-	private JMenuItem editMenuItem, removeMenuItem, predictMenuItem;
+	private JMenuItem editMenuItem, removeMenuItem;
 	
 	/** Constructor
 	 * 
@@ -55,6 +55,9 @@ public class ProblemWindow extends JFrame {
 		JMenu editMenu = new JMenu("Edit");
 		menuBar.add(editMenu);
 		
+		JMenuItem saveMenuItem = new JMenuItem("Save");
+		saveMenuItem.addActionListener(problemControl);
+		fileMenu.add(saveMenuItem);
 		JMenuItem addMenuItem = new JMenuItem("Learn Example");
 		addMenuItem.addActionListener(problemControl);
 		fileMenu.add(addMenuItem);
@@ -68,10 +71,7 @@ public class ProblemWindow extends JFrame {
 		removeMenuItem.setEnabled(false);
 		removeMenuItem.addActionListener(problemControl);
 		editMenu.add(removeMenuItem);
-		predictMenuItem = new JMenuItem("Predict Price");
-		predictMenuItem.setEnabled(false);
-		predictMenuItem.addActionListener(problemControl);
-		editMenu.add(predictMenuItem);
+		
 		
 		// Add the JMenuBar to the NORTH section of the BorderLayout
 		getContentPane().add(menuBar, BorderLayout.NORTH);
@@ -82,10 +82,7 @@ public class ProblemWindow extends JFrame {
 	 * @author Logan MacGillivray
 	 */
 	public void newScreen(){
-		
-		String[] str = problemControl.getProblemsArray();
 		listOfObjects.setListData(problemControl.getProblemsArray());
-		this.invalidate();
 	}
 	
 	/** Gets the JList for identifying selected value
@@ -104,5 +101,4 @@ public class ProblemWindow extends JFrame {
 		removeMenuItem.setEnabled(val);
 		editMenuItem.setEnabled(val);
 	}
-	
 }

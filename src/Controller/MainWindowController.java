@@ -1,6 +1,5 @@
 package Controller;
 import java.util.ArrayList;
-import Views.AlternateWindow;
 import Model.MachineLearning;
 import Model.Metrics.*;
 import Views.MainWindow;
@@ -41,7 +40,13 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("View")){
 			new ProblemWindow(new ProblemWindowController(machineLearningArray.get(frame.getJList().getSelectedIndex())));
+		} else if(e.getActionCommand().equals("Save")){
+			machineLearningArray.get(frame.getJList().getSelectedIndex()).serialSave(makeFileChooser("Save").getSelectedFile().getAbsolutePath() + ".bin");
+		} else if(e.getActionCommand().equals("Load")){
+			machineLearningArray.add(new MachineLearning("tmp").serialOpen(makeFileChooser("Open").getSelectedFile().getAbsolutePath()));
+			frame.newScreen();
 		} else if(e.getActionCommand().equals("Add Problem")){
+		
 			// Create the createPanel properties
 			JTextField nameField = new JTextField(5);
 			String[] optionForPanel = {"Next"};
@@ -120,6 +125,18 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 		}
 	}
 	
+	private JFileChooser makeFileChooser(String saveOrOpen) {
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setCurrentDirectory(new java.io.File("."));
+		fileChooser.setDialogTitle("Select a file");
+		if (saveOrOpen.equals("Save")) {
+			fileChooser.showSaveDialog(new JButton());
+		} else {
+			fileChooser.showOpenDialog(new JButton());
+		}
+		return fileChooser;
+	}
+
 	private JPanel addToPanel(JPanel panel, JComponent[] component) { 
 		for(int i = 0; i < component.length; i++) {
 			panel.add(component[i]);

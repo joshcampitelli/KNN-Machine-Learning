@@ -15,7 +15,8 @@ import Controller.MainWindowController;
 public class MainWindow extends JFrame{
 	private MainWindowController mainControl = new MainWindowController(this);
 	private JList<String> listOfProblems;
-	private JMenuItem editMenuItem = new JMenuItem("View");
+	private JMenuItem viewMenuItem = new JMenuItem("View");
+	private JMenuItem saveMenuItem = new JMenuItem("Save");
 	
 	/** Constructor
 	 * 
@@ -53,14 +54,24 @@ public class MainWindow extends JFrame{
 		JMenu editMenu = new JMenu("Edit");
 		menuBar.add(editMenu);
 		
+		// Add an Edit JMenuItem to the Edit JMenu
+		saveMenuItem.setEnabled(false);
+		saveMenuItem.addActionListener(mainControl);
+		fileMenu.add(saveMenuItem);
+		
+		// Add an Edit JMenuItem to the Edit JMenu
+		JMenuItem loadMenuItem = new JMenuItem("Load");
+		loadMenuItem.addActionListener(mainControl);
+		fileMenu.add(loadMenuItem);
+				
 		JMenuItem addProblemMenuItem = new JMenuItem("Add Problem");
 		addProblemMenuItem.addActionListener(mainControl);
 		fileMenu.add(addProblemMenuItem);
 		
 		// Add an Edit JMenuItem to the Edit JMenu
-		editMenuItem.setEnabled(false);
-		editMenuItem.addActionListener(mainControl);
-		editMenu.add(editMenuItem);
+		viewMenuItem.setEnabled(false);
+		viewMenuItem.addActionListener(mainControl);
+		editMenu.add(viewMenuItem);
 		
 		// Add the JMenuBar to the NORTH section of the BorderLayout
 		getContentPane().add(menuBar, BorderLayout.NORTH);
@@ -87,6 +98,7 @@ public class MainWindow extends JFrame{
 	 * @author Logan MacGillivray
 	 */
 	public void enableAll(boolean val){
-		editMenuItem.setEnabled(val);
+		viewMenuItem.setEnabled(val);
+		saveMenuItem.setEnabled(val);
 	}
 }

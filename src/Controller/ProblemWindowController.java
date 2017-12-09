@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -64,10 +66,19 @@ public class ProblemWindowController implements ActionListener, ListSelectionLis
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("Edit")){
 			new AlternateWindow(new FeatureController(this,"edit",frame.getJList().getSelectedValue()));
+		} else if(e.getActionCommand().equals("Save")){
+			// Save the file to the selected file location
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setCurrentDirectory(new java.io.File("."));
+			fileChooser.setDialogTitle("Select a file");
+			fileChooser.showSaveDialog(new JButton());
+				
+			machineLearning.serialSave(fileChooser.getSelectedFile().getAbsolutePath() + ".bin");
 		} else if(e.getActionCommand().equals("Learn Example")){
 			new AlternateWindow(new FeatureController(this, "add",name()));
 		} else if(e.getActionCommand().equals("Remove")){
-			machineLearning.getStorage().remove(frame.getJList().getSelectedValue());
+			// Get the name of selected values and remove it from machineLearning
+			machineLearning.getStorage().remove(frame.getJList().getSelectedValue().split(":",2)[0]);
 			frame.newScreen();
 		} else if(e.getActionCommand().equals("Predict Price")){			
 			new AlternateWindow(new FeatureController(this, "add",name()));
