@@ -10,6 +10,8 @@ import java.util.Set;
 
 public class PolarMetric extends GenericMetric implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	public PolarMetric(String name, Storage storage) {
     	super(name, storage);
     }

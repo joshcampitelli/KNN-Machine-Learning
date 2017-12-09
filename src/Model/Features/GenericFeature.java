@@ -5,6 +5,8 @@ import java.io.Serializable;
 import Model.Metrics.GenericMetric;
 
 public class GenericFeature implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	protected Object value;
 	protected String name;
 	protected GenericMetric metric;

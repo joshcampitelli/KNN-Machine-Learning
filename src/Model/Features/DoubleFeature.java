@@ -6,7 +6,9 @@ import Model.Metrics.GenericMetric;
 
 public class DoubleFeature extends GenericFeature implements Serializable {
 
-    /* This constructor requires an integer.  The value becomes the only
+	private static final long serialVersionUID = 1L;
+
+	/* This constructor requires an integer.  The value becomes the only
 	 * property to this metric, as the metric is used for size/volume metrics.
 	 *
 	 * @author Ethan Morrill

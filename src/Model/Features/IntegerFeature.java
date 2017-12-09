@@ -5,7 +5,9 @@ import java.io.Serializable;
 import Model.Metrics.GenericMetric;
 
 public class IntegerFeature extends GenericFeature implements Serializable {
-	
+
+	private static final long serialVersionUID = 1L;
+
 	/* This constructor requires an integer.  The value becomes the only
 	 * property to this metric, as the metric is used for size/volume metrics.
 	 * 
