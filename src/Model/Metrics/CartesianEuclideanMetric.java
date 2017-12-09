@@ -3,10 +3,11 @@ package Model.Metrics;
 import Model.Features.*;
 import Model.Storage;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Set;
 
-public class CartesianEuclideanMetric extends GenericMetric {
+public class CartesianEuclideanMetric extends GenericMetric implements Serializable {
 
     /* This constructor requires two integers and a reference to the storage for the problem.
      * The values are then stored into a two element array as a x-value and a y-value.

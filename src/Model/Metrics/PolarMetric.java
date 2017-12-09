@@ -3,11 +3,12 @@ package Model.Metrics;
 import Model.Features.*;
 import Model.Storage;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-public class PolarMetric extends GenericMetric {
+public class PolarMetric extends GenericMetric implements Serializable {
 
 	public PolarMetric(String name, Storage storage) {
     	super(name, storage);

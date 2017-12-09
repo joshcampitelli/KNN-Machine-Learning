@@ -1,5 +1,6 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -13,7 +14,7 @@ import Model.Features.*;
 * 
 * @author Josh Campitelli
 */
-public class Storage {
+public class Storage implements Serializable {
 	private HashMap<String, ArrayList<GenericFeature>> learned;
 	
 	public Storage() {
@@ -92,5 +93,25 @@ public class Storage {
 			str += list.get(i).toString() + "    ";
 		}
 		return str;
+	}
+	
+	public boolean equals(Storage compareStorage) {
+		if (this.getSize() != compareStorage.getSize()) {
+			return false;
+		}
+		HashMap<String, ArrayList<GenericFeature>> compareStorageLearn = compareStorage.getLearned();
+		int i;
+		Set<String> keys = learned.keySet();
+		for (String key : keys) {
+			for (i = 0; i < learned.get(key).size(); i++) {
+				if (!(learned.get(key).get(i).getName().equals(compareStorageLearn.get(key).get(i).getName()))) {
+					return false;
+				}
+				if (!(learned.get(key).get(i).getMetric().getName().equals(compareStorageLearn.get(key).get(i).getMetric().getName()))) {
+					return false;
+				}
+			}
+		}		
+		return true;
 	}
 }
