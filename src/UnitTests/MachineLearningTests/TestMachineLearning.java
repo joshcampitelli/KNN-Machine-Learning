@@ -199,6 +199,11 @@ public class TestMachineLearning {
 	}
 	
 	@Test
+	public void testGetSize() {
+		assertEquals("", 3, machineLearning.getSize());
+	}
+	
+	@Test
 	public void testEquals() {
 		String problem2 = "Housing";
 		MachineLearning machineLearning2 = new MachineLearning(problem2);
