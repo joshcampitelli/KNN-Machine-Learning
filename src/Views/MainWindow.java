@@ -12,6 +12,7 @@ import javax.swing.ListSelectionModel;
 
 import Controller.MainWindowController;
 
+@SuppressWarnings("serial")
 public class MainWindow extends JFrame{
 	private MainWindowController mainControl;		// The main controller for the JFrame
 	private JList<String> listOfProblems;			// List of MachineLearning instances, or types of problems

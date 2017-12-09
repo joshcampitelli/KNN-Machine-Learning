@@ -39,6 +39,8 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 	 *  item has been selected from the JList
 	 * 
 	 * @author Logan MacGillivray
+	 * 
+	 * @param e - event which triggers this function
 	 */
 	public void valueChanged(ListSelectionEvent e) {
 		frame.enableAll(true);
@@ -48,7 +50,10 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 	 *  with each JMenuItem
 	 * 
 	 * @author Logan MacGillivray
+	 * 
+	 * @param e - event which triggers this method
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void actionPerformed(ActionEvent e) {
 		// View the selected instance of MachineLearning (problem)
 		if(e.getActionCommand().equals("View")){
@@ -166,6 +171,8 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 	 * 
 	 * @author Logan MacGillivray
 	 * 
+	 * @param panel - the JPanel which will receive new JComponents
+	 * @param component - an array of JComponents to be added to the JPanel
 	 * @return a new JPanel
 	 */
 	private JPanel addToPanel(JPanel panel, JComponent[] component) { 

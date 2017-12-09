@@ -18,16 +18,25 @@ import Model.MachineLearning;
 import Views.AlternateWindow;
 import Views.ProblemWindow;
 
+/** A controller for ProblemWindow, this class handles all events 
+ *  the JFrame has to deal with.
+ * 
+ * @author Logan MacGillivray
+ */
 public class ProblemWindowController implements ActionListener, ListSelectionListener{
-	private ArrayList<String> storageKeys = new ArrayList<String>();
-	private ProblemWindow frame;
-	private MachineLearning machineLearning;
+	private ArrayList<String> storageKeys;		// ArrayList of the Keys in machineLearning's storage
+	private ProblemWindow frame;				// JFrame this controller controls
+	private MachineLearning machineLearning;	// The instance of MachineLearning the JFrame orients around
 	
-	/** Constructor for ProblemWindowController
+	/** Constructs a controller for the ProblemWindow.  This
+	 *  will contain the Action and ListSelection Listeners
 	 * 
 	 * @author Logan MacGillivray
+	 * 
+	 * @param frame - the MachineLearning the window is oriented around
 	 */
 	public ProblemWindowController(MachineLearning machine){
+		storageKeys = new ArrayList<String>();
 		machineLearning = machine;
 		String[] keys = machine.getStorage().getLearned().keySet().toArray(new String[machine.getStorage().getLearned().size()]);
 		for (int i = 0; i < keys.length; i++){
@@ -35,33 +44,43 @@ public class ProblemWindowController implements ActionListener, ListSelectionLis
 		}
 	}
 	
-	/** Sets the frame, used by ProblemWindow
+	/** Sets the JFrame for the controller
 	 * 
 	 * @author Logan MacGillivray
+	 * 
+	 * @param frame - the ProblemWindow this window controls
 	 */
 	public void setFrame(ProblemWindow frame) {
 		this.frame = frame;
 	}
 	
-	/** Returns the ProblemWindow this controller is assigned to
+	/** Public accessor to the JFrame this controller controls
 	 * 
 	 * @author Logan MacGillivray
+	 * 
+	 * @return ProblemWindow
 	 */
 	public ProblemWindow getWindow(){
 		return frame;
 	}
 	
-	/** Sets disabled options to enabled
+	/** ListSelectionListener for the ProblemWindow, checks if an 
+	 *  item has been selected from the JList
 	 * 
 	 * @author Logan MacGillivray
+	 * 
+	 * @param e - event which triggers this function
 	 */
 	public void valueChanged(ListSelectionEvent e) {
 		frame.enableAll(true);
 	}
 	
-	/** Performs various actions depending on which option is chosen
+	/** ActionListener for ProblemWindow.  Runs the command associated 
+	 *  with each JMenuItem
 	 * 
 	 * @author Logan MacGillivray
+	 * 
+	 * @param e - event which triggers this method
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("Edit")){
@@ -86,26 +105,29 @@ public class ProblemWindowController implements ActionListener, ListSelectionLis
 		frame.newScreen();
 	}
 	
-	/** Returns all the keys for the problem
-	 * 
-	 * Error in this code, known issue for next release
+	/** Creates a ListModel (for a JList) of all the learned examples
+	 *  in the instance of MachineLearning
 	 * 
 	 * @author Logan MacGillivray
+	 * 
+	 * return ListModel of learned examples and their features
 	 */
-	public DefaultListModel<String> getProblems(){
+	public DefaultListModel<String> getLearnedExamples(){
 		DefaultListModel<String> tmp = new DefaultListModel<String>();
-		for(int i = 0; i < storageKeys.size(); i++){
-			tmp.addElement(storageKeys.get(i) + ":    " + machineLearning.getStorage().getFeatureString(storageKeys.get(i)));
+		for(String key : storageKeys) {
+			tmp.addElement(key + ":    " + machineLearning.getStorage().getFeatureString(key));
 		}
 		return tmp;  
 	}
 	
-	/** Returns a String[] of all the keys in storage
+	/** Creates an array (for a JList) of all the learned examples
+	 *  in the instance of MachineLearning
 	 * 
 	 * @author Logan MacGillivray
+	 * 
+	 * return Array of learned examples and their features
 	 */
-	public String[] getProblemsArray(){
-		//System.out.println(machineLearning.getStorage().getSize());
+	public String[] getLearnedArray(){
 		String[] tmp = new String[machineLearning.getStorage().getSize()];
 		String[] keys = machineLearning.getStorage().getLearned().keySet().toArray(new String[machineLearning.getStorage().getLearned().size()]);
 		
@@ -113,28 +135,34 @@ public class ProblemWindowController implements ActionListener, ListSelectionLis
 			tmp[i] = keys[i] + ":    " + machineLearning.getStorage().getFeatureString(keys[i]);
 		}
 		return tmp;
-		//return machineLearning.getStorage().getLearned().keySet().toArray(new String[machineLearning.getStorage().getLearned().size()]);
 	}
 	
-	/** Gets name of problem
+	/** Public accessor to the name of the problem being worked on
 	 * 
 	 * @author Logan MacGillivray
+	 * 
+	 * return machineLearning's problem (name)
 	 */
 	public String toString(){
 		return machineLearning.getProblem();
 	}
 	
-	/** Used to pass the machine learning to other functions
+	/** Public accessor to machineLearning
 	 * 
 	 * @author Logan MacGillivray
+	 * 
+	 * return machineLearning
 	 */
 	public MachineLearning getMachine() {
 		return machineLearning;
 	}
 	
-	/** Gets the name for a new instance of the problem
+	/** When creating a new problem, this function gets the name
+	 *  of said problem
 	 * 
 	 * @author Logan MacGillivray
+	 * 
+	 * return name String
 	 */
 	private String name(){
 		String[] option = {"Enter"};
