@@ -3,11 +3,14 @@ package Model.Metrics;
 import Model.Features.*;
 import Model.Storage;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-public class PolarMetric extends GenericMetric {
+public class PolarMetric extends GenericMetric implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	public PolarMetric(String name, Storage storage) {
     	super(name, storage);
@@ -25,14 +28,12 @@ public class PolarMetric extends GenericMetric {
     //requires complex to be of form double distance, int angle or fails.
     @SuppressWarnings("unchecked")
     public HashMap<String, Double> getDistance(GenericFeature feature){
-        HashMap<String, Double> distances = new HashMap<>();
         if(feature instanceof ComplexFeature){
             ArrayList<GenericFeature> internalFeatures =  (ArrayList<GenericFeature>)feature.getValue();
             if(internalFeatures.get(0) instanceof DoubleFeature && internalFeatures.get(1)  instanceof IntegerFeature) {
                 double featureDistance = (double) internalFeatures.get(0).getValue();
                 int featureAngle = (int) internalFeatures.get(1).getValue();
-                HashMap<String, GenericFeature> learnedFeature = storage.getFeature(featureName);
-                Set<String> keys = learnedFeature.keySet();
+                super.getDistance(feature);
                 for (String key : keys) {
                     ArrayList<GenericFeature> internalLearnedFeature = (ArrayList<GenericFeature>) learnedFeature.get(key).getValue();
                     if(internalFeatures.get(0).getValue() == null || internalFeatures.get(1).getValue()==null){

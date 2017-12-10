@@ -2,6 +2,9 @@ package UnitTests.MachineLearningTests;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -14,20 +17,17 @@ import Model.Features.*;
 import Model.Metrics.CartesianEuclideanMetric;
 import Model.Metrics.DiscreteBinaryMetric;
 import Model.Metrics.IntegerAbsoluteMetric;
-
+/**
+ * 
+ * @author Ryan Ribeiro
+ * 
+ */
 public class TestMachineLearning {
 	private String problem = null;
 	private MachineLearning machineLearning = null;
 	private ArrayList<GenericFeature> featuresToLearn1;
 	private ArrayList<GenericFeature> featuresToLearn2;
 	private ArrayList<GenericFeature> featuresToLearn3;
-	
-	public enum FeatureTypes {
-		CartesianFeature,
-		EnumFeature,
-		IntegerFeature,
-		ComplexFeature
-	}
 	
 	@Before
 	public void setup() {
@@ -96,12 +96,6 @@ public class TestMachineLearning {
 		assertEquals("", testStorageLearned.get("h2"), learned.get("h2"));
 		assertEquals("", testStorageLearned.get("h3"), learned.get("h3"));
 	}
-	
-	/*
-	 * I don't need to test addFeatureLayout here. The way it is set up is that it is only ever
-	 * called with correct parameters because the parameters are checked by another class when they
-	 * are initially entered. Also, I know the method works because it is used in the setup().
-	*/
 	
 	@Test
 	public void testDeleteLearned() {
@@ -202,6 +196,74 @@ public class TestMachineLearning {
 		k = 3; testPredictedTotalError = 200000;		
 		machineLearning.predictError(k, featuresToLearn4);
 		assertEquals("", testPredictedTotalError, machineLearning.getTotalError());
+	}
+	
+	@Test
+	public void testGetSize() {
+		assertEquals("", 3, machineLearning.getSize());
+	}
+	
+	@Test
+	public void testEquals() {
+		String problem2 = "Housing";
+		MachineLearning machineLearning2 = new MachineLearning(problem2);
+		String[] allowableDiscreteValues = {"old", "new"};
+		CartesianEuclideanMetric cartMet = new CartesianEuclideanMetric("coordinates", machineLearning2.getStorage());
+		IntegerAbsoluteMetric intMet = new IntegerAbsoluteMetric("sq. ft.", machineLearning2.getStorage());
+		DiscreteBinaryMetric disBiMet = new DiscreteBinaryMetric("age", machineLearning2.getStorage(), allowableDiscreteValues);
+		IntegerAbsoluteMetric intPriceMet = new IntegerAbsoluteMetric("price", machineLearning2.getStorage());
+		ArrayList<GenericFeature> featuresToLearnA;
+		ArrayList<GenericFeature> featuresToLearnB;
+		ArrayList<GenericFeature> featuresToLearnC;
+		
+		intPriceMet.setPredictable();
+		
+		machineLearning2.addRequiredFeature(cartMet);
+		machineLearning2.addRequiredFeature(intMet);
+		machineLearning2.addRequiredFeature(disBiMet);
+		machineLearning2.addRequiredFeature(intPriceMet);
+	
+		featuresToLearnA = new ArrayList<>();
+		featuresToLearnA.add(new CartesianFeature("coordinates", 12, 25, cartMet));
+		featuresToLearnA.add(new IntegerFeature("sq. ft.", 1200, intMet));
+		featuresToLearnA.add(new EnumFeature("age", "new", disBiMet));
+		featuresToLearnA.add(new IntegerFeature("price", 500000, intPriceMet));		
+		machineLearning2.learn("h1", featuresToLearnA);
+		
+		featuresToLearnB = new ArrayList<>();
+		featuresToLearnB.add(new CartesianFeature("coordinates", 10, 50, cartMet)); 
+		featuresToLearnB.add(new IntegerFeature("sq. ft.", 1000, intMet));
+		featuresToLearnB.add(new EnumFeature("age", "old", disBiMet));
+		featuresToLearnB.add(new IntegerFeature("price", 300000, intPriceMet));
+		machineLearning2.learn("h2", featuresToLearnB);
+		
+		featuresToLearnC = new ArrayList<>();
+		featuresToLearnC.add(new CartesianFeature("coordinates", 30, 100, cartMet));
+		featuresToLearnC.add(new IntegerFeature("sq. ft.", 800, intMet));
+		featuresToLearnC.add(new EnumFeature("age", "new", disBiMet));
+		featuresToLearnC.add(new IntegerFeature("price", 400000, intPriceMet));
+		machineLearning2.learn("h3", featuresToLearnC);
+		
+		assertEquals("", true, machineLearning.equals(machineLearning2));
+		
+		MachineLearning badMachineLearning = new MachineLearning("Housing");		
+		assertEquals("", false, machineLearning.equals(badMachineLearning));
+	}
+	
+	@Test
+	public void testSerialSaveAndOpen() {
+		MachineLearning createdMachineLearning = null;
+		machineLearning.serialSave("test.ser");
+		createdMachineLearning = machineLearning.serialOpen("test.ser");
+		
+		assertEquals("", true, createdMachineLearning.equals(machineLearning));
+		
+		//This is just to clean up after this test so that there is no file left over
+		try {
+			Files.deleteIfExists(Paths.get("test.ser"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

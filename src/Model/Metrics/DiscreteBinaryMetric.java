@@ -2,12 +2,15 @@ package Model.Metrics;
 
 import Model.Features.*;
 import Model.Storage;
+
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Set;
 
-public class DiscreteBinaryMetric extends GenericMetric {
-	
-    private HashMap<String, Integer> permittedValues;
+public class DiscreteBinaryMetric extends GenericMetric implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	private HashMap<String, Integer> permittedValues;
 
     /* This constructor requires a string value of the feature name, a reference to the problem storage,
      * and an array of permitted values.
@@ -36,10 +39,8 @@ public class DiscreteBinaryMetric extends GenericMetric {
      * @author Ethan Morrill
      */
     public HashMap<String, Double> getDistance(GenericFeature feature){
-        HashMap<String, Double> distances = new HashMap<>();
         if(feature instanceof EnumFeature){
-            HashMap<String, GenericFeature> learnedFeature = storage.getFeature(featureName);
-            Set<String> keys = learnedFeature.keySet();
+            super.getDistance(feature);
             for(String key : keys) {
                 if(feature.getValue()==null || learnedFeature.get(key).getValue()==null){
                     distances.put(key, 0.0);

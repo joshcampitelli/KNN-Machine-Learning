@@ -3,12 +3,15 @@ package Model.Metrics;
 import Model.Features.*;
 import Model.Storage;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Set;
 
-public class CartesianEuclideanMetric extends GenericMetric {
+public class CartesianEuclideanMetric extends GenericMetric implements Serializable {
 
-    /* This constructor requires two integers and a reference to the storage for the problem.
+	private static final long serialVersionUID = 1L;
+
+	/* This constructor requires two integers and a reference to the storage for the problem.
      * The values are then stored into a two element array as a x-value and a y-value.
      * With a reference to the storage stored locally.
      *
@@ -27,12 +30,9 @@ public class CartesianEuclideanMetric extends GenericMetric {
      * @author Logan MacGillivray, Ethan Morrill
      */
     public HashMap<String, Double> getDistance(GenericFeature feature){
-        HashMap<String, Double> distances = new HashMap<>();
         int[] value = (int[])feature.getValue();
         if(feature instanceof CartesianFeature){
-
-            HashMap<String, GenericFeature> learnedFeature = storage.getFeature(featureName);
-            Set<String> keys = learnedFeature.keySet();
+            super.getDistance(feature);
             for(String key : keys) {
                 if(feature.getValue()==null || learnedFeature.get(key).getValue()==null){
                     distances.put(key, 0.0);

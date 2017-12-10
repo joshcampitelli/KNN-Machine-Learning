@@ -2,13 +2,16 @@ package Model.Metrics;
 
 import Model.Features.*;
 import Model.Storage;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 
-public class ComplexDifferenceMetric extends GenericMetric {
+public class ComplexDifferenceMetric extends GenericMetric implements Serializable {
 
-    public ComplexDifferenceMetric(String name, Storage storage){
+	private static final long serialVersionUID = 1L;
+
+	public ComplexDifferenceMetric(String name, Storage storage){
     	super(name, storage);
     }
 
