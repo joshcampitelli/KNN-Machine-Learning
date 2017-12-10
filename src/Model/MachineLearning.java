@@ -291,12 +291,25 @@ public class MachineLearning implements Serializable {
 	}
 	
 	/**
+	 * Returns the size of the instance of MachineLearning as the size of it's Storage
+	 * 
+	 * @return					an Integer representing the size of the Storage for this MachineLearning instance
+	 * @Author Ryan Ribeiro
+	 */
+	public int getSize() {
+		return storage.getSize();
+	}
+	
+	/**
 	 * Saves the instance of MachineLearning to a file of name 'fileName' using serialization.
 	 * 
 	 * @param fileName			a String which will become the name of the file being saved
 	 * @author Ryan Ribeiro
 	 */
 	public void serialSave(String fileName) {
+		if (!(fileName.endsWith(".ser"))) {
+			fileName = fileName + ".ser";
+		}
 		try {
 			FileOutputStream fileOut = new FileOutputStream(fileName); 		//Creates an FileOutputStream using the fileName provided
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);		//Creates an ObjectOutputStream using the created FileOutputStream
@@ -349,6 +362,10 @@ public class MachineLearning implements Serializable {
 	public boolean equals(MachineLearning compareML) {
 		int i;
 		ArrayList<GenericMetric> compareMetrics = compareML.getMetrics();
+		//If the sizes are not the same, the two aren't comparable
+		if (!(this.getSize() == compareML.getSize())) {
+			return false;
+		}
 		//All if statements must pass in order for the two instances of MachineLearning to be considered equal
 		if (!(this.problem.equals(compareML.getProblem()))) {
 			return false;

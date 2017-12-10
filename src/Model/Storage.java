@@ -119,12 +119,12 @@ public class Storage implements Serializable {
 		 */
 		for (String key : keys) {
 			for (i = 0; i < learned.get(key).size(); i++) {
-				//Comparing feature names
-				if (!(learned.get(key).get(i).getName().equals(compareStorageLearn.get(key).get(i).getName()))) {
+				//If the the returned String from toString() is equal, it means their names and values are equal
+				if (!(learned.get(key).get(i).toString().equals(compareStorageLearn.get(key).get(i).toString()))) {
 					return false;
 				}
-				//Comparing metric names
-				if (!(learned.get(key).get(i).getMetric().getName().equals(compareStorageLearn.get(key).get(i).getMetric().getName()))) {
+				//If the the returned String from toString() is equal, it means their names and values are equal
+				if (!(learned.get(key).get(i).toString().equals(compareStorageLearn.get(key).get(i).toString()))) {
 					return false;
 				}
 			}

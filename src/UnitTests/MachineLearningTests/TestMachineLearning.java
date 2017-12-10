@@ -2,6 +2,9 @@ package UnitTests.MachineLearningTests;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -196,6 +199,11 @@ public class TestMachineLearning {
 	}
 	
 	@Test
+	public void testGetSize() {
+		assertEquals("", 3, machineLearning.getSize());
+	}
+	
+	@Test
 	public void testEquals() {
 		String problem2 = "Housing";
 		MachineLearning machineLearning2 = new MachineLearning(problem2);
@@ -237,6 +245,9 @@ public class TestMachineLearning {
 		machineLearning2.learn("h3", featuresToLearnC);
 		
 		assertEquals("", true, machineLearning.equals(machineLearning2));
+		
+		MachineLearning badMachineLearning = new MachineLearning("Housing");		
+		assertEquals("", false, machineLearning.equals(badMachineLearning));
 	}
 	
 	@Test
@@ -246,6 +257,13 @@ public class TestMachineLearning {
 		createdMachineLearning = machineLearning.serialOpen("test.ser");
 		
 		assertEquals("", true, createdMachineLearning.equals(machineLearning));
+		
+		//This is just to clean up after this test so that there is no file left over
+		try {
+			Files.deleteIfExists(Paths.get("test.ser"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
