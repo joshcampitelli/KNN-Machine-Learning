@@ -187,7 +187,7 @@ public class FeatureController {
         StringBuffer sb = new StringBuffer();
 
         for (String value : permittedValues.keySet()) {
-            sb.append(value + "\n");
+            sb.append("\t -" + value + "\n");
         }
 
         Object[] message = {
