@@ -8,12 +8,13 @@ import Model.Storage;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FeatureController {
-    private String key; //Problem Key in HashMap
+    private String key;         //Problem Key in HashMap
     private MachineLearning machineLearning;
-    private Storage storage; //HashMap Reference
-    private State state; //Indicates edit or add
+    private Storage storage;    //HashMap Reference
+    private State state;        //Indicates edit or add
     private ProblemWindowController control;
     private GenericMetric predictMetric = null;
 
@@ -48,7 +49,7 @@ public class FeatureController {
         if (state == State.addProblem) {
             instantiateFeatures(listModel);
         } else {
-            ArrayList<GenericFeature> features = machineLearning.getStorage().getLearned().get(key);
+            ArrayList<GenericFeature> features = storage.getLearned().get(key);
             if (features != null) {
                 for (GenericFeature feature : features) {
                     listModel.addElement(feature);
@@ -132,9 +133,10 @@ public class FeatureController {
             feature = integerFeatureWindow(feature.getMetric(), "");
         } else if (feature instanceof DoubleFeature) {
             feature = doubleFeatureWindow(feature.getMetric(), "");
+        } else if (feature instanceof ComplexFeature) {
+            feature = complexPolarFeature(feature.getMetric());
         }
 
-        //todo: add complex feature implementation
         if (feature != null) {
             /*Replace the current feature with updated*/
             listModel.removeElementAt(index);
@@ -167,8 +169,9 @@ public class FeatureController {
                 return cartesianFeatureWindow(metric); //Testing recursion here.
             }
             return new CartesianFeature(metric.getName(), x, y, metric);
+        } else {
+            return cartesianFeatureWindow(metric);
         }
-        return null;
     }
 
     /**
@@ -176,18 +179,32 @@ public class FeatureController {
      * can enter the value. Creates a new EnumFeature and returns it.
      * @return EnumFeature
      * @author Josh Campitelli
-     * todo: input validation, check if its an accepted DiscreteValue
      */
     private EnumFeature enumFeatureWindow(GenericMetric metric) {
         JTextField enumField = new JTextField();
+        HashMap<String, Integer> permittedValues = metric.getPermittedValues();
+
+        StringBuffer sb = new StringBuffer();
+
+        for (String value : permittedValues.keySet()) {
+            sb.append("\t -" + value + "\n");
+        }
+
         Object[] message = {
+                "Options: \n" + sb.toString(),
                 "Discrete Value:", enumField,
         };
         int option = JOptionPane.showConfirmDialog(null, message, metric.getName() + " (Discrete):", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
-            return new EnumFeature(metric.getName(), enumField.getText(), metric);
+            if (metric.getPermittedValues().containsKey(enumField.getText())) {
+                return new EnumFeature(metric.getName(), enumField.getText(), metric);
+            } else {
+                JOptionPane.showMessageDialog(null, "Incorrect discrete value.");
+                return enumFeatureWindow(metric);
+            }
+        } else {
+            return enumFeatureWindow(metric);
         }
-        return null;
     }
 
     /**
@@ -212,8 +229,9 @@ public class FeatureController {
             }
 
             return new IntegerFeature(metric.getName(), value, metric);
+        } else {
+            return integerFeatureWindow(metric, text);
         }
-        return null;
     }
 
     /**
@@ -237,8 +255,9 @@ public class FeatureController {
                 return doubleFeatureWindow(metric, text); //Testing recursion here.
             }
             return new DoubleFeature(metric.getName(), value, metric);
+        } else {
+            return doubleFeatureWindow(metric, text);
         }
-        return null;
     }
 
     /**
@@ -332,7 +351,16 @@ public class FeatureController {
                 JOptionPane.showMessageDialog(null, "Incorrect value for K.");
                 predictPrice(listModel);
             }
+        } else {
+            predictPrice(listModel);
         }
+    }
+
+    /**
+     * todo: implement Predict and Learn method.
+     * @param listModel
+     */
+    public void predictLearn(DefaultListModel<GenericFeature> listModel) {
     }
 
     /**
@@ -362,6 +390,8 @@ public class FeatureController {
                 JOptionPane.showMessageDialog(null, "Incorrect value for K.");
                 predictError(listModel);
             }
+        } else {
+            predictError(listModel);
         }
     }
 
