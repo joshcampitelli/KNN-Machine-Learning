@@ -28,14 +28,12 @@ public class PolarMetric extends GenericMetric implements Serializable {
     //requires complex to be of form double distance, int angle or fails.
     @SuppressWarnings("unchecked")
     public HashMap<String, Double> getDistance(GenericFeature feature){
-        HashMap<String, Double> distances = new HashMap<>();
         if(feature instanceof ComplexFeature){
             ArrayList<GenericFeature> internalFeatures =  (ArrayList<GenericFeature>)feature.getValue();
             if(internalFeatures.get(0) instanceof DoubleFeature && internalFeatures.get(1)  instanceof IntegerFeature) {
                 double featureDistance = (double) internalFeatures.get(0).getValue();
                 int featureAngle = (int) internalFeatures.get(1).getValue();
-                HashMap<String, GenericFeature> learnedFeature = storage.getFeature(featureName);
-                Set<String> keys = learnedFeature.keySet();
+                super.getDistance(feature);
                 for (String key : keys) {
                     ArrayList<GenericFeature> internalLearnedFeature = (ArrayList<GenericFeature>) learnedFeature.get(key).getValue();
                     if(internalFeatures.get(0).getValue() == null || internalFeatures.get(1).getValue()==null){

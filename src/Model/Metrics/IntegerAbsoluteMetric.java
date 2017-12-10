@@ -30,10 +30,8 @@ public class IntegerAbsoluteMetric extends GenericMetric implements Serializable
      * @author Logan MacGillivray, Ethan Morrill
      */
     public HashMap<String, Double> getDistance(GenericFeature feature){
-        HashMap<String, Double> distances = new HashMap<>();
         if((feature instanceof IntegerFeature)){
-            HashMap<String, GenericFeature> learnedFeature = storage.getFeature(featureName);
-            Set<String> keys = learnedFeature.keySet();
+            super.getDistance(feature);
             for(String key : keys) {
                 if(feature.getValue()==null || learnedFeature.get(key).getValue()==null){
                     distances.put(key,0.0);

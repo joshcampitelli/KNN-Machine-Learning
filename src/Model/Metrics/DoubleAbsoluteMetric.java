@@ -16,10 +16,7 @@ public class DoubleAbsoluteMetric extends GenericMetric implements Serializable 
     }
 
     public HashMap<String, Double> getDistance(GenericFeature feature){
-        HashMap<String, Double> distances = new HashMap<>();
         if(feature instanceof DoubleFeature){
-            HashMap<String, GenericFeature> learnedFeature = storage.getFeature(featureName);
-            Set<String> keys = learnedFeature.keySet();
             for(String key : keys) {
                 if(feature.getValue()==null || learnedFeature.get(key).getValue()==null){
                     distances.put(key,0.0);
