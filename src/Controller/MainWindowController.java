@@ -7,6 +7,7 @@ import Views.ProblemWindow;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -19,6 +20,7 @@ import javax.swing.*;
  * @author Logan MacGillivray
  */
 public class MainWindowController implements ActionListener, ListSelectionListener {
+	private static final String FILETYPE = ".jerl";				// File type for saving MachineLearning
 	private ArrayList<MachineLearning> machineLearningArray;	/* List of MachineLearning instances,
 																 * 		different problems the user is working on */
 	private MainWindow frame;									// The MainWindow this controls 
@@ -60,11 +62,24 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 			new ProblemWindow(new ProblemWindowController(machineLearningArray.get(frame.getJList().getSelectedIndex())));
 		// Save the selected problem
 		} else if(e.getActionCommand().equals("Save")){
-			machineLearningArray.get(frame.getJList().getSelectedIndex()).serialSave(makeFileChooser("Save").getSelectedFile().getAbsolutePath() + ".bin");
+			machineLearningArray.get(frame.getJList().getSelectedIndex()).serialSave(makeFileChooser("Save").getSelectedFile().getAbsolutePath() + FILETYPE);
 		// Load in a previously saved problem
 		} else if(e.getActionCommand().equals("Load")){
-			machineLearningArray.add(new MachineLearning("tmp").serialOpen(makeFileChooser("Open").getSelectedFile().getAbsolutePath()));
-			frame.newScreen();
+			File file = makeFileChooser("Open").getSelectedFile();
+			if(file.exists() && file.getAbsolutePath().endsWith(FILETYPE)) {
+					machineLearningArray.add(new MachineLearning("tmp").serialOpen(file.getAbsolutePath()));
+					frame.newScreen();
+			} else {
+				JPanel panel = new JPanel();
+				if (file.exists()) {
+					panel = addToPanel(panel, new JComponent[] {new JLabel("Incorrect file type")});
+				} else {
+					panel = addToPanel(panel, new JComponent[] {new JLabel("Your File Could not be found")});
+				}
+				JOptionPane.showOptionDialog(null, panel, "Problem Creation", 
+						JOptionPane.NO_OPTION, JOptionPane.ERROR_MESSAGE, null, 
+						new String[] {"Okay"}, "Okay");
+			}
 		// Add a new problem to the session
 		} else if(e.getActionCommand().equals("Add Problem")){
 			// Create a JPanel to get basic information on the problem
@@ -209,5 +224,15 @@ public class MainWindowController implements ActionListener, ListSelectionListen
 			 arg[i] = machineLearningArray.get(i).getProblem();
 		}
 		return arg;
+	}
+	
+	/** This is a public accessor to the FILETYPE constant
+	 * 
+	 * @author Logan MacGillivray
+	 * 
+	 * @return
+	 */
+	public static String getFiletype() {
+		return FILETYPE;
 	}
 }
