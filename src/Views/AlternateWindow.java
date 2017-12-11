@@ -21,7 +21,6 @@ public class AlternateWindow extends JFrame {
 
     private JMenuItem predictItem = new JMenuItem("Predict Value");
     private JMenuItem predictErrorItem = new JMenuItem("Predict Error");
-    private JMenuItem predictLearnItem = new JMenuItem("Predict & Learn");
 
     private JMenuItem cancelItem = new JMenuItem("Cancel");
 
@@ -48,7 +47,6 @@ public class AlternateWindow extends JFrame {
         machineLearnMenu.add(updateItem);
         machineLearnMenu.add(predictItem);
         machineLearnMenu.add(predictErrorItem);
-        machineLearnMenu.add(predictLearnItem);
         machineLearnMenu.add(cancelItem);
 
         featureMenu.add(editItem);
@@ -108,7 +106,6 @@ public class AlternateWindow extends JFrame {
 
         predictItem.addActionListener(event -> featureController.predictPrice(listModel));
         predictErrorItem.addActionListener(event -> featureController.predictError(listModel));
-        predictLearnItem.addActionListener(event -> featureController.predictLearn(listModel));
         cancelItem.addActionListener(event -> this.dispose());
         editItem.addActionListener(event -> featureController.editFeature(list, listModel));
     }

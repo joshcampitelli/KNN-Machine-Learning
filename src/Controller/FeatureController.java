@@ -2,12 +2,9 @@ package Controller;
 
 import Model.Features.*;
 import Model.MachineLearning;
-
 import Model.Metrics.*;
 import Model.Storage;
-
 import javax.swing.*;
-import java.lang.reflect.GenericArrayType;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -96,7 +93,13 @@ public class FeatureController {
         }
     }
 
-
+    /**
+     * Method complexPolarFeature is a gui representation of a polar feature, which prompts the user
+     * for the Angle and the Distance.
+     * @param metric used to construct features
+     * @return GenericFeature
+     * @author Josh Campitelli
+     */
     private GenericFeature complexPolarFeature(GenericMetric metric) {
         GenericFeature subFeature1 = integerFeatureWindow(metric, "Degree"); //open different window with "angle" name
         GenericFeature subFeature2 = doubleFeatureWindow(metric, "Distance");
@@ -360,14 +363,7 @@ public class FeatureController {
             predictPrice(listModel);
         }
     }
-
-    /**
-     * todo: implement Predict and Learn method.
-     * @param listModel
-     */
-    public void predictLearn(DefaultListModel<GenericFeature> listModel) {
-    }
-
+    
     /**
      * predictPrice gets the k value from the user and calls the predictError method within MachineLearning
      * @param listModel list on gui to display features
