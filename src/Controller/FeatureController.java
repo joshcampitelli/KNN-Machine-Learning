@@ -101,8 +101,9 @@ public class FeatureController {
      * @author Josh Campitelli
      */
     private GenericFeature complexPolarFeature(GenericMetric metric) {
-        GenericFeature subFeature1 = integerFeatureWindow(metric, "Degree"); //open different window with "angle" name
-        GenericFeature subFeature2 = doubleFeatureWindow(metric, "Distance");
+        GenericFeature subFeature1 = doubleFeatureWindow(metric, "Distance");
+        GenericFeature subFeature2 = integerFeatureWindow(metric, "Degree");
+
         ArrayList<GenericFeature> subFeatures = new ArrayList<>();
         subFeatures.add(subFeature1);
         subFeatures.add(subFeature2);
