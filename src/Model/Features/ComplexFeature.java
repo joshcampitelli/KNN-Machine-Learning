@@ -12,12 +12,19 @@ public class ComplexFeature extends GenericFeature implements Serializable {
 	/** @author Logan
 	 *  Construct a ComplexFeature made of smaller GenericFeatures
 	 *  
-	 *  @param name of the feature (String), other features that make up this one (ArrayList)
+	 *  @param name of the feature (String)
+	 *  @param feature arraylist of the internal features
+	 *  @param metric metric to be used for calculating the distance of this to other features
 	 */
 	public ComplexFeature(String name, ArrayList<GenericFeature> feature, GenericMetric metric) {
 		super(name, feature, metric);
 	}
 
+	/** @author Ethan Morrill
+	 *  return the internal feature of the complexFeature of the provided feature name
+	 *
+	 *  @param featureName of the feature (String)
+	 */
 	public GenericFeature getInteralFeature(String featureName){
 		ArrayList<GenericFeature> internalFeatures = (ArrayList)this.getValue();
 		for(GenericFeature feature: internalFeatures){

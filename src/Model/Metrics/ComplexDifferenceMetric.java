@@ -24,7 +24,6 @@ public class ComplexDifferenceMetric extends GenericMetric implements Serializab
      * @author Ethan Morrill
      */
 
-     //Has temporary getMetric until implementation is known
     public HashMap<String, Double> getDistance(GenericFeature feature) {
 
         if(feature instanceof ComplexFeature){

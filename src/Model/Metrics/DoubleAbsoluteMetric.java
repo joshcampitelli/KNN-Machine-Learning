@@ -15,6 +15,14 @@ public class DoubleAbsoluteMetric extends GenericMetric implements Serializable 
     	super(name, storage);
     }
 
+    /* See GenericMetrics.getDifference(GenericFeature feature) for full java doc
+     * This particular function will return a hashmap of the example key and absolute distance
+     * of the provided feature and each learned example.
+     * The value shall be returned as a Hashmap of {key, positive double distance}.
+     * returns null if provided feature is of the wrong type.
+     *
+     * @author Ethan Morrill
+     */
     public HashMap<String, Double> getDistance(GenericFeature feature){
         if(feature instanceof DoubleFeature){
             super.getDistance(feature);
@@ -29,7 +37,15 @@ public class DoubleAbsoluteMetric extends GenericMetric implements Serializable 
         }
         return null;
     }
-
+    /* See GenericMetrics.getInternalDifference(GenericFeature feature, HashMap<String,GenericFeature>
+     *internalLearnedFeature) for full java doc
+     * This particular function will return a hashmap of the example key and Polar distance
+     * of the provided feature and each learned example of an internal feature.
+     * The value shall be returned as a Hashmap of {key, positive double distance}.
+     * returns null if provided feature is of the wrong type.
+     *
+     * @author Ethan Morrill
+     */
     public HashMap<String, Double> getInternalDistance(GenericFeature feature, HashMap<String,GenericFeature> internalLearnedFeature){
 
         if((feature instanceof DoubleFeature)){

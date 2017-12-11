@@ -17,7 +17,7 @@ public class PolarMetric extends GenericMetric implements Serializable {
     }
 
     /* See GenericMetrics.getDifference(GenericFeature feature) for full java doc
-     * This particular function will return a hashmap of the example key and euclidean distance
+     * This particular function will return a hashmap of the example key and Polar distance
      * of the provided feature and each learned example.
      * The value shall be returned as a Hashmap of {key, positive double distance}.
      * returns null if provided feature is of the wrong type.

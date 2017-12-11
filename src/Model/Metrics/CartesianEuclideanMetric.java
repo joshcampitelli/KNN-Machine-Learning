@@ -48,6 +48,15 @@ public class CartesianEuclideanMetric extends GenericMetric implements Serializa
         return null;
     }
 
+    /* See GenericMetrics.getInternalDifference(GenericFeature feature, HashMap<String,GenericFeature>
+     *internalLearnedFeature) for full java doc
+     * This particular function will return a hashmap of the example key and Polar distance
+     * of the provided feature and each learned example of an internal feature.
+     * The value shall be returned as a Hashmap of {key, positive double distance}.
+     * returns null if provided feature is of the wrong type.
+     *
+     * @author Ethan Morrill
+     */
     public HashMap<String, Double> getInternalDistance(GenericFeature feature, HashMap<String,GenericFeature> internalLearnedFeature){
 
         int[] value = (int[])feature.getValue();
