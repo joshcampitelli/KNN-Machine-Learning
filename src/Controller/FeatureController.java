@@ -7,6 +7,7 @@ import Model.Metrics.*;
 import Model.Storage;
 
 import javax.swing.*;
+import java.lang.reflect.GenericArrayType;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -87,17 +88,7 @@ public class FeatureController {
                 continue;
             }
 
-            if (metric instanceof CartesianEuclideanMetric) {
-                feature = cartesianFeatureWindow(metric);
-            } else if (metric instanceof IntegerAbsoluteMetric) {
-                feature = integerFeatureWindow(metric, "");
-            } else if (metric instanceof DiscreteBinaryMetric) {
-                feature = enumFeatureWindow(metric);
-            } else if (metric instanceof DoubleAbsoluteMetric) {
-                feature = doubleFeatureWindow(metric, "");
-            } else if (metric instanceof PolarMetric) {
-                feature = complexPolarFeature(metric);
-            }
+            feature = getFeature(metric);
 
             //Add to gui feature to gui JList
             if (feature != null)
@@ -125,17 +116,8 @@ public class FeatureController {
         int index = list.getSelectedIndex();
         GenericFeature feature = listModel.getElementAt(index);
 
-        if (feature instanceof CartesianFeature) {
-            feature = cartesianFeatureWindow(feature.getMetric());
-        } else if (feature instanceof EnumFeature) {
-            feature = enumFeatureWindow(feature.getMetric());
-        } else if (feature instanceof IntegerFeature) {
-            feature = integerFeatureWindow(feature.getMetric(), "");
-        } else if (feature instanceof DoubleFeature) {
-            feature = doubleFeatureWindow(feature.getMetric(), "");
-        } else if (feature instanceof ComplexFeature) {
-            feature = complexPolarFeature(feature.getMetric());
-        }
+        GenericMetric metric = feature.getMetric();
+        feature = getFeature(metric);
 
         if (feature != null) {
             /*Replace the current feature with updated*/
@@ -287,24 +269,35 @@ public class FeatureController {
         GenericFeature predictFeature= null;
 
         if (predictMetric != null) {
-            if (predictMetric instanceof CartesianEuclideanMetric) {
-                predictFeature = cartesianFeatureWindow(predictMetric);
-            } else if (predictMetric instanceof IntegerAbsoluteMetric) {
-                predictFeature = integerFeatureWindow(predictMetric, "");
-            } else if (predictMetric instanceof DiscreteBinaryMetric) {
-                predictFeature = enumFeatureWindow(predictMetric);
-            } else if (predictMetric instanceof DoubleAbsoluteMetric) {
-                predictFeature = doubleFeatureWindow(predictMetric, "");
-            } else if (predictMetric instanceof PolarMetric) {
-                predictFeature = complexPolarFeature(predictMetric);
-            }
-            
+            predictFeature = getFeature(predictMetric);
         }
+
         if(predictFeature != null) {
         	newInstance.add(predictFeature);
         	machineLearning.learn(key, newInstance);
         }
-        
+    }
+
+    /**
+     * Method getFeature checks instance of given metric, prompts the user for the feature's value
+     * constructs then returns the feature.
+     * @param metric Metric which infers feature
+     * @return GenericFeature
+     */
+    private GenericFeature getFeature(GenericMetric metric) {
+        if (metric instanceof CartesianEuclideanMetric) {
+            return cartesianFeatureWindow(metric);
+        } else if (metric instanceof IntegerAbsoluteMetric) {
+            return integerFeatureWindow(metric, "");
+        } else if (metric instanceof DiscreteBinaryMetric) {
+            return enumFeatureWindow(metric);
+        } else if (metric instanceof DoubleAbsoluteMetric) {
+            return doubleFeatureWindow(metric, "");
+        } else if (metric instanceof PolarMetric) {
+            return complexPolarFeature(metric);
+        } else {
+            return null;
+        }
     }
 
     /**
