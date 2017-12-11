@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -76,7 +75,7 @@ public class TestMachineLearning {
 	
 	@Test
 	public void testGetProblem() {
-		assertEquals("", problem, machineLearning.getProblem());
+		assertEquals("Should return 'Housing'", problem, machineLearning.getProblem());
 	}
 	
 	@Test
@@ -86,35 +85,21 @@ public class TestMachineLearning {
 		testStorage.insert("h2", featuresToLearn2);
 		testStorage.insert("h3", featuresToLearn3);
 		
-		HashMap<String, ArrayList<GenericFeature>> learned = new HashMap<>();
-		learned = machineLearning.getStorage().getLearned();
-		HashMap<String, ArrayList<GenericFeature>> testStorageLearned = new HashMap<>();
-		testStorageLearned = testStorage.getLearned();
-		
-		
-		assertEquals("", testStorageLearned.get("h1"), learned.get("h1"));
-		assertEquals("", testStorageLearned.get("h2"), learned.get("h2"));
-		assertEquals("", testStorageLearned.get("h3"), learned.get("h3"));
+		assertEquals("Should return 'true' if both storages contain the same contents", true, testStorage.equals(machineLearning.getStorage()));
 	}
 	
 	@Test
 	public void testDeleteLearned() {
-		Storage testStorage = new Storage();
-		testStorage.insert("h1", featuresToLearn1);
-		testStorage.insert("h2", featuresToLearn2);
-		testStorage.insert("h3", featuresToLearn3);
+		Storage testStorage = machineLearning.getStorage();
 		
-		machineLearning.deleteLearned("h1");
 		testStorage.remove("h1");		
-		assertEquals("", testStorage.getSize(), machineLearning.getStorage().getSize());
+		assertEquals("Size should be equal to '2'", 2, testStorage.getSize());
 		
-		machineLearning.deleteLearned("h2");
 		testStorage.remove("h2");		
-		assertEquals("", testStorage.getSize(), machineLearning.getStorage().getSize());
+		assertEquals("Size should be equal to '1'", 1, testStorage.getSize());
 		
-		machineLearning.deleteLearned("h3");
 		testStorage.remove("h3");		
-		assertEquals("", testStorage.getSize(), machineLearning.getStorage().getSize());
+		assertEquals("Size should be equal to '0'", 0, testStorage.getSize());
 	}
 	
 	@Test
@@ -129,17 +114,9 @@ public class TestMachineLearning {
 		featuresToLearn4.add(new IntegerFeature("sq. ft.", 1000, intMet));
 		featuresToLearn4.add(new EnumFeature("age", "new", disBiMet));		
 		
-		int k;
-		String testPredictedPrice;
-		
-		k = 1; testPredictedPrice = "300000";		
-		assertEquals("", testPredictedPrice, machineLearning.predict(k, featuresToLearn4));		
-
-		k = 2; testPredictedPrice = "400000";		
-		assertEquals("", testPredictedPrice, machineLearning.predict(k, featuresToLearn4));
-
-		k = 3; testPredictedPrice = "400000";		
-		assertEquals("", testPredictedPrice, machineLearning.predict(k, featuresToLearn4));
+		assertEquals("Predicted price should be '300000'", "300000", machineLearning.predict(1, featuresToLearn4));				
+		assertEquals("Predicted price should be '400000'", "400000", machineLearning.predict(2, featuresToLearn4));
+		assertEquals("Predicted price should be '400000'", "400000", machineLearning.predict(3, featuresToLearn4));
 	}
 	
 	@Test
@@ -156,16 +133,9 @@ public class TestMachineLearning {
 		featuresToLearn4.add(new EnumFeature("age", "new", disBiMet));
 		featuresToLearn4.add(new IntegerFeature("price", 300000, intPriceMet));
 		
-		int k, expectedError;
-		
-		k = 1; expectedError = 0;
-		assertEquals("", expectedError, machineLearning.predictError(k, featuresToLearn4));		
-
-		k = 2; expectedError = 100000;
-		assertEquals("", expectedError, machineLearning.predictError(k, featuresToLearn4));
-
-		k = 3; expectedError = 100000;	
-		assertEquals("", expectedError, machineLearning.predictError(k, featuresToLearn4));
+		assertEquals("Predicted error should be '0'", 0, machineLearning.predictError(1, featuresToLearn4));
+		assertEquals("Predicted error should be '100000'", 100000, machineLearning.predictError(2, featuresToLearn4));
+		assertEquals("Predicted error should be '100000'", 100000, machineLearning.predictError(3, featuresToLearn4));
 	}
 	
 	@Test
@@ -182,25 +152,19 @@ public class TestMachineLearning {
 		featuresToLearn4.add(new EnumFeature("age", "new", disBiMet));
 		featuresToLearn4.add(new IntegerFeature("price", 300000, intPriceMet));
 		
-		int k;
-		int testPredictedTotalError;
+		machineLearning.predictError(1, featuresToLearn4);
+		assertEquals("Total error should be '0'", 0, machineLearning.getTotalError());
 		
-		k = 1; testPredictedTotalError = 0;
-		machineLearning.predictError(k, featuresToLearn4);
-		assertEquals("", testPredictedTotalError, machineLearning.getTotalError());
+		machineLearning.predictError(2, featuresToLearn4);
+		assertEquals("Total error should be '100000'", 100000, machineLearning.getTotalError());
 		
-		k = 2; testPredictedTotalError = 100000;	
-		machineLearning.predictError(k, featuresToLearn4);
-		assertEquals("", testPredictedTotalError, machineLearning.getTotalError());
-		
-		k = 3; testPredictedTotalError = 200000;		
-		machineLearning.predictError(k, featuresToLearn4);
-		assertEquals("", testPredictedTotalError, machineLearning.getTotalError());
+		machineLearning.predictError(3, featuresToLearn4);
+		assertEquals("Total error should be '200000'", 200000, machineLearning.getTotalError());
 	}
 	
 	@Test
 	public void testGetSize() {
-		assertEquals("", 3, machineLearning.getSize());
+		assertEquals("Size should be '3'", 3, machineLearning.getSize());
 	}
 	
 	@Test
@@ -244,10 +208,13 @@ public class TestMachineLearning {
 		featuresToLearnC.add(new IntegerFeature("price", 400000, intPriceMet));
 		machineLearning2.learn("h3", featuresToLearnC);
 		
-		assertEquals("", true, machineLearning.equals(machineLearning2));
-		
+		assertEquals("Should return 'true' if instances of MachineLearning are equal", true, machineLearning.equals(machineLearning2));
+	}
+	
+	@Test
+	public void testEqualsNotEqual() {		
 		MachineLearning badMachineLearning = new MachineLearning("Housing");		
-		assertEquals("", false, machineLearning.equals(badMachineLearning));
+		assertEquals("Should return 'false' if instances of MachineLearning are not equal", false, machineLearning.equals(badMachineLearning));
 	}
 	
 	@Test
@@ -257,7 +224,9 @@ public class TestMachineLearning {
 		machineLearning.serialSave(fileName);
 		createdMachineLearning = machineLearning.serialOpen(fileName);
 		
-		assertEquals("", true, createdMachineLearning.equals(machineLearning));
+		assertEquals("Should retunr 'true' if the saved and subsequently opened"
+				+ "instance of MachineLearning is equal to the original version"
+				+ "before saving", true, createdMachineLearning.equals(machineLearning));
 		
 		//This is just to clean up after this test so that there is no file left over
 		try {
