@@ -30,26 +30,31 @@ public class PolarMetric extends GenericMetric implements Serializable {
     public HashMap<String, Double> getDistance(GenericFeature feature){
         if(feature instanceof ComplexFeature){
             ArrayList<GenericFeature> internalFeatures =  (ArrayList<GenericFeature>)feature.getValue();
-            if(internalFeatures.get(0) instanceof DoubleFeature && internalFeatures.get(1)  instanceof IntegerFeature) {
-                double featureDistance = (double) internalFeatures.get(0).getValue();
-                int featureAngle = (int) internalFeatures.get(1).getValue();
+            if((internalFeatures.get(0) instanceof DoubleFeature && internalFeatures.get(1)  instanceof IntegerFeature)||(internalFeatures.get(1) instanceof DoubleFeature && internalFeatures.get(0)  instanceof IntegerFeature)) {
+                double featureDistance = 0.0;
+                int featureAngle = 0;
+                HashMap<String, GenericFeature> doubleLearnedFeatures = null;
+                HashMap<String, GenericFeature> integerLearnedFeatures = null;
                 super.getDistance(feature);
-                for (String key : keys) {
-                    ArrayList<GenericFeature> internalLearnedFeature = (ArrayList<GenericFeature>) learnedFeature.get(key).getValue();
-                    if(internalFeatures.get(0).getValue() == null || internalFeatures.get(1).getValue()==null){
-                        distances.put(key,0.0);
-                    }
-                    else if(internalLearnedFeature.get(0).getValue()==null || internalLearnedFeature.get(1).getValue()==null){
-                        distances.put(key,0.0);
+                for(GenericFeature internalFeature: internalFeatures)
+                    if( internalFeature instanceof DoubleFeature){
+                        featureDistance = (double)internalFeature.getValue();
+                        doubleLearnedFeatures = storage.getInternalFeature(featureName, internalFeature.getName());
+
                     }
                     else{
-                        double learnedDistance = (double) internalLearnedFeature.get(0).getValue();
-                        int learnedAngle = (int) internalLearnedFeature.get(1).getValue();
-                        double distance = Math.sqrt(Math.pow(featureDistance,2)+Math.pow(learnedDistance,2)-2
-                                *featureDistance*learnedDistance*(Math.cos(featureAngle-learnedAngle)));
-
-                        distances.put(key, distance);
+                        featureAngle = (int) internalFeature.getValue();
+                        integerLearnedFeatures = storage.getInternalFeature(featureName, internalFeature.getName());
                     }
+
+                for (String key : keys) {
+
+                    double learnedDistance = (double) doubleLearnedFeatures.get(key).getValue();
+                    int learnedAngle = (int) integerLearnedFeatures.get(key).getValue();
+                    double distance = Math.sqrt(Math.pow(featureDistance,2)+Math.pow(learnedDistance,2)-2
+                            *featureDistance*learnedDistance*(Math.cos(featureAngle-learnedAngle)));
+
+                    distances.put(key, distance);
 
                 }
                 return distances;
