@@ -33,16 +33,36 @@ public class IntegerAbsoluteMetric extends GenericMetric implements Serializable
         if((feature instanceof IntegerFeature)){
             super.getDistance(feature);
             for(String key : keys) {
-                if(feature.getValue()==null || learnedFeature.get(key).getValue()==null){
-                    distances.put(key,0.0);
-                }
-                else{
-                    double distance = Math.abs((int)learnedFeature.get(key).getValue() - (int)feature.getValue());
 
-                    distances.put(key, distance);
-                }
+                double distance = Math.abs((int)learnedFeature.get(key).getValue() - (int)feature.getValue());
+                distances.put(key, distance);
+
             }
             return distances;
+        }
+        return null;
+    }
+
+    /* See GenericMetrics.getInternalDifference(GenericFeature feature, HashMap<String,GenericFeature>
+     *internalLearnedFeature) for full java doc
+     * This particular function will return a hashmap of the example key and Polar distance
+     * of the provided feature and each learned example of an internal feature.
+     * The value shall be returned as a Hashmap of {key, positive double distance}.
+     * returns null if provided feature is of the wrong type.
+     *
+     * @author Ethan Morrill
+     */
+    public HashMap<String, Double> getInternalDistance(GenericFeature feature, HashMap<String,GenericFeature> internalLearnedFeature){
+
+        if((feature instanceof IntegerFeature)){
+            HashMap<String, Double> internalDistances = new HashMap<>();
+            Set<String> internalKeys = internalLearnedFeature.keySet();
+            for(String key : internalKeys){
+                double distance = Math.abs((int)internalLearnedFeature.get(key).getValue() - (int)feature.getValue());
+
+                internalDistances.put(key, distance);
+            }
+            return internalDistances;
         }
         return null;
     }

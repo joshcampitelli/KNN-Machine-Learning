@@ -34,20 +34,44 @@ public class CartesianEuclideanMetric extends GenericMetric implements Serializa
         if(feature instanceof CartesianFeature){
             super.getDistance(feature);
             for(String key : keys) {
-                if(feature.getValue()==null || learnedFeature.get(key).getValue()==null){
-                    distances.put(key, 0.0);
+
+                int [] learnedValue = (int[]) learnedFeature.get(key).getValue();
+                double squareSum = 0;
+                for(int i = 0; i < value.length; i++){
+                    squareSum += Math.pow(value[i]-learnedValue[i], 2);
                 }
-                else{
-                    int [] learnedValue = (int[]) learnedFeature.get(key).getValue();
-                    double squareSum = 0;
-                    for(int i = 0; i < value.length; i++){
-                        squareSum += Math.pow(value[i]-learnedValue[i], 2);
-                    }
-                    distances.put(key, Math.sqrt(squareSum));
-                }
+                distances.put(key, Math.sqrt(squareSum));
 
             }
             return distances;
+        }
+        return null;
+    }
+
+    /* See GenericMetrics.getInternalDifference(GenericFeature feature, HashMap<String,GenericFeature>
+     *internalLearnedFeature) for full java doc
+     * This particular function will return a hashmap of the example key and Polar distance
+     * of the provided feature and each learned example of an internal feature.
+     * The value shall be returned as a Hashmap of {key, positive double distance}.
+     * returns null if provided feature is of the wrong type.
+     *
+     * @author Ethan Morrill
+     */
+    public HashMap<String, Double> getInternalDistance(GenericFeature feature, HashMap<String,GenericFeature> internalLearnedFeature){
+
+        int[] value = (int[])feature.getValue();
+        if((feature instanceof CartesianFeature)){
+            HashMap<String, Double> internalDistances = new HashMap<>();
+            Set<String> internalKeys = internalLearnedFeature.keySet();
+            for(String key : internalKeys){
+                int [] learnedValue = (int[]) internalLearnedFeature.get(key).getValue();
+                double squareSum = 0;
+                for(int i = 0; i < value.length; i++){
+                    squareSum += Math.pow(value[i]-learnedValue[i], 2);
+                }
+                internalDistances.put(key, Math.sqrt(squareSum));
+            }
+            return internalDistances;
         }
         return null;
     }

@@ -24,26 +24,42 @@ public class ComplexDifferenceMetric extends GenericMetric implements Serializab
      * @author Ethan Morrill
      */
 
-     //Has temporary getMetric until implementation is known
     public HashMap<String, Double> getDistance(GenericFeature feature) {
-        HashMap<String, Double> distances = new HashMap<>();
+
         if(feature instanceof ComplexFeature){
-            ArrayList<GenericFeature> internalFeatures =  (ArrayList<GenericFeature>)feature.getValue();
-            for(GenericFeature internalFeature: internalFeatures){
-                HashMap<String, Double> featureDistances = internalFeature.getMetric().getDistance(internalFeature);
-                for (String key : featureDistances.keySet()) {
+            super.getDistance(feature);
+            ArrayList<String> internalFeatureNames = new ArrayList<>();
+            for(String key: keys){
+                ArrayList<GenericFeature> internalFeatures = (ArrayList)learnedFeature.get(key).getValue();
+                for(GenericFeature internalFeature: internalFeatures) {
+
+                    internalFeatureNames.add(internalFeature.getName());
+
+                }
+                break;
+            }
+
+            for(String internalFeatName: internalFeatureNames){
+
+                HashMap<String, GenericFeature> internalFeature = storage.getInternalFeature(featureName, internalFeatName);
+                for(String key: keys) {
+
+                    HashMap<String, Double> internalDistances = internalFeature.get(key).getMetric().getInternalDistance(((ComplexFeature) feature).getInteralFeature(internalFeatName), internalFeature);
                     if (distances.containsKey(key)) {
-                        distances.put(key, featureDistances.get(key) + distances.get(key));
-                    } else {
-                        distances.put(key, featureDistances.get(key));
+                        distances.put(key, internalDistances.get(key) + distances.get(key));
+                    }
+                    else {
+                        distances.put(key, internalDistances.get(key));
                     }
                 }
-
-
             }
             return distances;
 
         }
+        return null;
+    }
+
+    public HashMap<String, Double> getInternalDistance(GenericFeature feature, HashMap<String,GenericFeature> internalLearnedFeature){
         return null;
     }
 
