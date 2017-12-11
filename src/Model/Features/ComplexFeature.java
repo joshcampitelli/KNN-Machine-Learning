@@ -18,6 +18,16 @@ public class ComplexFeature extends GenericFeature implements Serializable {
 		super(name, feature, metric);
 	}
 
+	public GenericFeature getInteralFeature(String featureName){
+		ArrayList<GenericFeature> internalFeatures = (ArrayList)this.getValue();
+		for(GenericFeature feature: internalFeatures){
+			if(feature.getName().equals(featureName)){
+				return feature;
+			}
+		}
+		return null;
+	}
+
 	/** @author Logan
 	 *  This function appends another feature to the ComplexFeature
 	 *  

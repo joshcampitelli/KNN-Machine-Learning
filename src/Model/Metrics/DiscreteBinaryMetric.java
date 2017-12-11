@@ -61,6 +61,29 @@ public class DiscreteBinaryMetric extends GenericMetric implements Serializable 
         }
         return null;
     }
+
+    public HashMap<String, Double> getInternalDistance(GenericFeature feature, HashMap<String,GenericFeature> internalLearnedFeature){
+
+        if((feature instanceof EnumFeature)){
+            HashMap<String, Double> internalDistances = new HashMap<>();
+            Set<String> internalKeys = internalLearnedFeature.keySet();
+            for(String key : internalKeys){
+                if(permittedValues.containsKey(feature.getValue())){
+                    if(permittedValues.get(internalLearnedFeature.get(key).getValue()).equals(permittedValues.get(feature.getValue()))){
+                        internalDistances.put(key,0.0);
+                    }
+                    else{
+                        internalDistances.put(key ,1.0);
+                    }
+                }
+                else{
+                    return null;
+                }
+            }
+            return internalDistances;
+        }
+        return null;
+    }
     
     /*
 	 * This function returns the array of permitted string values for discrete features

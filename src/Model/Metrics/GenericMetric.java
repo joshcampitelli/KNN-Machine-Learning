@@ -44,6 +44,8 @@ public abstract class GenericMetric implements Serializable {
 		return distances;
 	}
 
+	public abstract HashMap<String, Double> getInternalDistance(GenericFeature feature, HashMap<String,GenericFeature> internalLearnedFeature);
+
 	/* This function returns the feature name that the metric is afiliated with for viewing
 	 *
 	 * @author Logan Macgllvray

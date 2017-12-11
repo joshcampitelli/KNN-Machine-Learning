@@ -32,6 +32,10 @@ public class DoubleAbsoluteMetric extends GenericMetric implements Serializable 
         return null;
     }
 
+    public HashMap<String, Double> getInternalDistance(GenericFeature feature, HashMap<String,GenericFeature> internalLearnedFeature){
+        return null;
+    }
+
     /* See GenericMetric.getName() for full java doc
 	 * This function returns the feature name that the metric is afiliated with for viewing
 	 *

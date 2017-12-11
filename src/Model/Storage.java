@@ -86,6 +86,29 @@ public class Storage implements Serializable {
 		}
 		return targetFeatures;
 	}
+
+	public HashMap<String,GenericFeature> getInternalFeature(String complexFeatureName, String internalFeatureName){
+
+		HashMap<String, GenericFeature> targetFeatures = new HashMap<>();
+		Set<String> keys = learned.keySet();
+		for(String key : keys){
+			ArrayList<GenericFeature> values = learned.get(key);
+			for (GenericFeature feature : values) {
+				if(feature.getName().equals(complexFeatureName)){
+					ArrayList<GenericFeature> internalFeatures = (ArrayList)feature.getValue();
+					for(GenericFeature internalFeature : internalFeatures){
+						if(internalFeature.getName().equals(internalFeatureName)){
+							targetFeatures.put(key, internalFeature);
+						}
+
+					}
+				}
+			}
+		}
+
+		return targetFeatures;
+
+	}
 	
 	public String getFeatureString(String key) {
 		ArrayList<GenericFeature> list = learned.get(key);

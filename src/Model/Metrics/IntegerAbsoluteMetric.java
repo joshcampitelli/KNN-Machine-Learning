@@ -46,4 +46,19 @@ public class IntegerAbsoluteMetric extends GenericMetric implements Serializable
         }
         return null;
     }
+
+    public HashMap<String, Double> getInternalDistance(GenericFeature feature, HashMap<String,GenericFeature> internalLearnedFeature){
+
+        if((feature instanceof IntegerFeature)){
+            HashMap<String, Double> internalDistances = new HashMap<>();
+            Set<String> internalKeys = internalLearnedFeature.keySet();
+            for(String key : internalKeys){
+                double distance = Math.abs((int)internalLearnedFeature.get(key).getValue() - (int)feature.getValue());
+
+                internalDistances.put(key, distance);
+            }
+            return internalDistances;
+        }
+        return null;
+    }
 }

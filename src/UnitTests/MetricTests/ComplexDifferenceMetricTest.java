@@ -55,7 +55,7 @@ public class ComplexDifferenceMetricTest {
 
     @Test
     public void testGetDistance(){
-        System.out.println(complexMetric.getDistance(complexFeature).get("s1"));
+        //System.out.println(complexMetric.getDistance(complexFeature).get("s1"));
 
         assertEquals("Distance should be 51 and compare to true", true, testMap.get("s1").equals(complexMetric.getDistance(complexFeature).get("s1")));
     }

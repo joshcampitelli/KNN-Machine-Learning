@@ -51,4 +51,8 @@ public class CartesianEuclideanMetric extends GenericMetric implements Serializa
         }
         return null;
     }
+
+    public HashMap<String, Double> getInternalDistance(GenericFeature feature, HashMap<String,GenericFeature> internalLearnedFeature){
+        return null;
+    }
 }
