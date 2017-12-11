@@ -42,10 +42,7 @@ public class DiscreteBinaryMetric extends GenericMetric implements Serializable 
         if(feature instanceof EnumFeature){
             super.getDistance(feature);
             for(String key : keys) {
-                if(feature.getValue()==null || learnedFeature.get(key).getValue()==null){
-                    distances.put(key, 0.0);
-                }
-                else if(permittedValues.containsKey(feature.getValue())){
+                if(permittedValues.containsKey(feature.getValue())){
                     if(permittedValues.get(learnedFeature.get(key).getValue()).equals(permittedValues.get(feature.getValue()))){
                         distances.put(key,0.0);
                     }
@@ -58,6 +55,38 @@ public class DiscreteBinaryMetric extends GenericMetric implements Serializable 
                 }
             }
             return distances;
+        }
+        return null;
+    }
+
+    /* See GenericMetrics.getInternalDifference(GenericFeature feature, HashMap<String,GenericFeature>
+     *internalLearnedFeature) for full java doc
+     * This particular function will return a hashmap of the example key and Polar distance
+     * of the provided feature and each learned example of an internal feature.
+     * The value shall be returned as a Hashmap of {key, positive double distance}.
+     * returns null if provided feature is of the wrong type.
+     *
+     * @author Ethan Morrill
+     */
+    public HashMap<String, Double> getInternalDistance(GenericFeature feature, HashMap<String,GenericFeature> internalLearnedFeature){
+
+        if((feature instanceof EnumFeature)){
+            HashMap<String, Double> internalDistances = new HashMap<>();
+            Set<String> internalKeys = internalLearnedFeature.keySet();
+            for(String key : internalKeys){
+                if(permittedValues.containsKey(feature.getValue())){
+                    if(permittedValues.get(internalLearnedFeature.get(key).getValue()).equals(permittedValues.get(feature.getValue()))){
+                        internalDistances.put(key,0.0);
+                    }
+                    else{
+                        internalDistances.put(key ,1.0);
+                    }
+                }
+                else{
+                    return null;
+                }
+            }
+            return internalDistances;
         }
         return null;
     }

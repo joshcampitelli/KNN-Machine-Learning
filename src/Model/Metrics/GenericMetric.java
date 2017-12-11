@@ -30,9 +30,9 @@ public abstract class GenericMetric implements Serializable {
 		
 	}
 	
-	/* This function will return a positive whole number as a difference
-	 * between two metrics.  It will also return -1 when the metric passed 
-	 * does not match the current metric.  A metric parameter is required.
+	/* This function will return a HashMap of the learnedInstance keys and positive doubles as a difference
+	 * between two features.  It will also return null when the feature passed
+	 * does not match the current feature.  A feature parameter is required.
 	 * 
 	*/
 	public HashMap<String, Double> getDistance(GenericFeature feature){
@@ -43,6 +43,13 @@ public abstract class GenericMetric implements Serializable {
 
 		return distances;
 	}
+	/* This function will return a HashMap of the learnedInternalfeatures keys and positive double values of the difference
+	 * between the leaned internalFeature and the internalFeature of the desired Complex feature. Returns null if the
+	 * feature is of the wrong type
+	 *
+	 * @author Ethan Morrill
+	 */
+	public abstract HashMap<String, Double> getInternalDistance(GenericFeature feature, HashMap<String,GenericFeature> internalLearnedFeature);
 
 	/* This function returns the feature name that the metric is afiliated with for viewing
 	 *
