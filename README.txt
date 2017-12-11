@@ -45,13 +45,24 @@ The program now supports complex features.  The
 program is able to support multiple different  
 scenarios.
 
-Known Issues:					
-   - Predict has a bug where the list being passed
-   	was empty, working through that bug until 
-	deadline approached
-   - UML not up to date
+-----------------------------------------------
+UPDATE 3 - The Final Update
+-----------------------------------------------
+SAVING IS NOW A THING!!! The program allows a  
+user to save an instance of MachineLearning in 
+a .jerl file.  They can then reopen the program
+and open any .jerl file to the program.  There
+is also error handling in incorrect filetypes 
+and files not existing.
 
-The Map Ahead:	
-  1) Replace CartesianFeature with a ComplexFeature
-  2) Saving/Loading data
-  3) Bug fix on the Predict
+Users cannot build complex features; however, a
+complex feature can be used whenever a complex 
+metric is selected.
+
+Unit tests have also been updated to support new
+additions. 
+
+Known Issues:					
+   - If the user tries to "Learn Instance" and 
+   	then cancel, they will be prompted for a
+	value again
