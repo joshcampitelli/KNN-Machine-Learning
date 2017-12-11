@@ -253,14 +253,15 @@ public class TestMachineLearning {
 	@Test
 	public void testSerialSaveAndOpen() {
 		MachineLearning createdMachineLearning = null;
-		machineLearning.serialSave("test.ser");
-		createdMachineLearning = machineLearning.serialOpen("test.ser");
+		String fileName = "test.jerl";
+		machineLearning.serialSave(fileName);
+		createdMachineLearning = machineLearning.serialOpen(fileName);
 		
 		assertEquals("", true, createdMachineLearning.equals(machineLearning));
 		
 		//This is just to clean up after this test so that there is no file left over
 		try {
-			Files.deleteIfExists(Paths.get("test.ser"));
+			Files.deleteIfExists(Paths.get(fileName));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
