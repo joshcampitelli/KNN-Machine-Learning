@@ -42,10 +42,7 @@ public class DiscreteBinaryMetric extends GenericMetric implements Serializable 
         if(feature instanceof EnumFeature){
             super.getDistance(feature);
             for(String key : keys) {
-                if(feature.getValue()==null || learnedFeature.get(key).getValue()==null){
-                    distances.put(key, 0.0);
-                }
-                else if(permittedValues.containsKey(feature.getValue())){
+                if(permittedValues.containsKey(feature.getValue())){
                     if(permittedValues.get(learnedFeature.get(key).getValue()).equals(permittedValues.get(feature.getValue()))){
                         distances.put(key,0.0);
                     }

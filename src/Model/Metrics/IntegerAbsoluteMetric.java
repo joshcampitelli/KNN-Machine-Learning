@@ -33,14 +33,10 @@ public class IntegerAbsoluteMetric extends GenericMetric implements Serializable
         if((feature instanceof IntegerFeature)){
             super.getDistance(feature);
             for(String key : keys) {
-                if(feature.getValue()==null || learnedFeature.get(key).getValue()==null){
-                    distances.put(key,0.0);
-                }
-                else{
-                    double distance = Math.abs((int)learnedFeature.get(key).getValue() - (int)feature.getValue());
 
-                    distances.put(key, distance);
-                }
+                double distance = Math.abs((int)learnedFeature.get(key).getValue() - (int)feature.getValue());
+                distances.put(key, distance);
+
             }
             return distances;
         }

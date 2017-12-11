@@ -39,16 +39,13 @@ public class ComplexDifferenceMetric extends GenericMetric implements Serializab
                 }
                 break;
             }
-            System.out.println( internalFeatureNames);
-            System.out.println( keys);
+
             for(String internalFeatName: internalFeatureNames){
 
                 HashMap<String, GenericFeature> internalFeature = storage.getInternalFeature(featureName, internalFeatName);
                 for(String key: keys) {
 
-                    System.out.println( internalFeature.get(key).getMetric());
                     HashMap<String, Double> internalDistances = internalFeature.get(key).getMetric().getInternalDistance(((ComplexFeature) feature).getInteralFeature(internalFeatName), internalFeature);
-                    System.out.println( internalDistances);
                     if (distances.containsKey(key)) {
                         distances.put(key, internalDistances.get(key) + distances.get(key));
                     }

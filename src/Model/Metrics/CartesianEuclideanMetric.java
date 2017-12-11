@@ -34,17 +34,13 @@ public class CartesianEuclideanMetric extends GenericMetric implements Serializa
         if(feature instanceof CartesianFeature){
             super.getDistance(feature);
             for(String key : keys) {
-                if(feature.getValue()==null || learnedFeature.get(key).getValue()==null){
-                    distances.put(key, 0.0);
+
+                int [] learnedValue = (int[]) learnedFeature.get(key).getValue();
+                double squareSum = 0;
+                for(int i = 0; i < value.length; i++){
+                    squareSum += Math.pow(value[i]-learnedValue[i], 2);
                 }
-                else{
-                    int [] learnedValue = (int[]) learnedFeature.get(key).getValue();
-                    double squareSum = 0;
-                    for(int i = 0; i < value.length; i++){
-                        squareSum += Math.pow(value[i]-learnedValue[i], 2);
-                    }
-                    distances.put(key, Math.sqrt(squareSum));
-                }
+                distances.put(key, Math.sqrt(squareSum));
 
             }
             return distances;
@@ -53,6 +49,21 @@ public class CartesianEuclideanMetric extends GenericMetric implements Serializa
     }
 
     public HashMap<String, Double> getInternalDistance(GenericFeature feature, HashMap<String,GenericFeature> internalLearnedFeature){
+
+        int[] value = (int[])feature.getValue();
+        if((feature instanceof CartesianFeature)){
+            HashMap<String, Double> internalDistances = new HashMap<>();
+            Set<String> internalKeys = internalLearnedFeature.keySet();
+            for(String key : internalKeys){
+                int [] learnedValue = (int[]) internalLearnedFeature.get(key).getValue();
+                double squareSum = 0;
+                for(int i = 0; i < value.length; i++){
+                    squareSum += Math.pow(value[i]-learnedValue[i], 2);
+                }
+                internalDistances.put(key, Math.sqrt(squareSum));
+            }
+            return internalDistances;
+        }
         return null;
     }
 }
