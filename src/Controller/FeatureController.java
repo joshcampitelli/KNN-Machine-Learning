@@ -165,6 +165,11 @@ public class FeatureController {
                 x = Integer.valueOf(xField.getText());
                 y = Integer.valueOf(yField.getText());
             } catch (NumberFormatException e) {
+                //If user leaves blank assume 0.
+                if (xField.getText().equals("") || yField.getText().equals("")) {
+                    return new CartesianFeature(metric.getName(), 0, 0, metric);
+                }
+
                 JOptionPane.showMessageDialog(null, "Incorrect coordinate.");
                 return cartesianFeatureWindow(metric); //Testing recursion here.
             }
@@ -224,6 +229,10 @@ public class FeatureController {
             try {
                 value = Integer.valueOf(intField.getText());
             } catch (NumberFormatException e) {
+                //If user leaves blank assume 0.
+                if (intField.getText().equals("")) {
+                    return new IntegerFeature(metric.getName(), 0, metric);
+                }
                 JOptionPane.showMessageDialog(null, "Incorrect value.");
                 return integerFeatureWindow(metric, text); //Testing recursion here.
             }
@@ -251,6 +260,10 @@ public class FeatureController {
             try {
                 value = Double.valueOf(doubleField.getText());
             } catch (NumberFormatException e) {
+                //If user leaves blank assume 0.
+                if (doubleField.getText().equals("")) {
+                    return new DoubleFeature(metric.getName(), 0.0, metric);
+                }
                 JOptionPane.showMessageDialog(null, "Incorrect value.");
                 return doubleFeatureWindow(metric, text); //Testing recursion here.
             }
