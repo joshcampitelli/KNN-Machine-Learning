@@ -307,9 +307,7 @@ public class MachineLearning implements Serializable {
 	 * @author Ryan Ribeiro
 	 */
 	public void serialSave(String fileName) {
-		if (!(fileName.endsWith(".ser"))) {
-			fileName = fileName + ".ser";
-		}
+		
 		try {
 			FileOutputStream fileOut = new FileOutputStream(fileName); 		//Creates an FileOutputStream using the fileName provided
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);		//Creates an ObjectOutputStream using the created FileOutputStream
