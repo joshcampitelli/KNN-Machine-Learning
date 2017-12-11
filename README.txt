@@ -1,4 +1,4 @@
-SYSC 3110 Turn_Down_A_Bower Group: Deliverable 2
+SYSC 3110 Turn_Down_A_Bower Group: Deliverable 4
 ------------------------------------------------
 Josh Campitelli 	101010050
 Ryan Ribeiro 		100997936
@@ -50,10 +50,12 @@ UPDATE 3 - The Final Update
 -----------------------------------------------
 SAVING IS NOW A THING!!! The program allows a  
 user to save an instance of MachineLearning in 
-a .jerl file.  They can then reopen the program
+a .jerl file. They can then reopen the program
 and open any .jerl file to the program.  There
 is also error handling in incorrect filetypes 
-and files not existing.
+and files not existing. The .jerl file is a
+custom extension, however it functions the same
+way a .ser file would.
 
 Users cannot build complex features; however, a
 complex feature can be used whenever a complex 
