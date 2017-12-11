@@ -57,7 +57,14 @@ and files not existing.
 
 Users cannot build complex features; however, a
 complex feature can be used whenever a complex 
-metric is selected.
+metric is selected.  If we had more time (as we
+realised this last minute) we would have set up
+a recursive way of creating complex metrics that
+would take on the appearnace of starting a new
+instance of MachineLearning.  The windows would
+appear in the same order, and the distance of 
+the complex metric would be a sum of the distances
+of its "simpler" metrics.
 
 Unit tests have also been updated to support new
 additions. 
@@ -66,3 +73,9 @@ Known Issues:
    - If the user tries to "Learn Instance" and 
    	then cancel, they will be prompted for a
 	value again
+   - Unable to add complex metrics made from 
+   	"simpler" metrics
+
+Moving Forward:
+ Continue to work on (or overhaul) the project 
+ 	after the semester is over.
